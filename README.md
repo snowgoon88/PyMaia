@@ -1,4 +1,6 @@
-maia
+Internship - Loria, MAIA Team
 ====
 
-Internship - Loria, MAIA Team
+
+
+Théo Biasutto--Lervat
