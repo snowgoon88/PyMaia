@@ -1,12 +1,21 @@
-Monday(31/03):
+Lundi(31/03):
 	- Acceuil equipe
 	- Lecture de (1)
 	- Analyse de minimalESN.py
-Tuesay(01/04):
+Mardi(01/04):
+	- Analyse de (1)
 	- Lecture de (2)
-	- Apprentissage LaTeX
+	- Redaction "Aperçu d'un ESN" (LaTeX)
+Mercredi(02/04):
+	-
+Jeudi(03/04):
+	-
+Vendredi(04/04):
+	-
+
+BILAN
 
 
-
+Réfèrences
 (1) A practical guide to applying echo state network, Mantas Lukosevicius
 (2) The "echo state" approach to analysing and training recurrent neural networks - with an Erratum note, Herbert Jaeger

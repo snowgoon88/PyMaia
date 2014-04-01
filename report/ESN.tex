@@ -1,18 +1,97 @@
-\documentclass{article}
+\documentclass[12pt]{article}
 
-\usepackage[latin1]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[francais]{babel}
+\usepackage[french]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[OT1]{fontenc}
 
-\title{Echo State Network}
-\author{Th\'eo \bsc{Biasutto--Lervat}}
-\date{1 avril 2014}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+
+\title{Aperçu des Echo State Networks}
+\author{Théo \bsc{Biasutto--Lervat}}
+\date{}
 
 \begin{document}
 \maketitle
 
+
 \section{Introduction}
-Ceci é un tst !
-\section{}
+Le \textit{Reservoir computing} (RC) est une alternative à la méthode de descente du gradient pour entraîner les \textit{recurrent neural network} (RNN), une architecture de réseau de neurones artificielles où les connections synaptiques forment des cycles. Cela entraîne l'apparition d'état interne au sein du réseau, ce qui lui permet de présenter un comportement temporel dynamique.\newline
+Un \textit{Echo state network} est un RNN possèdant une couche cachée, le réservoir, avec peu de connection générées aléatoirement. Le poid des neurones de sortie est l'unique sous-ensemble du réseau entraîné à l'aide d'une régression linéaire.\newline
+Pour que l'approche ESN fonctionne, le réservoir doit satisfaire \textit{l'echo state property}: l'état d'un réservoir ne doit dépendre que des données entrées au court du temps. Donc pour un réservoir assimilant une grande quantitée de donnée, son état interne ne doit plus dépendre des conditions initiales.
+
+
+\section{Formalisation}
+Considérons un réseaux de neurones en temps discret, avec K neurones d'entrée, N neurones internes, et L neurones de sortie.\newline
+\begin{center}
+\includegraphics[scale=0.5]{esn.jpeg}
+\end{center}
+\begin{description}
+\item[$u(n)$ :] $K$-vecteur, activations des neurones d'entrée à l'instant n
+\item[$x(n)$ :] $N$-vecteur, activations des neurones internes à l'instant n
+\item[$y(n)$ :] $L$-vecteur, activations des neurones de sortie à l'instant n
+\item[$W^{in}$ :] $N \times K$ matrice, poids des synapses d'entrée
+\item[$W$ :] $N \times N$ matrice, poids des synapses internes
+\item[$W^{out}$ :] $L \times (K + N + L)$ matrice, poids des synapses de sortie
+\item[$W^{back}$ :] $N \times L$ matrice, poids des synapses de \textit{feedback}
+\item[$\alpha$ :] le taux de fuite
+\end{description}
+
+
+\section{Méthode}
+\subsection{Aperçu}
+\begin{enumerate}
+\item Générer le réservoir ($W^{in}$, $W$, $\alpha$);
+\item Utiliser le corpus d'apprentissage $u(n)$ et collecter $x(n)$;
+\item Calculer $W^{out}$ en minimisant la différence entre  $y(n)$ et $y^{target}(n)$;
+\item Utiliser les nouvelles données $u(n)$, obtenir  $y(n)$ avec $W^{out}$.
+\end{enumerate}
+
+\subsection{Generation du réservoir}
+\paragraph{Taille du réservoir}
+L'entrainement et l'utilisation d'un ESN est peu couteux à côté des autres approches de RNN, ce qui nous permets de créer de grand réservoir, avec un ordre de grandeur de $10^{4}$ neurones. Le réservoir peut cependant être trop gros si la tâche est triviale et qu'il n'y a pas assez de donnée disponible dans le corpus d'apprentissage.\newline
+Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
+\begin{itemize}
+\item Pour des tâches complexes, utiliser un réservoir aussi gros que vous le pouvez.
+\item Choisir les paramètres pour de petit réservoir, puis les mettres à l'échelle pour de plus gros.
+\item N doit être au moins égal à l'estimation de valeur indépendante que le réservoir doit mémoriser depuis les entrées pour résoudre la tâche.
+\end{itemize}
+
+\paragraph{Parcimonie du réservoir}
+Une grande partie des éléments de $W^{in}$ doivent être nul. En général, la parcimonie du réservoir affecte peu les performances du réseau de neurone.\newline
+Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
+\begin{itemize}
+\item Connecter chaque neurone à un petit nombres de neurones, indépendament de la taille du réservoir. Profiter de cette parcimonie pour accélerer les calculs.
+\end{itemize}
+
+\paragraph{Distribution des éléments non-nuls}
+Une grande partie des éléments de $W$ sont nuls, et la distribution des éléments non-nuls peut s'effectuer de différente façon : \textit{symmetrical uniform}, \textit{discrete bi-valued}, \textit{normal distribution centered around zero}, \textit{Gaussian distribution}.\newline
+La distribution Gaussienne et normal donne virtuellement les mêmes résultats, la distribution \textit{discrete bi-valued} semble moins efficace, mais peut faciliter l'analyse du réservoir lors de son exécution.
+
+\paragraph{Rayon spectral}
+Un des paramètres majeurs d'un ESN est le rayon spectral de la matrice $W$. Généralement, une fois la génération de $W$ effectuée, la matrice est divisée par $\rho(W)$ pour assurer un rayon spectral unitaire. Le rayon spectral détermine à quelle vitesse l'influence d'une entrée disparait du réservoir, et à quel point l'état interne du réservoir est stable.\newline
+Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
+\begin{itemize}
+\item $\rho(W) < 1$ assure dans la propriété \textit(echo state) dans la plupart des situations.
+\item Le rayon spectral optimale est souvent plus grand lors de tâche nécessitant une grande mémoire des entrées.
+\end{itemize}
+
+\paragraph{Redimmensionnement des entrées}
+Un autre paramètre essentiel d'un ESN... \newline
+Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
+\begin{itemize}
+\item Mettre à l'échelle $W^{in}$ uniformément, pour limiter le nombre de paramètre de l'ESN. Cependant, par souçi de performance, il est possible de redimmensionner la première colonne de $W^{in}$ (le biais) séparement, et de redimmensionner les autres colonnes séparement si les éléments de $u(n)$ contribue différement à la tâche.
+\item Il est conseillé de normaliser les données, ce qui peut aider à borner $u(n)$ et ainsi éviter des aberrations. Par exemple, appliquer $tanh(.)$ à $u(n)$ si celui ci n'est pas borné.
+\item Le redimensionnement des entrées régule la quantitée de non-linéarité de $x(n)$ (augmente aussi avec $\rho(W)$), et l'effet de l'entrée courante sur $x(n)$ par rapport aux entrées précédantes (proportionnellement à $\rho(W)$).
+\end{itemize}
+
+\paragraph{Taux de fuite}
+Le troisième paramètre primordial des ESN...\newline
+Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
+\begin{itemize}
+\item Le taux de fuite $\alpha$ doit correspondre à la vitesse de la dynamique de $u(n)$ et/ou $y^{target}(n)$.
+\end{itemize}
+
+\subsection{Apprentissage}
 
 \end{document}
