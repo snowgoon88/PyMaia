@@ -2,7 +2,7 @@
 """
 A minimalistic Echo State Networks demo with Mackey-Glass (delay 17) data 
 in "plain" scientific Python.
-by Mantas LukoÅ¡eviÄ?ius 2012
+by Mantas Lukosevicius 2012
 http://minds.jacobs-university.de/mantas
 """
 from numpy import *
@@ -90,4 +90,8 @@ figure(3).clear()
 bar( range(1+inSize+resSize), Wout.T )
 title('Output weights $\mathbf{W}^{out}$')
 
+print "data",data.shape," Y.T",Y.T.shape
+figure(4).clear()
+plot( data[trainLen+1:trainLen+testLen+1]- Y.T[:,0] )
+title('Erreur en fonction timestep')
 show()

@@ -5,9 +5,10 @@
 \usepackage[OT1]{fontenc}
 
 \usepackage{graphicx}
-\usepackage{wrapfig}
+\usepackage{verbatim}
+\usepackage{amsfonts}
 
-\title{Aperçu des Echo State Networks}
+\title{Aperçu d'une architecture de Reservoir Computing\\Les Echo State Networks}
 \author{Théo \bsc{Biasutto--Lervat}}
 \date{}
 
@@ -16,9 +17,9 @@
 
 
 \section{Introduction}
-Le \textit{Reservoir computing} (RC) est une alternative à la méthode de descente du gradient pour entraîner les \textit{recurrent neural network} (RNN), une architecture de réseau de neurones artificielles où les connections synaptiques forment des cycles. Cela entraîne l'apparition d'état interne au sein du réseau, ce qui lui permet de présenter un comportement temporel dynamique.\newline
-Un \textit{Echo state network} est un RNN possèdant une couche cachée, le réservoir, avec peu de connection générées aléatoirement. Le poid des neurones de sortie est l'unique sous-ensemble du réseau entraîné à l'aide d'une régression linéaire.\newline
-Pour que l'approche ESN fonctionne, le réservoir doit satisfaire \textit{l'echo state property}: l'état d'un réservoir ne doit dépendre que des données entrées au court du temps. Donc pour un réservoir assimilant une grande quantitée de donnée, son état interne ne doit plus dépendre des conditions initiales.
+Le \textit{Reservoir computing} (RC) est une alternative à la méthode de descente du gradient pour entraîner les \textit{recurrent neural network} (RNN), une architecture de réseau de neurones artificielles où les connections synaptiques peuvent former des cycles. Cela entraîne l'apparition d'états internes au sein du réseau, lui permettant d'adopter un comportement temporel dynamique.\newline
+Un \textit{Echo state network} est un RNN possèdant une couche cachée, le réservoir, avec un faible nombre de synapse dont les poids sont générés aléatoirement. Le poid des neurones de sortie est l'unique sous-ensemble du réseau qui sera entraîné, bien souvent à l'aide d'une régression linéaire.\newline
+Pour que l'approche ESN fonctionne, le réservoir doit satisfaire \textit{l'echo state property}: l'état d'un réservoir ne doit dépendre que des données entrées au court du temps. Pour un réservoir assimilant une grande quantitée de donnée, son état interne ne doit donc plus dépendre de l'initialisation.
 
 
 \section{Formalisation}
@@ -27,18 +28,20 @@ Considérons un réseaux de neurones en temps discret, avec K neurones d'entrée
 \includegraphics[scale=0.5]{esn.jpeg}
 \end{center}
 \begin{description}
-\item[$u(n)$ :] $K$-vecteur, activations des neurones d'entrée à l'instant n
-\item[$x(n)$ :] $N$-vecteur, activations des neurones internes à l'instant n
-\item[$y(n)$ :] $L$-vecteur, activations des neurones de sortie à l'instant n
-\item[$W^{in}$ :] $N \times K$ matrice, poids des synapses d'entrée
-\item[$W$ :] $N \times N$ matrice, poids des synapses internes
-\item[$W^{out}$ :] $L \times (K + N + L)$ matrice, poids des synapses de sortie
-\item[$W^{back}$ :] $N \times L$ matrice, poids des synapses de \textit{feedback}
+\item[$u(n)$ :] vecteur $\in \mathbb{R}^{K}$, activations des neurones d'entrée à l'instant n
+\item[$x(n)$ :] vecteur $\in \mathbb{R}^{N}$, activations des neurones internes à l'instant n
+\item[$y(n)$ :] vecteur $\in \mathbb{R}^{L}$, activations des neurones de sortie à l'instant n
+\item[$W^{in}$ :] $N \times K$ matrice $\in \mathbb{R}$, poids des synapses d'entrée
+\item[$W$ :] $N \times N$ matrice $\in \mathbb{R}$, poids des synapses internes
+\item[$W^{out}$ :] $L \times (K + N + L)$ matrice $\in \mathbb{R}$, poids des synapses de sortie
+\item[$W^{back}$ :] $N \times L$ matrice $\in \mathbb{R}$, poids des synapses de \textit{feedback}
 \item[$\alpha$ :] le taux de fuite
-\end{description}
+\end{description} 
+
+\section{Fonctionnement}
 
 
-\section{Méthode}
+\section{Méthodes}
 \subsection{Aperçu}
 \begin{enumerate}
 \item Générer le réservoir ($W^{in}$, $W$, $\alpha$);
@@ -76,7 +79,7 @@ Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
 \item Le rayon spectral optimale est souvent plus grand lors de tâche nécessitant une grande mémoire des entrées.
 \end{itemize}
 
-\paragraph{Redimmensionnement des entrées}
+\paragraph{Redimensionnement des entrées}
 Autre paramètre essentiel d'un ESN, la matrice $W^{in}$ détermine la linéarité de la réponse du réservoir. Pour des tâches très linéaire, $W^{in}$ devrait être peuplé de faible valeur. Lorsque $W^{in}$ possède de forte valeur, les neurones ont tendances à agir comme des commutateurs binaires. De plus, l'échelle de $W^{in}$ et celle de $W$ détermine respectivement comment l'état interne $x(n)$ dépent de l'entrée $u(n)$ et de $x(n-1)$.\newline
 Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
 \begin{itemize}
@@ -93,6 +96,45 @@ Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
 \end{itemize}
 
 \subsection{Apprentissage}
+\paragraph{Script}
+\begin{verbatim}
+network = ESN()
 
+network.setGenerationStrategy(genStrat)
+network.generateReservoir(K, N, L, a)
+
+for i=0; i<initTransient; i++ :
+ network.feed(u[i])
+
+X = zeros( (1+K+N, len(data)-initTransient ) )
+for i=0; i<len(data); i++ :
+ network.feed(data[i+initTransient])
+ X[:, i] = vstack( (1, data[i+initTransient], network.x) )[:, 0] 
+
+network.setLearningStrategy(learnStrat)
+network.learn(ytarget, X)
+\end{verbatim}
+
+\paragraph{Classes utilitaires}
+\begin{verbatim}
+def class ESN :
+ def setGenerationStrategy(self, genStrat):
+  self.genStrat = genStrat
+
+ def setLearningStrategy(self, learnStrat):
+  self.learnStrat = learnStrat
+
+ def generateReservoir(self, K, N, L, a):
+  self.Win = genStrat.generateWin(K, N)
+  self.W = genStrat.generateW(N)
+  self.a = a
+  self.x = zeros((N, 1))
+
+ def learn(self, ytarget, x):
+  self.Wout = learnStrat.learnWout(ytarget, x)
+  
+ def feed(data):
+  self.x = (1-a)*x + a*tanh( dot(Win, vstack((1, u))) + dot(W, x) )
+\end{verbatim}
 
 \end{document}
