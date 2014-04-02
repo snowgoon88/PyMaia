@@ -43,7 +43,7 @@ network = ESN()
 print 'Generation... '
 network.generate(K, N, L, a)
 # Spectral radius tuning
-rhoW = max( abs( linalg.eig(network.W) ) )
+rhoW = max( abs( linalg.eig(network.W)[0] ) )
 network.W *= 1.25 / rhoW
 # initialisation transient
 print 'Initialisation...'
