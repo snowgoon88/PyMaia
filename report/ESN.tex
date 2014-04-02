@@ -77,7 +77,7 @@ Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
 \end{itemize}
 
 \paragraph{Redimmensionnement des entrées}
-Un autre paramètre essentiel d'un ESN... \newline
+Autre paramètre essentiel d'un ESN, la matrice $W^{in}$ détermine la linéarité de la réponse du réservoir. Pour des tâches très linéaire, $W^{in}$ devrait être peuplé de faible valeur. Lorsque $W^{in}$ possède de forte valeur, les neurones ont tendances à agir comme des commutateurs binaires. De plus, l'échelle de $W^{in}$ et celle de $W$ détermine respectivement comment l'état interne $x(n)$ dépent de l'entrée $u(n)$ et de $x(n-1)$.\newline
 Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
 \begin{itemize}
 \item Mettre à l'échelle $W^{in}$ uniformément, pour limiter le nombre de paramètre de l'ESN. Cependant, par souçi de performance, il est possible de redimmensionner la première colonne de $W^{in}$ (le biais) séparement, et de redimmensionner les autres colonnes séparement si les éléments de $u(n)$ contribue différement à la tâche.
@@ -86,12 +86,13 @@ Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
 \end{itemize}
 
 \paragraph{Taux de fuite}
-Le troisième paramètre primordial des ESN...\newline
+Le troisième paramètre primordial des ESN, le taux de fuite peut être compris comme la vitesse de la dynamique de mise à jour du réservoir, mais aussi comme l'interval de temps entre deux consecutives \textit{timestep} de la réalisation discrète.\newline
 Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
 \begin{itemize}
 \item Le taux de fuite $\alpha$ doit correspondre à la vitesse de la dynamique de $u(n)$ et/ou $y^{target}(n)$.
 \end{itemize}
 
 \subsection{Apprentissage}
+
 
 \end{document}
