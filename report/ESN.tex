@@ -7,6 +7,8 @@
 \usepackage{graphicx}
 \usepackage{verbatim}
 \usepackage{amsfonts}
+\usepackage{comment}
+
 
 \title{Aperçu d'une architecture de Reservoir Computing\\Les Echo State Networks}
 \author{Théo \bsc{Biasutto--Lervat}}
@@ -39,10 +41,28 @@ Considérons un réseaux de neurones en temps discret, avec K neurones d'entrée
 \end{description} 
 
 \section{Fonctionnement}
+\subsection{Généralité}
+Dans le cas d'un apprentissage supervisé, c'est à dire dont les résultats sont connu à l'avance, voici les différentes équations décrivant le fonctionnement de l'ESN.\newline
+\paragraph{L'état interne}
+\begin{center}
+$x(n) = f(W^{in}u(n) + Wx(n-1) + W^{back}y(n-1) )$
+\end{center}
+où $f=(f_{1},...,f_{N})$ sont les fonctions d'activations des neurones du réservoir.\newline
+Dans le cas d'un ESN sans synapse de \textit{feedback}, avec biais et avec pour fonctions d'activation $\tanh$, nous obtenons
+\begin{center}
+$x(n) = (1-\alpha)x(n-1) + \alpha\tanh(W^{in}[1;u(n)] + Wx(n-1))$
+\end{center}
+\paragraph{La sortie}
+\begin{center}
+$y(n)= W^{out}[1;u(n);x(n)]$
+\end{center}
+\paragraph{Apprentissage de $W^{out}$}
+\begin{center}
+$W^{out} = Y^{target} X^\top (XX^\top + \beta I)^{-1}$
+\end{center}
+où $\beta$ est le coefficient de régularisation (A COMPLETER).
 
-
-\section{Méthodes}
-\subsection{Aperçu}
+\subsection{Mise en oeuvre}
 \begin{enumerate}
 \item Générer le réservoir ($W^{in}$, $W$, $\alpha$);
 \item Utiliser le corpus d'apprentissage $u(n)$ et collecter $x(n)$;
@@ -50,6 +70,7 @@ Considérons un réseaux de neurones en temps discret, avec K neurones d'entrée
 \item Utiliser les nouvelles données $u(n)$, obtenir  $y(n)$ avec $W^{out}$.
 \end{enumerate}
 
+\section{Astuces}
 \subsection{Generation du réservoir}
 \paragraph{Taille du réservoir}
 L'entrainement et l'utilisation d'un ESN est peu couteux à côté des autres approches de RNN, ce qui nous permets de créer de grand réservoir, avec un ordre de grandeur de $10^{4}$ neurones. Le réservoir peut cependant être trop gros si la tâche est triviale et qu'il n'y a pas assez de donnée disponible dans le corpus d'apprentissage.\newline
@@ -96,6 +117,9 @@ Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
 \end{itemize}
 
 \subsection{Apprentissage}
+Bientôt...
+
+\begin{comment}
 \paragraph{Script}
 \begin{verbatim}
 network = ESN()
@@ -136,5 +160,7 @@ def class ESN :
  def feed(data):
   self.x = (1-a)*x + a*tanh( dot(Win, vstack((1, u))) + dot(W, x) )
 \end{verbatim}
+
+\end{comment}
 
 \end{document}
