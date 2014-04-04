@@ -10,10 +10,12 @@ class ESN:
         self.a = a
         self.x = zeros((N, 1))
         self.Wout = zeros((L, K+N+L))
-        # random value [-0.5;0.5]
+        # Reservoir generation
+        random.seed(42)
         self.Win = random.rand(N, 1+K)-0.5
-        # random value [-0.5;0.5]
         self.W = random.rand(N, N)-0.5
+        #self.Win = random.randn(N, 1+K)
+        #self.W = random.randn(N,N)
         # Spectral radius tuning
         rhoW = max( abs( linalg.eig(self.W)[0] ) )
         self.W *= rho_factor / rhoW
@@ -40,44 +42,37 @@ def runESN(K, N, L, a, rho_factor, data, initLen, trainLen, testLen):
     network = ESN()
     # generate a reservoir
     if verbose :
-        print 'Generating a reservoir... '
+        print 'Step 1/5: Reservoir generation'
     network.generate(K, N, L, a, rho_factor)
 
     # initialisation transient
     if verbose :
-        print 'Initialisation step...'
+        print 'Step 2/5: Initialisation transient'
     for t in range(initLen):
         network.feed(data[t])
 
     # feed
     if verbose :
-        print 'Feeding step...'
+        print 'Step 3/5: Learning'
     for t in range(initLen, trainLen):
         network.feed(data[t])
         Xmem[:, t-initLen] = vstack((1, data[t], network.x))[:,0]
 
     # train
     if verbose:
-        print 'Training step...'
+        print 'Step 4/5: Compute Wout'
     network.train(Ytarget, Xmem, 1e-8*eye(1+K+N))
 
     # test
     if verbose:
-        print 'Testing step...'
+        print 'Step 5/5: Testing'
     Ymem = zeros((L, testLen))
     u = data[trainLen]
     for t in range(testLen):
         Ymem[:, t] = network.solve(u)
         u = Ymem[:, t]
 
-    if verbose:
-        print 'done'
-
-    figure(1).clear()
-    plot(data[trainLen+1:trainLen+testLen+1], 'g')
-    plot(Ymem.T, 'b')
-    legend(['Target signal', 'Predited signal'])
-    show()
+    return data[trainLen+1:trainLen+testLen+1], Ymem
 
 def main():
     try:
@@ -94,6 +89,8 @@ def main():
         elif opt in ('-h','--help'):
             usage()
             sys.exit(0)
+
+
     
     for json_file in files :
         fd=open(json_file)
@@ -109,7 +106,7 @@ def main():
 
         # data setup
         data = None
-        if json_data['data']['type'] == 'txt' :
+        if json_data['data']['type'] == 'MackeyGlass' :
             data = loadtxt(json_data['data']['path'])
         else :
             print 'Unsupported data type: ',json_data['data']['type']
@@ -119,11 +116,22 @@ def main():
         test_len=json_data['data']['testLen']
 
         if verbose:
-            print 'Running ', json_file
-        runESN(K, N, L, a, rho_factor, data, init_len, train_len, test_len)
+            print '=== Running', json_file, "==="
+
+        Ytarget, Y = runESN(K, N, L, a, rho_factor, data, init_len, train_len, test_len)
+        
+        if verbose:
+            print '===================='
+
+        figure(1).clear()
+        plot(Ytarget, 'g')
+        plot(Y.T, 'b')
+        title(json_file)
+        legend(['Target signal', 'Predited signal'])
+        show()
 
 def usage():
-    print 'python ESN.py [--help|-h] [--verbose|-v] testFiles...'
+    print 'python ESN.py ( (--help|-h) | ( [--verbose|-v] testFiles... ) )'
 
 if __name__ == "__main__":
     main()
