@@ -1,0 +1,114 @@
+@article{Schrauwen08,
+    abstract = {{The benefits of using intrinsic plasticity (IP), an unsupervised, local, biologically inspired adaptation rule that tunes the probability density of a neuron's output towards an exponential distribution—thereby realizing an information maximization—have already been demonstrated. In this work, we extend the ideas of this adaptation method to a more commonly used non-linearity and a Gaussian output distribution. After deriving the learning rules, we show the effects of the bounded output of the transfer function on the moments of the actual output distribution. This allows us to show that the rule converges to the expected distributions, even in random recurrent networks. The IP rule is evaluated in a reservoir computing setting, which is a temporal processing technique which uses random, untrained recurrent networks as excitable media, where the network's state is fed to a linear regressor used to calculate the desired output. We present an experimental comparison of the different IP rules on three benchmark tasks with different characteristics. Furthermore, we show that this unsupervised reservoir adaptation is able to adapt networks with very constrained topologies, such as a 1D lattice which generally shows quite unsuitable dynamic behavior, to a reservoir that can be used to solve complex tasks. We clearly demonstrate that IP is able to make reservoir computing more robust: the internal dynamics can autonomously tune themselves—irrespective of initial weights or input scaling—to the dynamic regime which is optimal for a given task.}},
+    author = {Schrauwen, Benjamin and Wardermann, Marion and Verstraeten, David and Steil, Jochen J. and Stroobandt, Dirk},
+    citeulike-article-id = {6753423},
+    citeulike-linkout-0 = {http://dx.doi.org/10.1016/j.neucom.2007.12.020},
+    doi = {10.1016/j.neucom.2007.12.020},
+    issn = {09252312},
+    journal = {Neurocomputing},
+    keywords = {learning, representation, reservoir, rnn},
+    month = mar,
+    number = {7-9},
+    pages = {1159--1171},
+    posted-at = {2014-04-03 15:39:59},
+    priority = {2},
+    title = {{Improving reservoirs using intrinsic plasticity}},
+    url = {http://dx.doi.org/10.1016/j.neucom.2007.12.020},
+    volume = {71},
+    year = {2008}
+}
+
+@article{Hammer04,
+    author = {Hammer, Barbara and Micheli, Alessio and Sperduti, Alessandro and Strickert, Marc},
+    citeulike-article-id = {13125496},
+    citeulike-linkout-0 = {http://dx.doi.org/10.1016/j.neunet.2004.06.009},
+    doi = {10.1016/j.neunet.2004.06.009},
+    issn = {08936080},
+    journal = {Neural Networks},
+    keywords = {representation, reservoir, rnn, som},
+    month = oct,
+    number = {8-9},
+    pages = {1061--1085},
+    posted-at = {2014-04-03 15:36:35},
+    priority = {2},
+    title = {{Recursive self-organizing network models}},
+    url = {http://dx.doi.org/10.1016/j.neunet.2004.06.009},
+    volume = {17},
+    year = {2004}
+}
+
+@article{Lee02,
+    author = {Lee, John A. and Verleysen, Michel},
+    citeulike-article-id = {13125492},
+    citeulike-linkout-0 = {http://dx.doi.org/10.1016/s0893-6080(02)00073-4},
+    doi = {10.1016/s0893-6080(02)00073-4},
+    issn = {08936080},
+    journal = {Neural Networks},
+    keywords = {representation, reservoir, rnn, som},
+    month = oct,
+    number = {8-9},
+    pages = {993--1003},
+    posted-at = {2014-04-03 15:34:48},
+    priority = {2},
+    title = {{Self-organizing maps with recursive neighborhood adaptation}},
+    url = {http://dx.doi.org/10.1016/s0893-6080(02)00073-4},
+    volume = {15},
+    year = {2002}
+}
+
+@article{Voegtlin02,
+    abstract = {{This paper explores the combination of self-organizing map (SOM) and feedback, in order to represent sequences of inputs. In general, neural networks with time-delayed feedback represent time implicitly, by combining current inputs and past activities. It has been difficult to apply this approach to SOM, because feedback generates instability during learning. We demonstrate a solution to this problem, based on a nonlinearity. The result is a generalization of SOM that learns to represent sequences recursively. We demonstrate that the resulting representations are adapted to the temporal statistics of the input series.}},
+    address = {Oxford, UK, UK},
+    author = {Voegtlin, Thomas},
+    citeulike-article-id = {4505563},
+    citeulike-linkout-0 = {http://portal.acm.org/citation.cfm?id=776102},
+    citeulike-linkout-1 = {http://dx.doi.org/10.1016/s0893-6080(02)00072-2},
+    doi = {10.1016/s0893-6080(02)00072-2},
+    issn = {08936080},
+    journal = {Neural Networks},
+    keywords = {ann, learning, representation, reservoir, rnn},
+    month = oct,
+    number = {8-9},
+    pages = {979--991},
+    posted-at = {2014-04-03 15:16:22},
+    priority = {2},
+    publisher = {Elsevier Science Ltd.},
+    title = {{Recursive self-organizing maps}},
+    url = {http://dx.doi.org/10.1016/s0893-6080(02)00072-2},
+    volume = {15},
+    year = {2002}
+}
+
+@article{Khouzam13,
+    abstract = {{In this paper, a distributed recurrent self-organizing architecture is presented. It can extract the current state of a dynamical system from the sequence of the recent observations provided by this system, even if they are ambiguous. The recurrent network is an adaptation of RecSOM to the context of the simulation of large scale distributed neural architectures, since it relies on a strictly local fine-grained computation. The experiments show the ability of the recurrent architecture to capture the states, but also exhibit some unexpected dynamical effects, like some instabilities of the learned mappings. The presented architecture addresses the cognitive ability to set up representations from sequences at a mesoscopic level. At that intermediate level, between cognition and neurons simulation, some complex dynamics is unveiled. It needs to be identified and understood in order to bridge the gap between neuronal activities and high level cognition.}},
+    author = {Khouzam, Bassem and Frezza-Buet, Herv\'{e}},
+    citeulike-article-id = {12474089},
+    citeulike-linkout-0 = {http://dx.doi.org/10.1016/j.bica.2012.11.001},
+    comment = {S'attaque au probl\`{e}me du ''perception aliasing'', principalement dans le cadre des HMM (d\'{e}sambiguer l'\'{e}tat \`{a} partir d'une s\'{e}quence d'observation) en utilisant une architecture neuronale r\'{e}currente.
+
+Plusieurs types d'architecture (avec de '''nombreuses r\'{e}f\'{e}rences''') sont mentionn\'{e}es:
+* '''feed-forward MLP + delayed lines''': apprentissage est d\'{e}licat, pas de capacit\'{e} de g\'{e}n\'{e}ralisation, utilisation d'un gradient complexe peu compatible avec bio (d\'{e}centralis\'{e}, asynchrone).
+* '''recurrent architecture without layer''' : adapt\'{e} \`{a} POMDP (avec essai), mais globalement les m\^{e}me limitations que pr\'{e}c\'{e}demment.
+* '''reservoir computing''': avec des versions adaptative du r\'{e}servoire. Pas de limites mentionn\'{e}es, mais il me semble que la g\'{e}n\'{e}ralisation peut \^{e}tre limit\'{e}e. C'est un peu de l'apprentissage par coeur...
+* '''SOM + delayed context''': approche suivie dans l'article, c'est SOM qui va servir \`{a} adapter et g\'{e}n\'{e}raliser. Reste le probl\`{e}me, crucial, de quel contexte r\'{e}utiliser.
+
+Arrive avec succ\`{e}es \`{a} d\'{e}sambiguer des s\'{e}quences comme "ABCBAFEDEF", c'est \`{a} dire que la SOM se sp\'{e}cialise en r\'{e}gions (une pour chaque lettre) mais que le barycentre de l'activit\'{e} de la carte ''input'' (\'{e}tat barycentrique) d\'{e}pend de l'historique de la lettre : "A" est repr\'{e}sent\'{e}e par 2 positions dans sa r\'{e}gion. Cette propri\'{e}t\'{e}, tout comme dans le cas de ''RecSOM'' [Voegtlin02], se v\'{e}rifie m\^{e}me dans un environnement non-stationnaire (quand la s\'{e}quence de lettre change pendant l'exp\'{e}rience). De plus, l'horizon temporel n'est pas limit\'{e} \`{a} 2 ("AAAAF" peut \^{e}tre appris), il est cependant plus grand dans ''RecSOM'', qui a une repr\'{e}sentation plus discr\'{e}tis\'{e}e.
+
+Quelques limitations ou points de discussions sont abord\'{e}s :
+* '''Input en UNE dimension''' : chaque lettre est cod\'{e}e entre 0 et 1. Comment cela se comporte en multi-dimension d'entr\'{e}e ? 
+* '''HMM vs POMPD''' : la dur\'{e}e de pr\'{e}sentation (en micro intervalles) et l'intervalle de temps entre les diff\'{e}rentes lettres est fixe, ce qui correspond \`{a} un HMM en dur. Comment on passe \`{a} des intervalles plus flexibles, moins symboliques ? 
+* '''instabilit\'{e}''' : l'\'{e}tat barycentrique d\'{e}rive doucement avec le temps. M\^{e}me quand la s\'{e}quence de lettre ne change pas, la position des \'{e}tats d\'{e}rive doucement, voire m\^{e}me les fronti\`{e}res des r\'{e}gions. C'est d\^{u}, semble-t-il, \`{a} l'aspect continu des cartes mais aussi \`{a} la connexion limit\'{e}e (par bandes) entre les cartes. Cela peut poser des probl\`{e}mes car des \'{e}tats qui \'{e}taient desambigu\'{e}s peuvent, temporairement, \^{e}tre de nouveau confondus. Et surtout, c'est probl\'{e}matique si on veut s'appuer sur ce genre d'architecture pour construire un comportement (dans un POMDP) car il faut s'appuyer sur un \'{e}tat non stable.},
+    doi = {10.1016/j.bica.2012.11.001},
+    issn = {2212683X},
+    journal = {Biologically Inspired Cognitive Architectures},
+    keywords = {frontal\_cortex, mental\_states, perception\_aliasing, pomdp, representation, reservoir, rnn, som},
+    month = jan,
+    pages = {87--104},
+    posted-at = {2013-07-11 09:31:15},
+    priority = {0},
+    title = {{Distributed recurrent self-organization for tracking the state of non-stationary partially observable dynamical systems}},
+    url = {http://dx.doi.org/10.1016/j.bica.2012.11.001},
+    volume = {3},
+    year = {2013}
+}
+
