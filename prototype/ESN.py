@@ -72,7 +72,7 @@ def runESN(verbose, K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, i
 
 def main():
     try:
-        opts, files = getopt.getopt(sys.argv[1:], "vh", ["help", "verbose"])
+        opts, files = getopt.getopt(sys.argv[1:], "v", ["help"])
     except getopt.GetoptError as err:
         print str(err)
         usage()
@@ -80,14 +80,14 @@ def main():
 
     verbose = False
     for opt, arg in opts:
-        if opt in ('-v','--verbose'):
+        if opt == '-v':
             verbose = True
-        elif opt in ('-h','--help'):
+        elif opt == '--help':
             usage()
             sys.exit(0)
     
     for json_file in files :
-        fd=open(json_file)
+        fd=open(json_file, 'r')
         json_data = json.load(fd)
         fd.close()
 
@@ -95,6 +95,8 @@ def main():
         data = None
         if json_data['data']['type'] == 'MackeyGlass' :
             data = loadtxt(json_data['data']['path'])
+        elif json_data['data']['type'] == 'Sequential' :
+            data = zeros()
         else :
             print 'Unsupported data type: ',json_data['data']['type']
             sys.exit(2)
@@ -126,7 +128,7 @@ def main():
         show()
 
 def usage():
-    print 'python ESN.py ( (--help|-h) | ( [--verbose|-v] testFiles... ) )'
+    print 'python ESN.py [--help] [-v] <test_file>* )'
 
 if __name__ == "__main__":
     main()

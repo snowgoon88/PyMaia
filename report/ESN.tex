@@ -27,7 +27,7 @@ Pour que l'approche ESN fonctionne, le réservoir doit satisfaire \textit{l'echo
 \section{Formalisation}
 Considérons un réseaux de neurones en temps discret, avec K neurones d'entrée, N neurones internes, et L neurones de sortie.\newline
 \begin{center}
-\includegraphics[scale=0.5]{esn.jpeg}
+\includegraphics{esn.jpeg}
 \end{center}
 \begin{description}
 \item[$u(n)$ :] vecteur $\in \mathbb{R}^{K}$, activations des neurones d'entrée à l'instant n
@@ -60,7 +60,7 @@ $y(n)= W^{out}[1;u(n);x(n)]$
 \begin{center}
 $Y = W^{out}M$
 \end{center}
-avec $M = [1; U; X]$ où $U$ la matrice des $u(n)$, $X$ la matrice des $x(n)$. Nous avons donc là un classique problème de régression linéaire que nous allons résoudre avec une \textit{ridge regression}. Nous obtenons donc:
+avec $M = [1; U; X]$ où $U$ est la matrice des $u(n)$, et $X$ la matrice des $x(n)$. Nous avons donc là un classique problème de régression linéaire que nous allons résoudre avec une \textit{ridge regression}. Nous obtenons donc:
 \begin{center}
 $W^{out} = Y^{target} M^\top (MM^\top + \beta I)^{-1}$
 \end{center}
@@ -78,7 +78,7 @@ où $\beta$ est le coefficient de régularisation.
 \subsection{Generation du réservoir}
 \paragraph{Taille du réservoir}
 L'entrainement et l'utilisation d'un ESN est peu couteux à côté des autres approches de RNN, ce qui nous permets de créer de grand réservoir, avec un ordre de grandeur de $10^{4}$ neurones. Le réservoir peut cependant être trop gros si la tâche est triviale et qu'il n'y a pas assez de donnée disponible dans le corpus d'apprentissage.\newline
-Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
+D'après \cite{Mantas12}:
 \begin{itemize}
 \item Pour des tâches complexes, utiliser un réservoir aussi gros que vous le pouvez.
 \item Choisir les paramètres pour de petit réservoir, puis les mettres à l'échelle pour de plus gros.
@@ -87,7 +87,7 @@ Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
 
 \paragraph{Parcimonie du réservoir}
 Une grande partie des éléments de $W^{in}$ doivent être nul. En général, la parcimonie du réservoir affecte peu les performances du réseau de neurone.\newline
-Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
+D'après \cite{Mantas12}:
 \begin{itemize}
 \item Connecter chaque neurone à un petit nombres de neurones, indépendament de la taille du réservoir. Profiter de cette parcimonie pour accélerer les calculs.
 \end{itemize}
@@ -98,7 +98,7 @@ La distribution Gaussienne et normal donne virtuellement les mêmes résultats, 
 
 \paragraph{Rayon spectral}
 Un des paramètres majeurs d'un ESN est le rayon spectral de la matrice $W$. Généralement, une fois la génération de $W$ effectuée, la matrice est divisée par $\rho(W)$ pour assurer un rayon spectral unitaire. Le rayon spectral détermine à quelle vitesse l'influence d'une entrée disparait du réservoir, et à quel point l'état interne du réservoir est stable.\newline
-Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
+D'après \cite{Mantas12}:
 \begin{itemize}
 \item $\rho(W) < 1$ assure dans la propriété \textit(echo state) dans la plupart des situations.
 \item Le rayon spectral optimale est souvent plus grand lors de tâche nécessitant une grande mémoire des entrées.
@@ -106,7 +106,7 @@ Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
 
 \paragraph{Redimensionnement des entrées}
 Autre paramètre essentiel d'un ESN, la matrice $W^{in}$ détermine la linéarité de la réponse du réservoir. Pour des tâches très linéaire, $W^{in}$ devrait être peuplé de faible valeur. Lorsque $W^{in}$ possède de forte valeur, les neurones ont tendances à agir comme des commutateurs binaires. De plus, l'échelle de $W^{in}$ et celle de $W$ détermine respectivement comment l'état interne $x(n)$ dépent de l'entrée $u(n)$ et de $x(n-1)$.\newline
-Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
+D'après \cite{Mantas12}:
 \begin{itemize}
 \item Mettre à l'échelle $W^{in}$ uniformément, pour limiter le nombre de paramètre de l'ESN. Cependant, par souçi de performance, il est possible de redimmensionner la première colonne de $W^{in}$ (le biais) séparement, et de redimmensionner les autres colonnes séparement si les éléments de $u(n)$ contribue différement à la tâche.
 \item Il est conseillé de normaliser les données, ce qui peut aider à borner $u(n)$ et ainsi éviter des aberrations. Par exemple, appliquer $tanh(.)$ à $u(n)$ si celui ci n'est pas borné.
@@ -115,12 +115,13 @@ Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
 
 \paragraph{Taux de fuite}
 Le troisième paramètre primordial des ESN, le taux de fuite peut être compris comme la vitesse de la dynamique de mise à jour du réservoir, mais aussi comme l'interval de temps entre deux consecutives \textit{timestep} de la réalisation discrète.\newline
-Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
+D'après \cite{Mantas12}:
 \begin{itemize}
 \item Le taux de fuite $\alpha$ doit correspondre à la vitesse de la dynamique de $u(n)$ et/ou $y^{target}(n)$.
 \end{itemize}
 
-\subsection{Apprentissage}
-Bientôt...
+
+\bibliographystyle{plain}
+\bibliography{reservoir}
 
 \end{document}

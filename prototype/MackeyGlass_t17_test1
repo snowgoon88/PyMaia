@@ -12,7 +12,7 @@
 	"data":
 	{
 		"type":"MackeyGlass",
-		"path":"/home/tbiasutt/Documents/maia-internship/prototype/MackeyGlass_t17_data",
+		"path":"MackeyGlass_t17_data",
 		"init_len":100,
 		"train_len":2000,
 		"test_len":2000
