@@ -1,17 +1,15 @@
 from numpy import *
 from matplotlib.pyplot import *
 import scipy.linalg
-import simplejson, getopt, sys
-
-verbose = False
+import json, getopt, sys
 
 class ESN:
-    def generate(self, K, N, L, a, rho_factor):
-        self.a = a
+    def generate(self, K, N, L, seed, leaking_rate, rho_factor):
+        self.a = leaking_rate
         self.x = zeros((N, 1))
         self.Wout = zeros((L, K+N+L))
         # Reservoir generation
-        random.seed(42)
+        random.seed(seed)
         self.Win = random.rand(N, 1+K)-0.5
         self.W = random.rand(N, N)-0.5
         #self.Win = random.randn(N, 1+K)
@@ -32,9 +30,7 @@ class ESN:
         self.Wout = dot( dot(Ytarget, Xmem.T), linalg.inv( dot(Xmem, Xmem.T) + regMatrix ) )
 
 
-def runESN(K, N, L, a, rho_factor, data, initLen, trainLen, testLen):
-    global verbose
-
+def runESN(verbose, K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen, testLen):
     Xmem = zeros((1+K+N, trainLen - initLen))
     Ytarget = data[None, initLen+1:trainLen+1]
 
@@ -43,7 +39,7 @@ def runESN(K, N, L, a, rho_factor, data, initLen, trainLen, testLen):
     # generate a reservoir
     if verbose :
         print 'Step 1/5: Reservoir generation'
-    network.generate(K, N, L, a, rho_factor)
+    network.generate(K, N, L, seed, leaking_rate, rho_factor)
 
     # initialisation transient
     if verbose :
@@ -61,7 +57,7 @@ def runESN(K, N, L, a, rho_factor, data, initLen, trainLen, testLen):
     # train
     if verbose:
         print 'Step 4/5: Compute Wout'
-    network.train(Ytarget, Xmem, 1e-8*eye(1+K+N))
+    network.train(Ytarget, Xmem, regul_coef*eye(1+K+N))
 
     # test
     if verbose:
@@ -82,27 +78,18 @@ def main():
         usage()
         sys.exit(1)
 
-    global verbose
+    verbose = False
     for opt, arg in opts:
         if opt in ('-v','--verbose'):
             verbose = True
         elif opt in ('-h','--help'):
             usage()
             sys.exit(0)
-
-
     
     for json_file in files :
         fd=open(json_file)
-        json_data = simplejson.load(fd)
+        json_data = json.load(fd)
         fd.close()
-
-        # ESN setup
-        K = json_data['esn']['K']
-        N = json_data['esn']['N']
-        L = json_data['esn']['L']
-        a = json_data['esn']['a']
-        rho_factor = json_data['esn']['rho_factor']
 
         # data setup
         data = None
@@ -111,14 +98,22 @@ def main():
         else :
             print 'Unsupported data type: ',json_data['data']['type']
             sys.exit(2)
-        init_len=json_data['data']['initLen']
-        train_len=json_data['data']['trainLen']
-        test_len=json_data['data']['testLen']
-
+ 
         if verbose:
             print '=== Running', json_file, "==="
 
-        Ytarget, Y = runESN(K, N, L, a, rho_factor, data, init_len, train_len, test_len)
+        Ytarget, Y = runESN(verbose,
+                            json_data['esn']['K'], 
+                            json_data['esn']['N'], 
+                            json_data['esn']['L'], 
+                            json_data['esn']['seed'], 
+                            json_data['esn']['leaking_rate'], 
+                            json_data['esn']['rho_factor'], 
+                            json_data['esn']['regul_coef'],
+                            data, 
+                            json_data['data']['init_len'], 
+                            json_data['data']['train_len'], 
+                            json_data['data']['test_len'])
         
         if verbose:
             print '===================='

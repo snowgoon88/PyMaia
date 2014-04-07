@@ -48,7 +48,7 @@ Dans le cas d'un apprentissage supervisé, c'est à dire dont les résultats son
 $x(n) = f(W^{in}u(n) + Wx(n-1) + W^{back}y(n-1) )$
 \end{center}
 où $f=(f_{1},...,f_{N})$ sont les fonctions d'activations des neurones du réservoir.\newline
-Dans le cas d'un ESN sans synapse de \textit{feedback}, avec biais et avec pour fonctions d'activation $\tanh$, nous obtenons
+Dans le cas d'un ESN sans synapse de \textit{feedback}, avec biais, taux de fuite et pour fonctions d'activation $\tanh$, nous obtenons
 \begin{center}
 $x(n) = (1-\alpha)x(n-1) + \alpha\tanh(W^{in}[1;u(n)] + Wx(n-1))$
 \end{center}
@@ -58,9 +58,13 @@ $y(n)= W^{out}[1;u(n);x(n)]$
 \end{center}
 \paragraph{Apprentissage de $W^{out}$}
 \begin{center}
-$W^{out} = Y^{target} X^\top (XX^\top + \beta I)^{-1}$
+$Y = W^{out}M$
 \end{center}
-où $\beta$ est le coefficient de régularisation (A COMPLETER).
+avec $M = [1; U; X]$ où $U$ la matrice des $u(n)$, $X$ la matrice des $x(n)$. Nous avons donc là un classique problème de régression linéaire que nous allons résoudre avec une \textit{ridge regression}. Nous obtenons donc:
+\begin{center}
+$W^{out} = Y^{target} M^\top (MM^\top + \beta I)^{-1}$
+\end{center}
+où $\beta$ est le coefficient de régularisation.
 
 \subsection{Mise en oeuvre}
 \begin{enumerate}
@@ -118,49 +122,5 @@ Dans \textit{A Pratical Guide to Applying Echo State Network}, il est dit :
 
 \subsection{Apprentissage}
 Bientôt...
-
-\begin{comment}
-\paragraph{Script}
-\begin{verbatim}
-network = ESN()
-
-network.setGenerationStrategy(genStrat)
-network.generateReservoir(K, N, L, a)
-
-for i=0; i<initTransient; i++ :
- network.feed(u[i])
-
-X = zeros( (1+K+N, len(data)-initTransient ) )
-for i=0; i<len(data); i++ :
- network.feed(data[i+initTransient])
- X[:, i] = vstack( (1, data[i+initTransient], network.x) )[:, 0] 
-
-network.setLearningStrategy(learnStrat)
-network.learn(ytarget, X)
-\end{verbatim}
-
-\paragraph{Classes utilitaires}
-\begin{verbatim}
-def class ESN :
- def setGenerationStrategy(self, genStrat):
-  self.genStrat = genStrat
-
- def setLearningStrategy(self, learnStrat):
-  self.learnStrat = learnStrat
-
- def generateReservoir(self, K, N, L, a):
-  self.Win = genStrat.generateWin(K, N)
-  self.W = genStrat.generateW(N)
-  self.a = a
-  self.x = zeros((N, 1))
-
- def learn(self, ytarget, x):
-  self.Wout = learnStrat.learnWout(ytarget, x)
-  
- def feed(data):
-  self.x = (1-a)*x + a*tanh( dot(Win, vstack((1, u))) + dot(W, x) )
-\end{verbatim}
-
-\end{comment}
 
 \end{document}
