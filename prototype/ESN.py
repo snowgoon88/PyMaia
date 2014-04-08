@@ -3,6 +3,8 @@ from matplotlib.pyplot import *
 import scipy.linalg
 import json, getopt, sys
 
+import pdb
+
 class ESN:
     def generate(self, K, N, L, seed, leaking_rate, rho_factor):
         self.a = leaking_rate
@@ -28,6 +30,7 @@ class ESN:
     def train(self, Ytarget, Xmem, regMatrix):
         # ridge regression
         self.Wout = dot( dot(Ytarget, Xmem.T), linalg.inv( dot(Xmem, Xmem.T) + regMatrix ) )
+        pdb.set_trace()
 
 
 def runESN(verbose, K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen, testLen):
@@ -96,7 +99,13 @@ def main():
         if json_data['data']['type'] == 'MackeyGlass' :
             data = loadtxt(json_data['data']['path'])
         elif json_data['data']['type'] == 'Sequential' :
-            data = zeros()
+            fd = open(json_data['data']['path'], 'r')
+            #data = loadtxt(json_data['data']['path'], dtype=string0)
+            data = fd.read().split()
+            fd.close()
+            for i in range(len(data)):
+                data[i] = json_data['data']['encode'][data[i]]
+            data = array(data)
         else :
             print 'Unsupported data type: ',json_data['data']['type']
             sys.exit(2)
@@ -124,7 +133,7 @@ def main():
         plot(Ytarget, 'g')
         plot(Y.T, 'b')
         title(json_file)
-        legend(['Target signal', 'Predited signal'])
+        legend(['Target signal', 'Predicted signal'])
         show()
 
 def usage():

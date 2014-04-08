@@ -1,0 +1,24 @@
+{
+	"esn":
+	{
+		"K":2,
+		"N":1000,
+		"L":2,
+		"leaking_rate":0.3,
+		"rho_factor":1.25,
+		"seed":42,
+		"regul_coef":1e-8
+	},
+	"data":
+	{
+		"type":"Sequential",
+		"encode": {
+			  "A":[[1],[0]],
+			  "B":[[0],[1]]
+		},
+		"path":"seq1_data",
+		"init_len":100,
+		"train_len":2000,
+		"test_len":2000
+	}
+}

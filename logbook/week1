@@ -11,12 +11,14 @@ Mercredi(02/04):
 	- Suite rédaction "Aperçu d'un ESN"
 	- pseudo-algo
 Jeudi(03/04):
-	-
+	- ESN.py v1 (MackeyGlass)
 Vendredi(04/04):
-	-
+	- ESN.py v2 (+ json/ getopt)
+	- formattage des test sous json
+	- réunion alain: suite des évènements... Comment comparer deux archi ? Quels tâches leurs faire apprendre ?
 
 BILAN
-
+Bonne semaine d'arrivée, j'commence à comprendre comment marche les ESN
 
 Réfèrences
 (1) A practical guide to applying echo state network, Mantas Lukosevicius

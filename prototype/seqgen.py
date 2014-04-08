@@ -25,7 +25,7 @@ def main():
         data = generate(length, param)
         fd = open("%s_data"%json_file, "w")
         for i in range(len(data)):
-            fd.write(data[i])
+            fd.write("%s\n" % data[i])
         fd.close()
 
 def generate(length, param):
