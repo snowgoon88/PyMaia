@@ -1,9 +1,9 @@
 {
 	"esn":
 	{
-		"K":2,
+		"K":3,
 		"N":200,
-		"L":2,
+		"L":3,
 		"leaking_rate":0.3,
 		"rho_factor":1.25,
 		"seed":3,
@@ -13,10 +13,11 @@
 	{
 		"type":"Sequential",
 		"encode": {
-			  "A":[1,0],
-			  "B":[0,1]
+			  "A":[1,0,0],
+			  "B":[0,1,0],
+			  "C":[0,0,1]
 		},
-		"path":"seq1_data",
+		"path":"seq2_data",
 		"init_len":100,
 		"train_len":2000,
 		"test_len":2000
