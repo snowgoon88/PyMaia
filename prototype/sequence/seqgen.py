@@ -34,10 +34,13 @@ def generate(length, param):
         idx = int(random.random_sample()*len(param["alphabet"]))
         data.append(param["alphabet"][idx])
     for i in range(max(param["delay"]), length):
-        tmp = param["rules"]
+        #tmp = param["rules"]
+        #for j in range(len(param["delay"])):
+            #tmp = tmp[data[i-param["delay"][j]]]
+        tmp = []
         for j in range(len(param["delay"])):
-            tmp = tmp[data[i-param["delay"][j]]]
-        data.append(tmp)
+            tmp.append(data[i-param["delay"][j]])
+        data.append(param["rules"][''.join(tmp)])
     return data
 
 def usage():
