@@ -105,12 +105,13 @@ def main():
 
             if display:
                 k+=1
-                figure(k).clear()
-                figure(k).canvas.set_window_title(json_file)
+                fig = figure(k)
+                fig.clear()
+                fig.canvas.set_window_title(json_file)
                 subplot(211)
                 plot(Ytarget.T, 'k')
                 plot(Y.T, 'r')
-                legend(['Ytarget', 'Y'])
+                legend(['Target', 'Prediction'])
                 subplot(212)
                 plot(Ytarget.T - Y.T, 'k')
                 legend(['Error'])
@@ -146,16 +147,19 @@ def main():
 
             if display:
                 k+=1
-                figure(k).clear()
-                figure(k).canvas.set_window_title(json_file)
+                fig = figure(k)
+                fig.clear()
+                fig.canvas.set_window_title(json_file)
                 subplot(211)
-                yticks(range(26), [chr(97 + x) for x in range(26)])
+                yticks(range(26), [chr(65 + x) for x in range(26)])
                 plot(print_Ytarget, 'wo')
                 plot(print_Y, 'r+')
-                legend(['Ytarget', 'Y'])
+                legend(['Target', 'Prediction'])
                 subplot(212)
                 plot(acc, 'k')
                 legend(['Accuracy'])
+                yinf, ysup = fig.get_axes()[0].get_ylim()
+                fig.get_axes()[0].set_ylim(yinf-0.5, ysup+0.5)
 
         else :
             print 'Unsupported data type: ',json_data['data']['type']

@@ -17,14 +17,15 @@
 \begin{document}
 \maketitle
 
-
 \section{Introduction}
+
 Le \textit{Reservoir computing} (RC) est une alternative à la méthode de descente du gradient pour entraîner les \textit{recurrent neural network} (RNN), une architecture de réseau de neurones artificielles où les connections synaptiques peuvent former des cycles. Cela entraîne l'apparition d'états internes au sein du réseau, lui permettant d'adopter un comportement temporel dynamique.\newline
 Un \textit{Echo state network} est un RNN possèdant une couche cachée, le réservoir, avec un faible nombre de synapse dont les poids sont générés aléatoirement. Le poid des neurones de sortie est l'unique sous-ensemble du réseau qui sera entraîné, bien souvent à l'aide d'une régression linéaire.\newline
 Pour que l'approche ESN fonctionne, le réservoir doit satisfaire \textit{l'echo state property}: l'état d'un réservoir ne doit dépendre que des données entrées au court du temps. Pour un réservoir assimilant une grande quantitée de donnée, son état interne ne doit donc plus dépendre de l'initialisation.
 
 
 \section{Formalisation}
+
 Considérons un réseaux de neurones en temps discret, avec K neurones d'entrée, N neurones internes, et L neurones de sortie.\newline
 \begin{center}
 \includegraphics{esn.jpeg}
@@ -41,6 +42,7 @@ Considérons un réseaux de neurones en temps discret, avec K neurones d'entrée
 \end{description} 
 
 \section{Fonctionnement}
+
 \subsection{Généralité}
 Dans le cas d'un apprentissage supervisé, c'est à dire dont les résultats sont connu à l'avance, voici les différentes équations décrivant le fonctionnement de l'ESN.\newline
 \paragraph{L'état interne}
@@ -74,8 +76,34 @@ où $\beta$ est le coefficient de régularisation.
 \item Utiliser les nouvelles données $u(n)$, obtenir  $y(n)$ avec $W^{out}$.
 \end{enumerate}
 
+
+\section{Protocole d'expérimentation}
+
+\subsection{Tâches de prédiction}
+
+\subsubsection{Mackey-Glass}
+\paragraph{Formalisation}
+\begin{center}
+$x(t+1) = \beta \frac{ x(t-\tau) }{ 1+{x(t-\tau)}^n }-\gamma x$
+\end{center}
+où $\quad \gamma,\beta,n > 0$
+\paragraph{Démarche}
+L'ESN possède un neurone d'entrée et un neurone de sortie. Après la phase d'apprentissage, l'ESN devrait être capable de générer la fonction de façon autonome, c'est à dire que $y(n)$ généré par le réseau sera utilisé comme entrée $u(n+1)$.
+
+
+\subsubsection{Séquence de lettre}
+\paragraph{Formalisation}
+\begin{center}
+$char(t) = f( char(t-\tau_{1}),..., char(t-\tau_{n}) )$
+\end{center}
+où $\forall i, \tau_{i} > 0$, $char(t)$ est la fonction retournant la lettre à l'emplacement $t$ et $f$ est la fonction de génération de la séquence.
+\paragraph{Démarche}
+Même démarche que pour la fonction de Mackey-Glass, mis à part que l'ESN possède autant de neurone d'entrée et de sortie que de lettres composant la séquence. Ainsi pour une séquence formée à l'aide de A et B, le réseau de neurone possèdera deux neurones d'entrée, l'activation du premier neurone correspondant à un A, et celle du second neurone correspondant à un B. Bien entendu, la couche de sortie du réseau de neurone ne sera pas activé de façon binaire, et nous regarderons donc l'unité la plus active pour savoir quelle est la lettre prédite par l'ESN.
+
 \section{Astuces}
+
 \subsection{Generation du réservoir}
+
 \paragraph{Taille du réservoir}
 L'entrainement et l'utilisation d'un ESN est peu couteux à côté des autres approches de RNN, ce qui nous permets de créer de grand réservoir, avec un ordre de grandeur de $10^{4}$ neurones. Le réservoir peut cependant être trop gros si la tâche est triviale et qu'il n'y a pas assez de donnée disponible dans le corpus d'apprentissage.\newline
 D'après \cite{Lukosevicius12}:
@@ -97,7 +125,7 @@ Une grande partie des éléments de $W$ sont nuls, et la distribution des élém
 La distribution Gaussienne et normal donne virtuellement les mêmes résultats, la distribution \textit{discrete bi-valued} semble moins efficace, mais peut faciliter l'analyse du réservoir lors de son exécution.
 
 \paragraph{Rayon spectral}
-Un des paramètres majeurs d'un ESN est le rayon spectral de la matrice $W$. Généralement, une fois la génération de $W$ effectuée, la matrice est divisée par $\rho(W)$ pour assurer un rayon spectral unitaire. Le rayon spectral détermine à quelle vitesse l'influence d'une entrée disparait du réservoir, et à quel point l'état interne du réservoir est stable.\newline
+Un des paramètres majeurs d'un ESN est le rayon spectral de la matrice $W$, c'est à dire l'extremum de ses valeurs propres. Généralement, une fois la génération de $W$ effectuée, la matrice est divisée par $\rho(W)$ pour assurer un rayon spectral unitaire. Le rayon spectral détermine à quelle vitesse l'influence d'une entrée disparait du réservoir, et à quel point l'état interne du réservoir est stable.\newline
 D'après \cite{Lukosevicius12}:
 \begin{itemize}
 \item $\rho(W) < 1$ assure dans la propriété \textit(echo state) dans la plupart des situations.
@@ -119,6 +147,8 @@ D'après \cite{Lukosevicius12}:
 \begin{itemize}
 \item Le taux de fuite $\alpha$ doit correspondre à la vitesse de la dynamique de $u(n)$ et/ou $y^{target}(n)$.
 \end{itemize}
+
+
 
 
 \bibliographystyle{apalike}
