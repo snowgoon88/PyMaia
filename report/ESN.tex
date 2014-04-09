@@ -31,9 +31,9 @@ Considérons un réseaux de neurones en temps discret, avec K neurones d'entrée
 \includegraphics{esn.jpeg}
 \end{center}
 \begin{description}
-\item[$u(n)$ :] vecteur $\in \mathbb{R}^{K}$, activations des neurones d'entrée à l'instant n
-\item[$x(n)$ :] vecteur $\in \mathbb{R}^{N}$, activations des neurones internes à l'instant n
-\item[$y(n)$ :] vecteur $\in \mathbb{R}^{L}$, activations des neurones de sortie à l'instant n
+\item[$u(t)$ :] vecteur $\in \mathbb{R}^{K}$, activations des neurones d'entrée à l'instant $t$
+\item[$x(t)$ :] vecteur $\in \mathbb{R}^{N}$, activations des neurones internes à l'instant $t$
+\item[$y(t)$ :] vecteur $\in \mathbb{R}^{L}$, activations des neurones de sortie à l'instant $t$
 \item[$W^{in}$ :] $N \times K$ matrice $\in \mathbb{R}$, poids des synapses d'entrée
 \item[$W$ :] $N \times N$ matrice $\in \mathbb{R}$, poids des synapses internes
 \item[$W^{out}$ :] $L \times (K + N + L)$ matrice $\in \mathbb{R}$, poids des synapses de sortie
@@ -47,22 +47,22 @@ Considérons un réseaux de neurones en temps discret, avec K neurones d'entrée
 Dans le cas d'un apprentissage supervisé, c'est à dire dont les résultats sont connu à l'avance, voici les différentes équations décrivant le fonctionnement de l'ESN.\newline
 \paragraph{L'état interne}
 \begin{center}
-$x(n) = f(W^{in}u(n) + Wx(n-1) + W^{back}y(n-1) )$
+$x(t) = f(W^{in}u(t) + Wx(t-1) + W^{back}y(t-1) )$
 \end{center}
 où $f=(f_{1},...,f_{N})$ sont les fonctions d'activations des neurones du réservoir.\newline
 Dans le cas d'un ESN sans synapse de \textit{feedback}, avec biais, taux de fuite et pour fonctions d'activation $\tanh$, nous obtenons
 \begin{center}
-$x(n) = (1-\alpha)x(n-1) + \alpha\tanh(W^{in}[1;u(n)] + Wx(n-1))$
+$x(t) = (1-\alpha)x(t-1) + \alpha\tanh(W^{in}[1;u(t)] + Wx(t-1))$
 \end{center}
 \paragraph{La sortie}
 \begin{center}
-$y(n)= W^{out}[1;u(n);x(n)]$
+$y(t)= W^{out}[1;u(t);x(t)]$
 \end{center}
 \paragraph{Apprentissage de $W^{out}$}
 \begin{center}
 $Y = W^{out}M$
 \end{center}
-avec $M = [1; U; X]$ où $U$ est la matrice des $u(n)$, et $X$ la matrice des $x(n)$. Nous avons donc là un classique problème de régression linéaire que nous allons résoudre avec une \textit{ridge regression}. Nous obtenons donc:
+avec $M = [1; U; X]$ où $U$ est la matrice des $u(t)$, et $X$ la matrice des $x(t)$. Nous avons donc là un classique problème de régression linéaire que nous allons résoudre avec une \textit{ridge regression}. Nous obtenons donc:
 \begin{center}
 $W^{out} = Y^{target} M^\top (MM^\top + \beta I)^{-1}$
 \end{center}
@@ -71,9 +71,9 @@ où $\beta$ est le coefficient de régularisation.
 \subsection{Mise en oeuvre}
 \begin{enumerate}
 \item Générer le réservoir ($W^{in}$, $W$, $\alpha$);
-\item Utiliser le corpus d'apprentissage $u(n)$ et collecter $x(n)$;
-\item Calculer $W^{out}$ en minimisant la différence entre  $y(n)$ et $y^{target}(n)$;
-\item Utiliser les nouvelles données $u(n)$, obtenir  $y(n)$ avec $W^{out}$.
+\item Utiliser le corpus d'apprentissage $u(t)$ et collecter $x(t)$;
+\item Calculer $W^{out}$ en minimisant la différence entre  $y(t)$ et $y^{target}(t)$;
+\item Utiliser les nouvelles données $u(t)$, obtenir  $y(t)$ avec $W^{out}$.
 \end{enumerate}
 
 
@@ -88,7 +88,9 @@ $x(t+1) = \beta \frac{ x(t-\tau) }{ 1+{x(t-\tau)}^n }-\gamma x$
 \end{center}
 où $\quad \gamma,\beta,n > 0$
 \paragraph{Démarche}
-L'ESN possède un neurone d'entrée et un neurone de sortie. Après la phase d'apprentissage, l'ESN devrait être capable de générer la fonction de façon autonome, c'est à dire que $y(n)$ généré par le réseau sera utilisé comme entrée $u(n+1)$.
+L'ESN possède un neurone d'entrée et un neurone de sortie. Après la phase d'apprentissage, l'ESN devrait être capable de générer la fonction de façon autonome, c'est à dire que $y(t)$ généré par le réseau à l'instant $t$ sera utilisé comme entrée $u(t+1)$ à l'instant $t+1$.
+\paragraph{Mesure de la performance}
+Nous nous baserons ici sur la différence entre $y^{target}(t)$ et $y(t)$ pour tout $t$, nous permettant une analyse statistique de l'erreur.
 
 
 \subsubsection{Séquence de lettre}
@@ -97,8 +99,16 @@ L'ESN possède un neurone d'entrée et un neurone de sortie. Après la phase d'a
 $char(t) = f( char(t-\tau_{1}),..., char(t-\tau_{n}) )$
 \end{center}
 où $\forall i, \tau_{i} > 0$, $char(t)$ est la fonction retournant la lettre à l'emplacement $t$ et $f$ est la fonction de génération de la séquence.
+\paragraph{Génération de la séquence}
+Nous générons au hasard $max_{\forall i}(\tau_{i})$ caractères, puis appliquons la fonction $f$ pour générer la suite de la séquence.
 \paragraph{Démarche}
 Même démarche que pour la fonction de Mackey-Glass, mis à part que l'ESN possède autant de neurone d'entrée et de sortie que de lettres composant la séquence. Ainsi pour une séquence formée à l'aide de A et B, le réseau de neurone possèdera deux neurones d'entrée, l'activation du premier neurone correspondant à un A, et celle du second neurone correspondant à un B. Bien entendu, la couche de sortie du réseau de neurone ne sera pas activé de façon binaire, et nous regarderons donc l'unité la plus active pour savoir quelle est la lettre prédite par l'ESN.
+\paragraph{Mesure de la performance}
+Pour cette tâche, nous mesurons la précision à chaque instant, c'est à dire.
+\begin{center}
+$accuracy(t) = \frac{Nombre de bonne prédictions à l'instant t}{t}$
+\end{center}
+
 
 \section{Astuces}
 
@@ -147,8 +157,6 @@ D'après \cite{Lukosevicius12}:
 \begin{itemize}
 \item Le taux de fuite $\alpha$ doit correspondre à la vitesse de la dynamique de $u(n)$ et/ou $y^{target}(n)$.
 \end{itemize}
-
-
 
 
 \bibliographystyle{apalike}
