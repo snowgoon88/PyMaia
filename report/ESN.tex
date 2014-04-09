@@ -44,7 +44,7 @@ Considérons un réseaux de neurones en temps discret, avec K neurones d'entrée
 \section{Fonctionnement}
 
 \subsection{Généralité}
-Dans le cas d'un apprentissage supervisé, c'est à dire dont les résultats sont connu à l'avance, voici les différentes équations décrivant le fonctionnement de l'ESN.\newline
+Dans le cas d'un apprentissage supervisé, c'est à dire dont les résultats sont connu à l'avance, voici les différentes équations décrivant le fonctionnement des ESN.\newline
 \paragraph{L'état interne}
 \begin{center}
 $x(t) = f(W^{in}u(t) + Wx(t-1) + W^{back}y(t-1) )$
@@ -72,7 +72,7 @@ où $\beta$ est le coefficient de régularisation.
 \begin{enumerate}
 \item Générer le réservoir ($W^{in}$, $W$, $\alpha$);
 \item Utiliser le corpus d'apprentissage $u(t)$ et collecter $x(t)$;
-\item Calculer $W^{out}$ en minimisant la différence entre  $y(t)$ et $y^{target}(t)$;
+\item Apprentissage de $W^{out}$;
 \item Utiliser les nouvelles données $u(t)$, obtenir  $y(t)$ avec $W^{out}$.
 \end{enumerate}
 
@@ -80,6 +80,8 @@ où $\beta$ est le coefficient de régularisation.
 \section{Protocole d'expérimentation}
 
 \subsection{Tâches de prédiction}
+
+Toutes les tâches explicitées ci-dessous ont pour but d'analyser la faculté d'un réservoir à apprendre et prédire une séquence temporelle.
 
 \subsubsection{Mackey-Glass}
 \paragraph{Formalisation}
@@ -106,8 +108,13 @@ Même démarche que pour la fonction de Mackey-Glass, mis à part que l'ESN poss
 \paragraph{Mesure de la performance}
 Pour cette tâche, nous mesurons la précision à chaque instant, c'est à dire.
 \begin{center}
-$accuracy(t) = \frac{Nombre de bonne prédictions à l'instant t}{t}$
+$accuracy(t) = \frac{Good\ prediction\ at\ timestep\ t}{t}$
 \end{center}
+
+\subsection{Tâche de classification}
+
+Toutes les tâches explicitées ci-dessous ont pour but d'analyser la faculté d'un réservoir à apprendre à classer des individus au sein de groupes prédéfinis. 
+
 
 
 \section{Astuces}
