@@ -4,7 +4,7 @@
 		"K":5,
 		"N":200,
 		"L":5,
-		"leaking_rate":0.1,
+		"leaking_rate":0.9,
 		"rho_factor":1.25,
 		"seed":3,
 		"regul_coef":0.1

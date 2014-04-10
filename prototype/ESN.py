@@ -143,6 +143,8 @@ def main():
             precision = []
             rappel = []
             fmesure = []
+            accuracy = []
+            acc = 0
             for i in range(json_data['data']['test_len']):
                 print_Ytarget.append(where(Ytarget[:, i]==1)[0][0])
                 print_Y.append(where(Y[:, i]==max(Y[:, i]))[0][0])
@@ -159,6 +161,8 @@ def main():
 
                 if print_Y[i] == print_Ytarget[i]:
                     bonneAttribution[print_Y[i]]+=1
+                    acc+=1
+                accuracy.append(float(acc)/(i+1))
 
                 tmpP = 0.0
                 tmpR = 0.0
@@ -172,7 +176,7 @@ def main():
                 precision.append(tmpP)
                 rappel.append(tmpR)
                 if tmpP == 0 and tmpR == 0 :
-                    fmesure.append(0)
+                    fmesure.append(None)
                 else :
                     fmesure.append( 2*tmpP*tmpR / (tmpP + tmpR) )
 
@@ -191,10 +195,11 @@ def main():
                 plot(print_Y, 'r+')
                 legend(['Target', 'Prediction'])
                 subplot(212)
-                plot(precision, 'k')
-                plot(rappel, 'b')
-                plot(fmesure, 'r')
-                legend(['Precision', 'Recall', 'F-Measure'])
+                plot(precision, 'g--')
+                plot(rappel, 'b--')
+                plot(fmesure, 'k')
+                plot(accuracy, 'r')
+                legend(['Precision', 'Recall', 'F-Measure', '\"Accuracy\"'])
                 yinf, ysup = fig.get_axes()[0].get_ylim()
                 fig.get_axes()[0].set_ylim(yinf-0.5, ysup+0.5)
 
