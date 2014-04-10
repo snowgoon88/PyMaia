@@ -7,7 +7,12 @@ Mardi (08/04):
 Mercredi (09/04):
 	- matplot amélioré
 	- ESN.tex, formalisation du protocol (à rediscuter avec Alain)
-	- Recherche de donnée pour classification simple (=> Iris)
+	- Recherche de donnée / protocole pour classification
 Jeudi (10/04):
+     - (?) mesure de performance sur la prediction des seq temporelles de lettres
+      	=> precision, rappel, F-Score : Pas sur de l'utilité pour le moment
+     - implem. dans ESN.py
+     - recherche tâche pour ESN
+     - recherche et lecture rapide d'articles
 Vendredi (11/04):
 BILAN
