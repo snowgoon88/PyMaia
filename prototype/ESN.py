@@ -136,14 +136,49 @@ def main():
 
             print_Ytarget = []
             print_Y = []
-            acc = []
-            predictOK = 0
+
+            bonneAttribution = {}
+            attribution = {}
+            appartenant = {}
+            precision = []
+            rappel = []
+            fmesure = []
             for i in range(json_data['data']['test_len']):
                 print_Ytarget.append(where(Ytarget[:, i]==1)[0][0])
                 print_Y.append(where(Y[:, i]==max(Y[:, i]))[0][0])
+
+                if not attribution.has_key(print_Y[i]):
+                    attribution[print_Y[i]] = 0
+                if not bonneAttribution.has_key(print_Ytarget[i]):
+                    bonneAttribution[print_Ytarget[i]] = 0
+                if not appartenant.has_key(print_Ytarget[i]):
+                    appartenant[print_Ytarget[i]] = 0
+
+                appartenant[print_Ytarget[i]] +=1
+                attribution[print_Y[i]] += 1
+
                 if print_Y[i] == print_Ytarget[i]:
-                    predictOK+=1
-                acc.append(float(predictOK)/(i+1))
+                    bonneAttribution[print_Y[i]]+=1
+
+                tmpP = 0.0
+                tmpR = 0.0
+                
+                for j in range(json_data['esn']['K']):
+                    if bonneAttribution.has_key(j) and attribution.has_key(j) :
+                        tmpP += float(bonneAttribution[j]) / ( json_data['esn']['K'] * attribution[j] )
+                    if appartenant.has_key(j) and attribution.has_key(j):
+                        tmpR += float(bonneAttribution[j]) / ( json_data['esn']['K'] * appartenant[j] )
+                
+                precision.append(tmpP)
+                rappel.append(tmpR)
+                if tmpP == 0 and tmpR == 0 :
+                    fmesure.append(0)
+                else :
+                    fmesure.append( 2*tmpP*tmpR / (tmpP + tmpR) )
+
+            for j in range(json_data['esn']['K']):
+                print 'Precision en',chr(65 + j),':', float(bonneAttribution[j]) / attribution[j]
+                print 'Rappel en',chr(65 + j),':', float(bonneAttribution[j]) / appartenant[j]
 
             if display:
                 k+=1
@@ -156,8 +191,10 @@ def main():
                 plot(print_Y, 'r+')
                 legend(['Target', 'Prediction'])
                 subplot(212)
-                plot(acc, 'k')
-                legend(['Accuracy'])
+                plot(precision, 'k')
+                plot(rappel, 'b')
+                plot(fmesure, 'r')
+                legend(['Precision', 'Recall', 'F-Measure'])
                 yinf, ysup = fig.get_axes()[0].get_ylim()
                 fig.get_axes()[0].set_ylim(yinf-0.5, ysup+0.5)
 

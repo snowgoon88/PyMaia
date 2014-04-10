@@ -21,7 +21,7 @@
 
 Le \textit{Reservoir computing} (RC) est une alternative à la méthode de descente du gradient pour entraîner les \textit{recurrent neural network} (RNN), une architecture de réseau de neurones artificielles où les connections synaptiques peuvent former des cycles. Cela entraîne l'apparition d'états internes au sein du réseau, lui permettant d'adopter un comportement temporel dynamique.\newline
 Un \textit{Echo state network} est un RNN possèdant une couche cachée, le réservoir, avec un faible nombre de synapse dont les poids sont générés aléatoirement. Le poid des neurones de sortie est l'unique sous-ensemble du réseau qui sera entraîné, bien souvent à l'aide d'une régression linéaire.\newline
-Pour que l'approche ESN fonctionne, le réservoir doit satisfaire \textit{l'echo state property}: l'état d'un réservoir ne doit dépendre que des données entrées au court du temps. Pour un réservoir assimilant une grande quantitée de donnée, son état interne ne doit donc plus dépendre de l'initialisation.
+Pour que l'approche ESN fonctionne, le réservoir doit satisfaire \textit{l'echo state property} : l'état d'un réservoir ne doit dépendre que des données entrées au court du temps (\cite{Herbert10}). Pour un réservoir assimilant une importante quantitée de donnée, son état interne ne doit donc plus dépendre de l'initialisation.
 
 
 \section{Formalisation}
@@ -77,11 +77,11 @@ où $\beta$ est le coefficient de régularisation.
 \end{enumerate}
 
 
-\section{Protocole d'expérimentation}
+\section{Protocoles}
 
 \subsection{Tâches de prédiction}
 
-Toutes les tâches explicitées ci-dessous ont pour but d'analyser la faculté d'un réservoir à apprendre et prédire une séquence temporelle.
+Toutes les tâches explicitées ci-dessous ont pour but d'analyser la faculté d'un réservoir à apprendre de manière supervisée à prédire une séquence temporelle.
 
 \subsubsection{Mackey-Glass}
 \paragraph{Formalisation}
@@ -90,7 +90,7 @@ $x(t+1) = \beta \frac{ x(t-\tau) }{ 1+{x(t-\tau)}^n }-\gamma x$
 \end{center}
 où $\quad \gamma,\beta,n > 0$
 \paragraph{Démarche}
-L'ESN possède un neurone d'entrée et un neurone de sortie. Après la phase d'apprentissage, l'ESN devrait être capable de générer la fonction de façon autonome, c'est à dire que $y(t)$ généré par le réseau à l'instant $t$ sera utilisé comme entrée $u(t+1)$ à l'instant $t+1$.
+L'ESN possède un neurone d'entrée et un neurone de sortie. Après la phase d'apprentissage, le réseau devrait être capable de générer la fonction de façon autonome, c'est à dire que $y(t)$ prédit à l'instant $t$ sera utilisé comme entrée $u(t+1)$ à l'instant $t+1$.
 \paragraph{Mesure de la performance}
 Nous nous baserons ici sur la différence entre $y^{target}(t)$ et $y(t)$ pour tout $t$, nous permettant une analyse statistique de l'erreur.
 
@@ -104,22 +104,33 @@ où $\forall i, \tau_{i} > 0$, $char(t)$ est la fonction retournant la lettre à
 \paragraph{Génération de la séquence}
 Nous générons au hasard $max_{\forall i}(\tau_{i})$ caractères, puis appliquons la fonction $f$ pour générer la suite de la séquence.
 \paragraph{Démarche}
-Même démarche que pour la fonction de Mackey-Glass, mis à part que l'ESN possède autant de neurone d'entrée et de sortie que de lettres composant la séquence. Ainsi pour une séquence formée à l'aide de A et B, le réseau de neurone possèdera deux neurones d'entrée, l'activation du premier neurone correspondant à un A, et celle du second neurone correspondant à un B. Bien entendu, la couche de sortie du réseau de neurone ne sera pas activé de façon binaire, et nous regarderons donc l'unité la plus active pour savoir quelle est la lettre prédite par l'ESN.
+Même démarche que pour la fonction de Mackey-Glass, mis à part que l'ESN possède autant de neurone d'entrée et de sortie que de lettres composant la séquence. Ainsi pour une séquence formée à l'aide d'un alphabet de cardinalité 2, le réseau de neurone possèdera deux neurones d'entrée. L'activation du premier neurone correspondant à une lettre, et celle du second neurone correspondant à la deuxième lettre. Bien entendu, la couche de sortie du réseau de neurone ne sera pas activé de façon binaire, et nous regarderons donc l'unité la plus active pour savoir quelle est la lettre prédite par l'ESN.
 \paragraph{Mesure de la performance}
-Pour cette tâche, nous mesurons la précision à chaque instant, c'est à dire.
+Pour cette tâche, nous mesurons la précision, le rappel, et le F-score à chaque instant.
 \begin{center}
-$accuracy(t) = \frac{Good\ prediction\ at\ timestep\ t}{t}$
+$precision(t) = \frac{1}{\#Alphabet} \sum_{l \in Alphabet} \frac{l\ correctement\ predit}{l\ predit}$\\
+$rappel(t) = \frac{1}{\#Alphabet} \sum_{l \in Alphabet} \frac{l\ correctement\ predit}{l\ existant}$\\
+$Fscore(t) = \frac{2 \times precision(t) \times rappel(t)}{precision(t) + rappel(t)}$\\
 \end{center}
 
 \subsection{Tâche de classification}
 
-Toutes les tâches explicitées ci-dessous ont pour but d'analyser la faculté d'un réservoir à apprendre à classer des individus au sein de groupes prédéfinis. 
+Toutes les tâches explicitées ci-dessous ont pour but d'analyser la faculté d'un réservoir à apprendre à classer des séquences temporelles.
+
+\begin{center}
+COMING SOON... 
+\end{center}
+
+\section{Expérimentations}
+
+\begin{center}
+COMING SOON... 
+\end{center}
 
 
+\appendix
 
-\section{Astuces}
-
-\subsection{Generation du réservoir}
+\section{Paramétrage du réservoir}
 
 \paragraph{Taille du réservoir}
 L'entrainement et l'utilisation d'un ESN est peu couteux à côté des autres approches de RNN, ce qui nous permets de créer de grand réservoir, avec un ordre de grandeur de $10^{4}$ neurones. Le réservoir peut cependant être trop gros si la tâche est triviale et qu'il n'y a pas assez de donnée disponible dans le corpus d'apprentissage.\newline
