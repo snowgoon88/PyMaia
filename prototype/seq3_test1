@@ -11,7 +11,7 @@
 	},
 	"data":
 	{
-		"type":"Sequential",
+		"type":"Sequence",
 		"encode": {
 			  "A":[1,0,0,0,0],
 			  "B":[0,1,0,0,0],

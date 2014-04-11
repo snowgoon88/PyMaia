@@ -106,12 +106,12 @@ Nous générons au hasard $max_{\forall i}(\tau_{i})$ caractères, puis appliquo
 \paragraph{Démarche}
 Même démarche que pour la fonction de Mackey-Glass, mis à part que l'ESN possède autant de neurone d'entrée et de sortie que de lettres composant la séquence. Ainsi pour une séquence formée à l'aide d'un alphabet de cardinalité 2, le réseau de neurone possèdera deux neurones d'entrée. L'activation du premier neurone correspondant à une lettre, et celle du second neurone correspondant à la deuxième lettre. Bien entendu, la couche de sortie du réseau de neurone ne sera pas activé de façon binaire, et nous regarderons donc l'unité la plus active pour savoir quelle est la lettre prédite par l'ESN.
 \paragraph{Mesure de la performance}
-Pour cette tâche, nous mesurons la précision, le rappel, et le F-score à chaque instant.
-\begin{center}
-$precision(t) = \frac{1}{\#Alphabet} \sum_{l \in Alphabet} \frac{l\ correctement\ predit}{l\ predit}$\\
-$rappel(t) = \frac{1}{\#Alphabet} \sum_{l \in Alphabet} \frac{l\ correctement\ predit}{l\ existant}$\\
-$Fscore(t) = \frac{2 \times precision(t) \times rappel(t)}{precision(t) + rappel(t)}$\\
-\end{center}
+Pour cette tâche, nous mesurons la précision (\textit{precision}), le rappel (\textit{recall}), la F-mesure (\textit{F-measure}), et la justesse (\textit{accuracy}) à chaque instant.\\
+
+$precision(t) = \frac{1}{\#Alphabet} \sum_{l \in Alphabet} \frac{l\ correctement\ predit}{l\ predit}$\\\\
+$rappel(t) = \frac{1}{\#Alphabet} \sum_{l \in Alphabet} \frac{l\ correctement\ predit}{l\ existant}$\\\\
+$F-measure(t) = \frac{2 \times precision(t) \times rappel(t)}{precision(t) + rappel(t)}$\\\\
+$accuracy(t)= \frac{predictions correctes}{t}$
 
 \subsection{Tâche de classification}
 
