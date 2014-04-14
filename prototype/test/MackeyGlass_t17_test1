@@ -12,7 +12,7 @@
 	"data":
 	{
 		"type":"MackeyGlass",
-		"path":"../data/MackeyGlass_t17_data",
+		"path":"data/MackeyGlass_t17_data",
 		"init_len":100,
 		"train_len":2000,
 		"test_len":2000

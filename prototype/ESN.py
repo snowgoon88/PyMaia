@@ -1,5 +1,4 @@
 from numpy import *
-from matplotlib.pyplot import *
 import scipy.linalg
 
 class ESN:
@@ -8,7 +7,7 @@ class ESN:
         self.Wout = zeros((L, K+N+L))
         self.a = leaking_rate
         ## Reservoir generation
-        random.seed(seed)
+        random.seed(int(seed))
         ### With an uniform distribution on [0;1)
         self.Win = random.rand(N, 1+K)-0.5
         self.W = random.rand(N, N)-0.5
@@ -31,25 +30,25 @@ class ESN:
         return dot(self.Wout, vstack((1,vstack(data),self.x)) )
 
 
-def runESN(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen, testLen):
-    print 'Step 1/5: Reservoir generation'
+def runPredictionESN(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen, testLen):
+    #print 'Step 1/5: Reservoir generation'
     network = ESN()
     network.generate(K, N, L, seed, leaking_rate, rho_factor)
 
-    print 'Step 2/5: Transient initialization'
+    #print 'Step 2/5: Transient initialization'
     for t in range(initLen):
         network.input(data[:, t])
 
-    print 'Step 3/5: Learning phase'
+    #print 'Step 3/5: Learning phase'
     Xmem = zeros((1+K+N, trainLen - initLen))
-    for t in range(initLen, trainLen):
+    for t in range(initLen, int(trainLen)):
         network.input(data[:, t])
         Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.x))[:,0]
 
-    print 'Step 4/5: Wout computation'
+    #print 'Step 4/5: Wout computation'
     network.train(data[:, initLen+1:trainLen+1], Xmem, regul_coef*eye(1+K+N))
 
-    print 'Step 5/5: Testing phase'
+    #print 'Step 5/5: Testing phase'
     Ymem = zeros((L, testLen))
     u = data[:, trainLen]
     for t in range(testLen):

@@ -6,7 +6,7 @@
 		"L":3,
 		"leaking_rate":0.3,
 		"rho_factor":1.25,
-		"seed":3,
+		"seed":42,
 		"regul_coef":0.1
 	},
 	"data":
@@ -17,7 +17,7 @@
 			  "B":[0,1,0],
 			  "C":[0,0,1]
 		},
-		"path":"../data/seq2_data",
+		"path":"data/seq2_data",
 		"init_len":100,
 		"train_len":2000,
 		"test_len":2000

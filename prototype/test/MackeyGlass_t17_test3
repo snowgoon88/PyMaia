@@ -2,17 +2,17 @@
 	"esn":
 	{
 		"K":1,
-		"N":1000,
+		"N":200,
 		"L":1,
-		"leaking_rate":1,
-		"rho_factor":1.25,
-		"seed":42,
+		"leaking_rate":0.243,
+		"rho_factor":1.247,
+		"seed":41,
 		"regul_coef":1e-8
 	},
 	"data":
 	{
 		"type":"MackeyGlass",
-		"path":"../data/MackeyGlass_t17_data",
+		"path":"data/MackeyGlass_t17_data",
 		"init_len":100,
 		"train_len":2000,
 		"test_len":2000

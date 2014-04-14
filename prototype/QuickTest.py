@@ -1,25 +1,24 @@
-from ESN import *
+from ESN import runPredictionESN
+from numpy import *
+from matplotlib.pyplot import *
 import json, getopt, sys
 
 def main():
     try:
-        opts, files = getopt.getopt(sys.argv[1:], "d", ["help"])
+        opts, files = getopt.getopt(sys.argv[1:], "", ["help"])
     except getopt.GetoptError as err:
         print str(err)
         usage()
         sys.exit(1)
 
-    display = False
     for opt, arg in opts:
         if opt == '--help':
             usage()
             sys.exit(0)
-        elif opt == '-d':
-            display = True
             
     for k in range(len(files)) :
-        print '=== Running', files[k], "==="
-        
+        print "=====", files[k], "====="
+
         fd=open(files[k], 'r')
         json_data = json.load(fd)
         fd.close()
@@ -30,7 +29,7 @@ def main():
             for i in range(len(tmp)):
                 data[:, i] = tmp[i]
 
-            Ytarget, Y = runESN(json_data['esn']['K'], 
+            Ytarget, Y = runPredictionESN(json_data['esn']['K'], 
                                 json_data['esn']['N'], 
                                 json_data['esn']['L'], 
                                 json_data['esn']['seed'], 
@@ -42,8 +41,7 @@ def main():
                                 json_data['data']['train_len'], 
                                 json_data['data']['test_len'])
 
-            if display:
-                displayMackeyGlass(k, files[k], Ytarget, Y)
+            displayMackeyGlass(k, files[k], Ytarget, Y)
                 
 
         elif json_data['data']['type'] == 'Sequence' :
@@ -52,7 +50,7 @@ def main():
             for i in range(len(tmp)):
                 data[:, i] = array(json_data['data']['encode'][tmp[i]])
 
-            Ytarget, Y = runESN(json_data['esn']['K'], 
+            Ytarget, Y = runPredictionESN(json_data['esn']['K'], 
                                 json_data['esn']['N'], 
                                 json_data['esn']['L'], 
                                 json_data['esn']['seed'], 
@@ -64,24 +62,20 @@ def main():
                                 json_data['data']['train_len'], 
                                 json_data['data']['test_len'])
 
-            if display:
-                displaySequence(k, files[k], Ytarget, Y)
-
-            #for j in range(json_data['esn']['K']):
-            #    print 'Precision en',chr(65 + j),':', float(bonneAttribution[j]) / attribution[j]
-            #    print 'Rappel en',chr(65 + j),':', float(bonneAttribution[j]) / appartenant[j]
+            displaySequence(k, files[k], Ytarget, Y)
 
         else :
             print 'Unsupported data type: ',json_data['data']['type']
             sys.exit(2)
 
-    if display:
-        show()
+        
 
-def displayMackeyGlass(k, title, Ytarget, Y):
+    show()
+
+def displayMackeyGlass(k, windowsTitle, Ytarget, Y):
     fig = figure(k)
     fig.clear()
-    fig.canvas.set_window_title(title)
+    fig.canvas.set_window_title(windowsTitle)
     subplot(211)
     plot(Ytarget.T, 'k')
     plot(Y.T, 'r')
@@ -90,7 +84,7 @@ def displayMackeyGlass(k, title, Ytarget, Y):
     plot(Ytarget.T - Y.T, 'k')
     legend(['Error'])
 
-def displaySequence(k, title, Ytarget, Y):
+def displaySequence(k, windowsTitle, Ytarget, Y):
     print_Ytarget = []
     print_Y = []
 
@@ -138,10 +132,23 @@ def displaySequence(k, title, Ytarget, Y):
         else :
             fmesure.append( 2*tmpP*tmpR / (tmpP + tmpR) )
 
+    for i in range(len(Y)):
+        tmpP = float(bonneAttribution[i]) / attribution[i]
+        tmpR = float(bonneAttribution[i]) / appartenant[i]
+        print '-', chr(65 + i)
+        print '\tPrecision:', tmpP
+        print '\tRecall:', tmpR
+        print '\tF-Measure:', 2 * tmpP * tmpR / (tmpP + tmpR)
+
+    print ''
+    print 'Global precision:', precision[-1]
+    print 'Global recall:', rappel[-1]
+    print 'Global F-Measure:', fmesure[-1]
+
     k+=1
     fig = figure(k)
     fig.clear()
-    fig.canvas.set_window_title(title)
+    fig.canvas.set_window_title(windowsTitle)
     subplot(211)
     yticks(range(26), [chr(65 + x) for x in range(26)])
     plot(print_Ytarget, 'wo')
@@ -158,7 +165,7 @@ def displaySequence(k, title, Ytarget, Y):
 
 
 def usage():
-    print 'usage: python ESN.py [--help] [-d] TEST_FILE... )'
+    print 'usage: python QuickTest.py [--help] TEST_FILE... )'
 
 if __name__ == "__main__":
     main()
