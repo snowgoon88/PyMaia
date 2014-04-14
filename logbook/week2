@@ -9,10 +9,16 @@ Mercredi (09/04):
 	- ESN.tex, formalisation du protocol (à rediscuter avec Alain)
 	- Recherche de donnée / protocole pour classification
 Jeudi (10/04):
-     - (?) mesure de performance sur la prediction des seq temporelles de lettres
+    - (?) mesure de performance sur la prediction des seq temporelles de lettres
       	=> precision, rappel, F-Score : Pas sur de l'utilité pour le moment
-     - implem. dans ESN.py
-     - recherche tâche pour ESN
-     - recherche et lecture rapide d'articles
+    - implem. dans ESN.py
+    - recherche tâche pour ESN
+    - recherche et lecture rapide d'articles
 Vendredi (11/04):
+    - debug/refactoring
+    - lecture d'articles (y a tout dans mes marques pages, faut que je le mette dans le .bib)
+    - recherche de tâches
+
 BILAN
+Encore pas mal d'article de côté à lire, l'archi des test se mets en place
+Encore des discussion à avoir sur la mesure des performances

@@ -1,22 +1,25 @@
 {
 	"esn":
 	{
-		"K":2,
+		"K":5,
 		"N":200,
-		"L":2,
+		"L":5,
 		"leaking_rate":0.1,
 		"rho_factor":1.25,
-		"seed":24,
+		"seed":3,
 		"regul_coef":0.1
 	},
 	"data":
 	{
 		"type":"Sequence",
 		"encode": {
-			  "A":[1,0],
-			  "B":[0,1]
+			  "A":[1,0,0,0,0],
+			  "B":[0,1,0,0,0],
+			  "C":[0,0,1,0,0],
+			  "D":[0,0,0,1,0],
+			  "E":[0,0,0,0,1]
 		},
-		"path":"data/seq1_data",
+		"path":"../data/seq3_data",
 		"init_len":100,
 		"train_len":2000,
 		"test_len":2000
