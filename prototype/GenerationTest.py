@@ -1,4 +1,4 @@
-from ESN import runPredictionESN
+import ESN as esn
 from numpy import *
 from matplotlib.pyplot import *
 import json, getopt, sys
@@ -29,17 +29,17 @@ def main():
             for i in range(len(tmp)):
                 data[:, i] = tmp[i]
 
-            Ytarget, Y = runPredictionESN(json_data['esn']['K'], 
-                                json_data['esn']['N'], 
-                                json_data['esn']['L'], 
-                                json_data['esn']['seed'], 
-                                json_data['esn']['leaking_rate'], 
-                                json_data['esn']['rho_factor'], 
-                                json_data['esn']['regul_coef'],
-                                data, 
-                                json_data['data']['init_len'], 
-                                json_data['data']['train_len'], 
-                                json_data['data']['test_len'])
+            Ytarget, Y = esn.generation(json_data['esn']['K'], 
+                                        json_data['esn']['N'], 
+                                        json_data['esn']['L'], 
+                                        json_data['esn']['seed'], 
+                                        json_data['esn']['leaking_rate'], 
+                                        json_data['esn']['rho_factor'], 
+                                        json_data['esn']['regul_coef'],
+                                        data, 
+                                        json_data['data']['init_len'], 
+                                        json_data['data']['train_len'], 
+                                        json_data['data']['test_len'])
 
             displayMackeyGlass(k, files[k], Ytarget, Y)
                 
@@ -50,17 +50,17 @@ def main():
             for i in range(len(tmp)):
                 data[:, i] = array(json_data['data']['encode'][tmp[i]])
 
-            Ytarget, Y = runPredictionESN(json_data['esn']['K'], 
-                                json_data['esn']['N'], 
-                                json_data['esn']['L'], 
-                                json_data['esn']['seed'], 
-                                json_data['esn']['leaking_rate'], 
-                                json_data['esn']['rho_factor'], 
-                                json_data['esn']['regul_coef'],
-                                data, 
-                                json_data['data']['init_len'], 
-                                json_data['data']['train_len'], 
-                                json_data['data']['test_len'])
+            Ytarget, Y = esn.generation(json_data['esn']['K'], 
+                                        json_data['esn']['N'], 
+                                        json_data['esn']['L'], 
+                                        json_data['esn']['seed'], 
+                                        json_data['esn']['leaking_rate'], 
+                                        json_data['esn']['rho_factor'], 
+                                        json_data['esn']['regul_coef'],
+                                        data, 
+                                        json_data['data']['init_len'], 
+                                        json_data['data']['train_len'], 
+                                        json_data['data']['test_len'])
 
             displaySequence(k, files[k], Ytarget, Y)
 
@@ -68,19 +68,16 @@ def main():
             print 'Unsupported data type: ',json_data['data']['type']
             sys.exit(2)
 
-        
-
     show()
 
 def displayMackeyGlass(k, windowsTitle, Ytarget, Y):
+    se = []
+    rmse= []
+    for i in range(len(Y.T)):
+        se.append( np.power(Ytarget.T[i] - Y.T[i] , 2) )
+        rmse.append( np.sqrt(sum(se)/len(se)) )
 
-    err = []
-    err = sum(abs(Y.T - Ytarget.T),1)
-    avg = sum(err)/len(err)
-    var = sum(power(err - avg, 2))/len(err)
-
-    print 'Error average:', avg
-    print 'Error variance:', var
+    print "RMSE:", rmse[-1]
 
     fig = figure(k)
     fig.clear()
@@ -88,10 +85,11 @@ def displayMackeyGlass(k, windowsTitle, Ytarget, Y):
     subplot(211)
     plot(Ytarget.T, 'k')
     plot(Y.T, 'r')
-    legend(['Target', 'Prediction'])
+    legend(['Targeted', 'Generated'])
     subplot(212)
-    plot(err, 'k')
-    legend(['Error'])
+    plot(Ytarget.T - Y.T, 'k')
+    plot(rmse, 'r--')
+    legend(['Error', 'RMSE'])
 
 def displaySequence(k, windowsTitle, Ytarget, Y):
     print_Ytarget = []

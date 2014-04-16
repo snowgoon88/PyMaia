@@ -30,7 +30,7 @@ class ESN:
         return dot(self.Wout, vstack((1,vstack(data),self.x)) )
 
 
-def runPredictionESN(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen, testLen):
+def generation(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen, testLen):
     #print 'Step 1/5: Reservoir generation'
     network = ESN()
     network.generate(K, N, L, seed, leaking_rate, rho_factor)
@@ -56,3 +56,63 @@ def runPredictionESN(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, 
         u = Ymem[:, t]
 
     return data[:, trainLen+1:trainLen+testLen+1], Ymem
+
+
+def prediction(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen, testLen):
+    #print 'Step 1/5: Reservoir generation'
+    network = ESN()
+    network.generate(K, N, L, seed, leaking_rate, rho_factor)
+
+    #print 'Step 2/5: Transient initialization'
+    for t in range(initLen):
+        network.input(data[:, t])
+
+    #print 'Step 3/5: Learning phase'
+    Xmem = zeros((1+K+N, trainLen - initLen))
+    for t in range(initLen, int(trainLen)):
+        network.input(data[:, t])
+        Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.x))[:,0]
+
+    #print 'Step 4/5: Wout computation'
+    network.train(data[:, initLen+1:trainLen+1], Xmem, regul_coef*eye(1+K+N))
+
+    #print 'Step 5/5: Testing phase'
+    Ymem = zeros((L, testLen))
+    for t in range(testLen):
+        u = data[:, trainLen+t]
+        Ymem[:, t] = hstack(network.output(u))
+
+    return data[:, trainLen+1:trainLen+testLen+1], Ymem
+
+def modelisation(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen):
+    #print 'Step 1/5: Reservoir generation'
+    network = ESN()
+    network.generate(K, N, L, seed, leaking_rate, rho_factor)
+    xbak = network.x
+
+    #print 'Step 2/5: Transient initialization'
+    for t in range(initLen):
+        network.input(data[:, t])
+
+    #print 'Step 3/5: Learning phase'
+    Xmem = zeros((1+K+N, trainLen))
+    for t in range(initLen, trainLen + initLen):
+        network.input(data[:, t])
+        Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.x))[:,0]
+
+    #print 'Step 4/5: Wout computation'
+    network.train(data[:, initLen+1:trainLen+initLen+1], Xmem, regul_coef*eye(1+K+N))
+
+    network.x = xbak
+    #print 'Step: Transient again?'
+    for t in range(initLen):
+        network.input(data[:, t])
+
+    #print 'Step 5/5: Testing phase'
+    Ymem = zeros((L, trainLen))
+    u = data[:, initLen]
+    for t in range(trainLen):
+        Ymem[:, t] = hstack(network.output(u))
+        u = Ymem[:, t]
+
+    return data[:, initLen+1:trainLen+initLen+1], Ymem   

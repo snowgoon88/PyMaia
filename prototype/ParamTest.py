@@ -1,4 +1,4 @@
-from ESN import runPredictionESN
+import ESN as esn
 from scipy import optimize
 import numpy as np
 import json, getopt, sys
@@ -21,17 +21,17 @@ def mackeyGlass(arg, *params):
 	elif paramToSlide == "train_len":
 		train_len = variableParam
 
-	Ytarget, Y = runPredictionESN(K, 
-								  N, 
-								  L, 
-								  seed, 
-								  leaking_rate, 
-								  rho_factor, 
-								  regul_coef, 
-								  data, 
-								  init_len, 
-								  train_len, 
-								  test_len)
+	Ytarget, Y = esn.prediction(K, 
+								N, 
+								L, 
+								seed, 
+								leaking_rate, 
+								rho_factor, 
+								regul_coef, 
+								data, 
+								init_len, 
+								train_len, 
+								test_len)
 
 	print "Error with", variableParam, ":", sum(abs(Y.T - Ytarget.T),1) / len(Y.T)
 	return sum(abs(Y.T - Ytarget.T),1) / len(Y.T)
