@@ -2,15 +2,11 @@ from ESN import runPredictionESN
 from scipy import optimize
 import numpy as np
 
-i = 1 
 
 def minimizeMackeyGlass(arg, *params):
-	global i
-	print "Iteration", i
-	i+=1
+	 = arg
+	K, N, L, leaking_rate, rho_factor, seed, regul_coef, data, init_len, test_len, train_len = params 
 
-	leaking_rate, rho_factor, seed = arg
-	K, N, L, regul_coef, data, init_len, test_len, train_len = params 
 	Ytarget, Y = runPredictionESN(K, 
 								  N, 
 								  L, 
@@ -24,12 +20,8 @@ def minimizeMackeyGlass(arg, *params):
 								  test_len)
 
 	tmp = []
-	for k in range(len(Y)):
-		tmp = abs(Y[k] - Ytarget[k])
-
-	if np.isinf(sum(tmp) / len(tmp)):
-		print "PROBLEME with ",arg, "\nYtarget:", Ytarget, "\nY:", Y
-
+	for k in range(len(Y.T)):
+		tmp.append(abs(Y.T[k] - Ytarget.T[k]))
 
 	return sum(tmp) / len(tmp)
 
@@ -39,10 +31,10 @@ def main():
 	for i in range(len(tmp)):
 		data[:, i] = tmp[i]
 
-	print "GRID SEARCH"
 	rranges = (slice(0.25, 0.35, 0.05), slice(1, 1.5, 0.25), slice(40, 45, 1))
 	params = (1, 200, 1, 1e-8, data , 100, 1000, 1000)
 	
+	print "Grid Search..."
 	resbrute = optimize.brute(minimizeMackeyGlass, rranges, args=params, full_output=True, finish=optimize.fmin)
 
 	print "min(global error) =", resbrute[1]

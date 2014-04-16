@@ -73,6 +73,15 @@ def main():
     show()
 
 def displayMackeyGlass(k, windowsTitle, Ytarget, Y):
+
+    err = []
+    err = sum(abs(Y.T - Ytarget.T),1)
+    avg = sum(err)/len(err)
+    var = sum(power(err - avg, 2))/len(err)
+
+    print 'Error average:', avg
+    print 'Error variance:', var
+
     fig = figure(k)
     fig.clear()
     fig.canvas.set_window_title(windowsTitle)
@@ -81,7 +90,7 @@ def displayMackeyGlass(k, windowsTitle, Ytarget, Y):
     plot(Y.T, 'r')
     legend(['Target', 'Prediction'])
     subplot(212)
-    plot(Ytarget.T - Y.T, 'k')
+    plot(err, 'k')
     legend(['Error'])
 
 def displaySequence(k, windowsTitle, Ytarget, Y):
@@ -141,11 +150,10 @@ def displaySequence(k, windowsTitle, Ytarget, Y):
         print '\tF-Measure:', 2 * tmpP * tmpR / (tmpP + tmpR)
 
     print ''
-    print 'Global precision:', precision[-1]
-    print 'Global recall:', rappel[-1]
-    print 'Global F-Measure:', fmesure[-1]
+    print '=> Global precision:', precision[-1]
+    print '=> Global recall:', rappel[-1]
+    print '=> Global F-Measure:', fmesure[-1]
 
-    k+=1
     fig = figure(k)
     fig.clear()
     fig.canvas.set_window_title(windowsTitle)
