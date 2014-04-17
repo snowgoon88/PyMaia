@@ -1,40 +1,8 @@
-import ESN as esn
-from scipy import optimize
 import numpy as np
+import matplotlib.pyplot as plt
+from scipy import optimize
+import ESN as esn
 import json, getopt, sys
-
-
-def mackeyGlass(arg, *params):
-	variableParam = arg
-	paramToSlide, K, N, L, leaking_rate, rho_factor, regul_coef, data, init_len, train_len, test_len = params 
-
-	if paramToSlide == "N":
-		N = variableParam
-	elif paramToSlide == "leaking_rate":
-		leaking_rate = variableParam
-	elif paramToSlide == "rho_factor":
-		rho_factor = variableParam
-	elif paramToSlide == "regul_coef":
-		regul_coef = variableParam
-	elif paramToSlide == "seed":
-		seed = variableParam
-	elif paramToSlide == "train_len":
-		train_len = variableParam
-
-	Ytarget, Y = esn.prediction(K, 
-								N, 
-								L, 
-								seed, 
-								leaking_rate, 
-								rho_factor, 
-								regul_coef, 
-								data, 
-								init_len, 
-								train_len, 
-								test_len)
-
-	print "Error with", variableParam, ":", sum(abs(Y.T - Ytarget.T),1) / len(Y.T)
-	return sum(abs(Y.T - Ytarget.T),1) / len(Y.T)
 
 def main():
 	try:
@@ -58,7 +26,7 @@ def main():
 			sys.exit(0)
 		elif opt == "-s":
 			tmp = arg.split(':')
-			rranges = ( slice(float(tmp[0]), float(tmp[1]), float(tmp[2])), )
+			rranges = (float(tmp[0]), float(tmp[1]), float(tmp[2]))
 		elif opt in ("--N", "--leaking_rate", "--rho_factor", "--seed", "--regul_coef", "--train_len"):
 			if paramToSlice == None:
 				paramToSlice = opt[2:]
@@ -71,8 +39,6 @@ def main():
 		sys.exit(1)
 
 	for json_file in files:
-		print "=====", json_file, "====="
-
 		fd=open(json_file, 'r')
 		json_data = json.load(fd)
 		fd.close()
@@ -83,26 +49,51 @@ def main():
 			for i in range(len(tmp)):
 				data[:, i] = tmp[i]
 
-			params = (	paramToSlice, 
-            			json_data['esn']['K'], 
-            			json_data['esn']['N'], 
-            			json_data['esn']['L'],
-            			json_data['esn']['leaking_rate'],
-            			json_data['esn']['rho_factor'],
-            			json_data['esn']['regul_coef'],
-            			data,
-            			json_data['data']['init_len'],
-            			json_data['data']['train_len'],
-            			json_data['data']['test_len'])
+			K = json_data['esn']['K']
+			N = json_data['esn']['N'] 
+			L = json_data['esn']['L']
+			a = json_data['esn']['leaking_rate']
+			rho = json_data['esn']['rho_factor']
+			seed = json_data['esn']['seed']
+			b = json_data['esn']['regul_coef']
+			init = json_data['data']['init_len']
+			train = json_data['data']['train_len']
+			test = json_data['data']['test_len']
 
-			resbrute = optimize.brute(mackeyGlass, rranges, args=params, full_output=True)
+			rmse = []
+			xticks = []
+			for i in np.arange(rranges[0], rranges[1]+rranges[2], rranges[2]):
+				print json_file, "with", paramToSlice, "=", i
+				xticks.append(i)
+				if paramToSlice == "N":
+					Ytarget, Y = esn.generation(K, i, L, seed, a, rho, b, data, init, train, test)
+				elif paramToSlice == "seed":
+					Ytarget, Y = esn.generation(K, N, L, i, a, rho, b, data, init, train, test)
+				elif paramToSlice == "leaking_rate":
+					Ytarget, Y = esn.generation(K, N, L, seed, i, rho, b, data, init, train, test)
+				elif paramToSlice == "rho_factor":
+					Ytarget, Y = esn.generation(K, N, L, seed, a, i, b, data, init, train, test)
+				elif paramToSlice == "regul_coef":
+					Ytarget, Y = esn.generation(K, N, L, seed, a, rho, i, data, init, train, test)
+				elif paramToSlice == "train_len":
+					Ytarget, Y = esn.generation(K, N, L, seed, a, rho, b, data, init, i, test) 	
+				else:
+					Ytarget, Y = esn.generation(K, N, L, seed, a, rho, b, data, init, train, test)
+				rmse.append(np.sqrt(np.sum(np.power(Y.T - Ytarget.T, 2))/len(Y.T)))
 
-			print resbrute
-			print "min(global error) =", resbrute[1]
-			print "with argument:", resbrute[0]
+				
+				print "RMSE=", rmse[-1]
+
+			plt.figure().canvas.set_window_title(json_file)
+			plt.plot(rmse, 'k')
+			plt.xticks(range(len(xticks)), xticks)
+			plt.xlabel(paramToSlice)
+			plt.ylabel("RMSE")
+			plt.show()
+
 
 		elif json_data['data']['type'] == 'Sequence' :
-			tmp = np.loadtxt(json_data['data']['path'], dtype=string0)
+			tmp = np.loadtxt(json_data['data']['path'], dtype=np.string0)
 			data = np.zeros((json_data['esn']['K'], len(tmp)))
 			for i in range(len(tmp)):
 				data[:, i] = np.array(json_data['data']['encode'][tmp[i]])
