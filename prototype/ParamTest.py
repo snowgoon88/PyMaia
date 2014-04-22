@@ -43,6 +43,7 @@ def main():
 		json_data = json.load(fd)
 		fd.close()
 
+		print "=====", json_file, "====="
 		if json_data['data']['type'] == 'MackeyGlass' :
 			tmp = np.loadtxt(json_data['data']['path'])
 			data = np.zeros((1, len(tmp)))
@@ -63,7 +64,7 @@ def main():
 			rmse = []
 			xticks = []
 			for i in np.arange(rranges[0], rranges[1]+rranges[2], rranges[2]):
-				print json_file, "with", paramToSlice, "=", i
+				print "*", paramToSlice, "=", i
 				xticks.append(i)
 				if paramToSlice == "N":
 					Ytarget, Y = esn.generation(K, i, L, seed, a, rho, b, data, init, train, test)

@@ -3,12 +3,9 @@ from scipy import optimize
 import numpy as np
 
 def minimizeMackeyGlass(arg, *params):
-	leaking_rate, rho_factor, seed = arg
-	print "leaking_rate:",leaking_rate
-	print "rho_factor:", rho_factor
-	print "seed:", seed
-
-	K, N, L, regul_coef, data, init_len, train_len, test_len = params 
+	print "With arg:",arg
+	leaking_rate, rho_factor = arg
+	K, N, L, seed, regul_coef, data, init_len, train_len, test_len = params 
 	Ytarget, Y = generation(K, 
 							N, 
 							L, 
@@ -31,8 +28,8 @@ def main():
 	for i in range(len(tmp)):
 		data[:, i] = tmp[i]
 
-	rranges = (slice(0.25, 0.35, 0.05), slice(1, 1.5, 0.25), slice(40, 45, 1))
-	params = (1, 1000, 1, 1e-8, data , 100, 1900, 2000)
+	rranges = (slice(0.30, 0.35, 0.01), slice(1, 1.5, 0.05))
+	params = (1, 1000, 1, 42, 1e-8, data , 100, 1900, 2000)
 	
 	resbrute = optimize.brute(minimizeMackeyGlass, rranges, args=params, full_output=True, finish=None)
 
