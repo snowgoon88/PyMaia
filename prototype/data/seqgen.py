@@ -40,7 +40,27 @@ def generate(length, param):
         tmp = []
         for j in range(len(param["delay"])):
             tmp.append(seq[i-param["delay"][j]])
-        seq.append(param["rules"][''.join(tmp)])
+        tmp = param["rules"][''.join(tmp)]
+        if hasattr(tmp, 'lower'):
+            seq.append(tmp)
+        else:
+            if sum(tmp.values()) != 1 :
+                print "Error: Sum of the propability must be equal to 1"
+                sys.exit(2);
+            else:
+                rangedProb = []
+                rangedLetter = []
+                for letter in tmp :
+                    rangedLetter.append(letter)
+                    rangedProb.append(sum(rangedProb)+tmp[letter])
+                prob = random.random()
+                k = 0
+                while True:
+                    if prob < rangedProb[k]:
+                        seq.append(rangedLetter[k])
+                        break
+                    else:
+                        k+=1
     return seq
 
 def usage():

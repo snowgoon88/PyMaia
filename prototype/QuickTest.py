@@ -212,8 +212,8 @@ def displaySequence(k, windowsTitle, Ytarget, Y):
     precision = []
     rappel = []
     fmesure = []
-    #accuracy = []
-    #acc = 0
+    accuracy = []
+    acc = 0
 
     for i in range(len(Y.T)):
         print_Ytarget.append(where(Ytarget[:, i]==1)[0][0])
@@ -231,8 +231,8 @@ def displaySequence(k, windowsTitle, Ytarget, Y):
 
         if print_Y[i] == print_Ytarget[i]:
             bonneAttribution[print_Y[i]]+=1
-            #acc+=1
-        #accuracy.append(float(acc)/(i+1))
+            acc+=1
+        accuracy.append(float(acc)/(i+1))
 
         tmpP = 0.0
         tmpR = 0.0
@@ -263,6 +263,7 @@ def displaySequence(k, windowsTitle, Ytarget, Y):
     print '=> Global precision:', precision[-1]
     print '=> Global recall:', rappel[-1]
     print '=> Global F-Measure:', fmesure[-1]
+    print 'ACCURACY:', accuracy[-1]
 
     fig = figure(k)
     fig.clear()
@@ -275,8 +276,9 @@ def displaySequence(k, windowsTitle, Ytarget, Y):
     subplot(212)
     plot(precision, 'g--')
     plot(rappel, 'b--')
-    plot(fmesure, 'r')
-    legend(['Precision', 'Recall', 'F-Measure'])
+    plot(fmesure, 'r--')
+    plot(accuracy, 'r')
+    legend(['Precision', 'Recall', 'F-Measure', 'Accuracy'])
     yinf, ysup = fig.get_axes()[0].get_ylim()
     fig.get_axes()[0].set_ylim(yinf-0.5, ysup+0.5)
 

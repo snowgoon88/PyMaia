@@ -4,8 +4,8 @@
 		"K":2,
 		"N":200,
 		"L":2,
-		"leaking_rate":0.1,
-		"rho_factor":1.25,
+		"leaking_rate":0.7,
+		"rho_factor":1,
 		"seed":42,
 		"regul_coef":0.1
 	},
@@ -18,7 +18,7 @@
 		},
 		"path":"data/seq1_data",
 		"init_len":100,
-		"train_len":2000,
+		"train_len":1900,
 		"test_len":2000
 	}
 }

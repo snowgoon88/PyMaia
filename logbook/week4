@@ -1,0 +1,8 @@
+Mardi
+	- Debug GridSearch + ParamTest
+	  => y a encore un p'tit problème, pas les meme résultats avec ParamTest/GridSearch et avec QuickSearch pour quelques cas
+
+Mercredi
+	- Suite debug...
+	- Implem bruit dans les sequences
+	- Retour de la "justesse" (accuracy) pour la mesure de performance
