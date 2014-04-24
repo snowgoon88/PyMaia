@@ -6,3 +6,9 @@ Mercredi
 	- Suite debug...
 	- Implem bruit dans les sequences
 	- Retour de la "justesse" (accuracy) pour la mesure de performance
+
+Jeudi
+	- Implementation generation trajectory
+	- gros refactoring RunTest.py 
+		-referencement de methode
+		-new json test format ("test" key)

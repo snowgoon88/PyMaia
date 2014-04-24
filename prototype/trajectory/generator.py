@@ -20,13 +20,13 @@ def main():
     timestep = 2*np.pi / 30
     alpha = 0.7
 
-    for clazzID in clazz :
+    for classID in clazz :
         for i in xrange(1, 51):
-    	   fd = open("dataset/%s_%s"%(clazzID, i), 'w')
+    	   fd = open("dataset/%s_%s"%(classID, i), 'w')
     	   beta = 2*np.pi*np.random.random()
         t = 2*np.pi*np.random.random()
         for _ in it.repeat(None, 30):
-    	       fd.write("%s %s\n"%clazz[clazzID](t, alpha, beta))
+    	       fd.write("%s %s\n"%clazz[classID](t, alpha, beta))
     	       t += timestep
     	fd.close()
 

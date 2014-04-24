@@ -46,6 +46,7 @@ def main():
 
 def process(json_file, json_data, data, display):
     for test in json_data["test"]:
+        print "*", test
         if test == 'generation':
             Ytarget, Y = esn.generation(json_data['esn']['K'], 
                                         json_data['esn']['N'], 
@@ -184,7 +185,7 @@ def displaySequence(windowsTitle, Ytarget, Y):
     # print '=> Global precision:', precision[-1]
     # print '=> Global recall:', rappel[-1]
     # print '=> Global F-Measure:', fmesure[-1]
-    print 'ACCURACY:', accuracy[-1]
+    print 'Accuracy:', accuracy[-1]
 
     fig = figure()
     fig.clear()
@@ -205,7 +206,7 @@ def displaySequence(windowsTitle, Ytarget, Y):
 
 
 def usage():
-    print 'usage: python QuickTest.py [--help] TEST_FILE... )'
+    print 'usage: python RunTest.py [--help] TEST_FILE... )'
 
 if __name__ == "__main__":
     main()
