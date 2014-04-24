@@ -16,5 +16,6 @@
 		"init_len":100,
 		"train_len":1900,
 		"test_len":2000
-	}
+	},
+	"test": []
 }

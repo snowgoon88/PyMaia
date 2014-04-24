@@ -5,31 +5,21 @@ import json, getopt, sys
 
 def main():
     try:
-        opts, files = getopt.getopt(sys.argv[1:], "gp", ["help", "rappel"])
+        opts, files = getopt.getopt(sys.argv[1:], "", ["help"])
     except getopt.GetoptError as err:
         print str(err)
         usage()
         sys.exit(1)
 
-    generationFlag = False
-    predictionFlag = False
-    rappelFlag = False
     for opt, arg in opts:
         if opt == '--help':
             usage()
             sys.exit(0)
-        elif opt == '--rappel':
-            rappelFlag = True
-        elif opt == '-g':
-            generationFlag = True
-        elif opt == '-p':
-            predictionFlag = True
 
-    numFig = 0 ;
-    for k in range(len(files)) :
-        print "=====", files[k], "====="
+    for json_file in files :
+        print "=====", json_file, "====="
 
-        fd=open(files[k], 'r')
+        fd=open(json_file, 'r')
         json_data = json.load(fd)
         fd.close()
 
@@ -38,138 +28,14 @@ def main():
             data = zeros((1, len(tmp)))
             for i in range(len(tmp)):
                 data[:, i] = tmp[i]
-
-            if not rappelFlag:
-                if predictionFlag:
-                    print "* Prediction"
-                    Ytarget, Y = esn.prediction(json_data['esn']['K'], 
-                                                json_data['esn']['N'], 
-                                                json_data['esn']['L'], 
-                                                json_data['esn']['seed'], 
-                                                json_data['esn']['leaking_rate'], 
-                                                json_data['esn']['rho_factor'], 
-                                                json_data['esn']['regul_coef'],
-                                                data, 
-                                                json_data['data']['init_len'], 
-                                                json_data['data']['train_len'], 
-                                                json_data['data']['test_len'])
-                    displayMackeyGlass(numFig, "Prediction avec %s"%files[k], Ytarget, Y)
-                    numFig += 1
-
-                if generationFlag:
-                    print "* Generation"
-                    Ytarget, Y = esn.generation(json_data['esn']['K'], 
-                                                json_data['esn']['N'], 
-                                                json_data['esn']['L'], 
-                                                json_data['esn']['seed'], 
-                                                json_data['esn']['leaking_rate'], 
-                                                json_data['esn']['rho_factor'], 
-                                                json_data['esn']['regul_coef'],
-                                                data, 
-                                                json_data['data']['init_len'], 
-                                                json_data['data']['train_len'], 
-                                                json_data['data']['test_len'])
-                    displayMackeyGlass(numFig, "Generation avec %s"%files[k], Ytarget, Y)     
-                    numFig += 1           
-            else:
-                if predictionFlag:
-                    print "* Rappel sur prediction"
-                    Ytarget, Y = esn.rappelPrediction(json_data['esn']['K'], 
-                                                json_data['esn']['N'], 
-                                                json_data['esn']['L'], 
-                                                json_data['esn']['seed'], 
-                                                json_data['esn']['leaking_rate'], 
-                                                json_data['esn']['rho_factor'], 
-                                                json_data['esn']['regul_coef'],
-                                                data, 
-                                                json_data['data']['init_len'], 
-                                                json_data['data']['train_len'])
-                    displayMackeyGlass(numFig, "Rappel sur prediction avec  %s"%files[k], Ytarget, Y)
-                    numFig += 1
-
-                if generationFlag:
-                    print "* Rappel sur generation"
-                    Ytarget, Y = esn.rappelGeneration(json_data['esn']['K'], 
-                                                    json_data['esn']['N'], 
-                                                    json_data['esn']['L'], 
-                                                    json_data['esn']['seed'], 
-                                                    json_data['esn']['leaking_rate'], 
-                                                    json_data['esn']['rho_factor'], 
-                                                    json_data['esn']['regul_coef'],
-                                                    data, 
-                                                    json_data['data']['init_len'], 
-                                                    json_data['data']['train_len'])
-                    displayMackeyGlass(numFig, "Rappel sur generation avec %s"%files[k], Ytarget, Y)     
-                    numFig += 1  
-
+            process(json_file, json_data, data, displayMackeyGlass)
+            
         elif json_data['data']['type'] == 'Sequence' :
             tmp = loadtxt(json_data['data']['path'], dtype=string0)
             data = zeros((json_data['esn']['K'], len(tmp)))
             for i in range(len(tmp)):
                 data[:, i] = array(json_data['data']['encode'][tmp[i]])
-
-            if not rappelFlag:
-                if predictionFlag:
-                    print "* Prediction"
-                    Ytarget, Y = esn.prediction(json_data['esn']['K'], 
-                                                json_data['esn']['N'], 
-                                                json_data['esn']['L'], 
-                                                json_data['esn']['seed'], 
-                                                json_data['esn']['leaking_rate'], 
-                                                json_data['esn']['rho_factor'], 
-                                                json_data['esn']['regul_coef'],
-                                                data, 
-                                                json_data['data']['init_len'], 
-                                                json_data['data']['train_len'], 
-                                                json_data['data']['test_len'])
-                    displaySequence(numFig, "Prediction avec %s"%files[k], Ytarget, Y)
-                    numFig += 1
-
-                if generationFlag:
-                    print "* Generation"
-                    Ytarget, Y = esn.generation(json_data['esn']['K'], 
-                                                json_data['esn']['N'], 
-                                                json_data['esn']['L'], 
-                                                json_data['esn']['seed'], 
-                                                json_data['esn']['leaking_rate'], 
-                                                json_data['esn']['rho_factor'], 
-                                                json_data['esn']['regul_coef'],
-                                                data, 
-                                                json_data['data']['init_len'], 
-                                                json_data['data']['train_len'], 
-                                                json_data['data']['test_len'])
-                    displaySequence(numFig, "Generation avec %s"%files[k], Ytarget, Y)     
-                    numFig += 1           
-            else:
-                if predictionFlag:
-                    print "* Rappel sur prediction"
-                    Ytarget, Y = esn.rappelPrediction(json_data['esn']['K'], 
-                                                json_data['esn']['N'], 
-                                                json_data['esn']['L'], 
-                                                json_data['esn']['seed'], 
-                                                json_data['esn']['leaking_rate'], 
-                                                json_data['esn']['rho_factor'], 
-                                                json_data['esn']['regul_coef'],
-                                                data, 
-                                                json_data['data']['init_len'], 
-                                                json_data['data']['train_len'])
-                    displaySequence(numFig, "Rappel sur prediction avec  %s"%files[k], Ytarget, Y)
-                    numFig += 1
-
-                if generationFlag:
-                    print "* Rappel sur generation"
-                    Ytarget, Y = esn.rappelGeneration(json_data['esn']['K'], 
-                                                    json_data['esn']['N'], 
-                                                    json_data['esn']['L'], 
-                                                    json_data['esn']['seed'], 
-                                                    json_data['esn']['leaking_rate'], 
-                                                    json_data['esn']['rho_factor'], 
-                                                    json_data['esn']['regul_coef'],
-                                                    data, 
-                                                    json_data['data']['init_len'], 
-                                                    json_data['data']['train_len'])
-                    displaySequence(numFig, "Rappel sur generation avec %s"%files[k], Ytarget, Y)     
-                    numFig += 1  
+            process(json_file, json_data, data, displaySequence)
 
         else :
             print 'Unsupported data type: ',json_data['data']['type']
@@ -177,7 +43,51 @@ def main():
 
     show()
 
-def displayMackeyGlass(k, windowsTitle, Ytarget, Y):
+
+def process(json_file, json_data, data, display):
+    toDo = {}
+    rappelToDo = {}
+    for test in json_data["test"]:
+        if test == 'generation':
+            toDo[test] = esn.generation
+        elif test == 'prediction':
+            toDo[test] = esn.prediction
+        elif test == 'rappelGeneration':
+            rappelToDo[test] = esn.rappelGeneration
+        elif test == 'rappelPrediction':
+            rappelToDo[test] = esn.rappelPrediction
+
+    for func in toDo:
+        print "* %s"%func
+        Ytarget, Y = toDo[func](json_data['esn']['K'], 
+                                json_data['esn']['N'], 
+                                json_data['esn']['L'], 
+                                json_data['esn']['seed'], 
+                                json_data['esn']['leaking_rate'], 
+                                json_data['esn']['rho_factor'], 
+                                json_data['esn']['regul_coef'],
+                                data, 
+                                json_data['data']['init_len'], 
+                                json_data['data']['train_len'], 
+                                json_data['data']['test_len'])
+        display("%s: %s"%(func, json_file), Ytarget, Y)
+
+    for func in rappelToDo:
+        print "* %s"%func
+        Ytarget, Y = rappelToDo[func](json_data['esn']['K'], 
+                                      json_data['esn']['N'], 
+                                      json_data['esn']['L'], 
+                                      json_data['esn']['seed'], 
+                                      json_data['esn']['leaking_rate'], 
+                                      json_data['esn']['rho_factor'], 
+                                      json_data['esn']['regul_coef'],
+                                      data, 
+                                      json_data['data']['init_len'], 
+                                      json_data['data']['train_len'])
+        display("%s: %s"%(func, json_file), Ytarget, Y)
+
+
+def displayMackeyGlass(windowsTitle, Ytarget, Y):
     err = []
     rmse = []
     #avg = []
@@ -190,7 +100,7 @@ def displayMackeyGlass(k, windowsTitle, Ytarget, Y):
         
     print "RMSE:", rmse[-1]
 
-    fig = figure(k)
+    fig = figure()
     fig.clear()
     fig.canvas.set_window_title(windowsTitle)
     subplot(211)
@@ -202,7 +112,7 @@ def displayMackeyGlass(k, windowsTitle, Ytarget, Y):
     plot(rmse, 'r')
     legend(['Error', 'RMSE'])
 
-def displaySequence(k, windowsTitle, Ytarget, Y):
+def displaySequence(windowsTitle, Ytarget, Y):
     print_Ytarget = []
     print_Y = []
 
@@ -265,7 +175,7 @@ def displaySequence(k, windowsTitle, Ytarget, Y):
     print '=> Global F-Measure:', fmesure[-1]
     print 'ACCURACY:', accuracy[-1]
 
-    fig = figure(k)
+    fig = figure()
     fig.clear()
     fig.canvas.set_window_title(windowsTitle)
     subplot(211)
