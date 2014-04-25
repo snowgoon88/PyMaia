@@ -37,6 +37,10 @@ def main():
                 data[:, i] = array(json_data['data']['encode'][tmp[i]])
             process(json_file, json_data, data, displaySequence)
 
+        elif json_data['data']['type'] == 'Trajectory':
+            tmpData = loadtxt(json_data['data']['path'])
+            tmpTarget = loadtxt(json_data['data']['target'])
+
         else :
             print 'Unsupported data type: ',json_data['data']['type']
             sys.exit(2)
@@ -97,7 +101,28 @@ def process(json_file, json_data, data, display):
                                               json_data['data']['init_len'], 
                                               json_data['data']['train_len'])
             display("%s: %s"%(test, json_file), Ytarget, Y)
+        elif test == 'classification':
+            Ytarget, Y = esn.classification(json_data['esn']['K'], 
+                                            json_data['esn']['N'], 
+                                            json_data['esn']['L'], 
+                                            json_data['esn']['seed'], 
+                                            json_data['esn']['leaking_rate'], 
+                                            json_data['esn']['rho_factor'], 
+                                            json_data['esn']['regul_coef'],
+                                            data[0],
+                                            data[1], 
+                                            json_data['data']['init_len'], 
+                                            json_data['data']['train_len'], 
+                                            json_data['data']['test_len'])
+            display("%s: %s"%(test, json_file), Ytarget, Y)
 
+
+def displayTrajectory(windowsTitle, Ytarget, Y):
+    print "Soon..."
+
+    fig = figure()
+    fig.clear()
+    fig.canvas.set_window_title(windowsTitle)
 
 def displayMackeyGlass(windowsTitle, Ytarget, Y):
     err = []

@@ -30,6 +30,33 @@ class ESN:
         return dot(self.Wout, vstack((1,vstack(data),self.x)) )
 
 
+def classification(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, target, initLen, trainLen, testLen):
+    #print 'Step 1/5: Reservoir generation'
+    network = ESN()
+    network.generate(K, N, L, seed, leaking_rate, rho_factor)
+
+    #print 'Step 2/5: Transient initialization'
+    for t in range(initLen):
+        network.input(data[:, t])
+
+    #print 'Step 3/5: Learning phase'
+    Xmem = zeros((1+K+N, trainLen))
+    for t in range(initLen, int(trainLen+initLen)):
+        network.input(data[:, t])
+        Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.x))[:,0]
+
+    #print 'Step 4/5: Wout computation'
+    network.train(target[:, initLen+1:trainLen+initLen+1], Xmem, regul_coef*eye(1+K+N))
+
+    #print 'Step 5/5: Testing phase'
+    Ymem = zeros((L, testLen))
+    for t in range(testLen):
+        u = data[:, initLen+trainLen+t]
+        Ymem[:, t] = hstack(network.output(u))
+
+    return target[:, initLen+trainLen+1:initLen+trainLen+testLen+1], Ymem
+
+
 def generation(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen, testLen):
     #print 'Step 1/5: Reservoir generation'
     network = ESN()
