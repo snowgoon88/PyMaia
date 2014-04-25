@@ -40,7 +40,7 @@ def main():
         elif json_data['data']['type'] == 'Trajectory':
             tmpData = loadtxt(json_data['data']['path'])
             tmpTarget = loadtxt(json_data['data']['target'])
-
+            process(json_file, json_data, (tmpData.T, tmpTarget.T), displayTrajectory)
         else :
             print 'Unsupported data type: ',json_data['data']['type']
             sys.exit(2)
@@ -115,14 +115,50 @@ def process(json_file, json_data, data, display):
                                             json_data['data']['train_len'], 
                                             json_data['data']['test_len'])
             display("%s: %s"%(test, json_file), Ytarget, Y)
+        elif test == 'rappelClassification':
+            Ytarget, Y = esn.rappelClassification(json_data['esn']['K'], 
+                                                  json_data['esn']['N'], 
+                                                  json_data['esn']['L'], 
+                                                  json_data['esn']['seed'], 
+                                                  json_data['esn']['leaking_rate'], 
+                                                  json_data['esn']['rho_factor'], 
+                                                  json_data['esn']['regul_coef'],
+                                                  data[0],
+                                                  data[1], 
+                                                  json_data['data']['init_len'], 
+                                                  json_data['data']['train_len'])
+            display("%s: %s"%(test, json_file), Ytarget, Y)
 
 
 def displayTrajectory(windowsTitle, Ytarget, Y):
-    print "Soon..."
+    print_Ytarget = []
+    print_Y = []
+
+    accuracy = []
+    acc = 0
+
+    for i in range(len(Y.T)):
+        print_Ytarget.append(where(Ytarget[:, i]==0.7)[0][0])
+        print_Y.append(where(Y[:, i]==max(Y[:, i]))[0][0])
+
+        if print_Y[i] == print_Ytarget[i]:
+            acc+=1
+        accuracy.append(float(acc)/(i+1))
+
+    print "Accuracy:", accuracy[-1]
 
     fig = figure()
     fig.clear()
     fig.canvas.set_window_title(windowsTitle)
+    subplot(211)
+    yticks(range(3), ["Class %s"%x for x in range(3)])
+    plot(print_Ytarget, 'wo')
+    plot(print_Y, 'b+')
+    subplot(212)
+    plot(accuracy, 'r')
+    legend(['Accuracy'])
+    yinf, ysup = fig.get_axes()[0].get_ylim()
+    fig.get_axes()[0].set_ylim(yinf-0.5, ysup+0.5)
 
 def displayMackeyGlass(windowsTitle, Ytarget, Y):
     err = []

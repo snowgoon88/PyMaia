@@ -1,0 +1,22 @@
+{
+	"esn":
+	{
+		"K":2,
+		"N":1000,
+		"L":3,
+		"leaking_rate":0.9,
+		"rho_factor":1.25,
+		"seed":42,
+		"regul_coef":1e-8
+	},
+	"data":
+	{
+		"type":"Trajectory",
+		"path":"data/trajectory_data",
+		"target":"data/trajectory_class",
+		"init_len":90,
+		"train_len":900,
+		"test_len":1800
+	},
+	"test": ["classification"]
+}
