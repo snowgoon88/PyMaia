@@ -21,7 +21,7 @@
 
 Le \textit{Reservoir computing} (RC) est une alternative à la méthode de descente du gradient pour entraîner les \textit{recurrent neural network} (RNN), une architecture de réseau de neurones artificielles où les connections synaptiques peuvent former des cycles. Cela entraîne l'apparition d'états internes au sein du réseau, lui permettant d'adopter un comportement temporel dynamique.\newline
 Un \textit{Echo state network} est un RNN possèdant une couche cachée, le réservoir, avec un faible nombre de synapse dont les poids sont générés aléatoirement. Le poid des neurones de sortie est l'unique sous-ensemble du réseau qui sera entraîné, bien souvent à l'aide d'une régression linéaire.\newline
-Pour que l'approche ESN fonctionne, le réservoir doit satisfaire \textit{l'echo state property} : l'état d'un réservoir ne doit dépendre que des données entrées au court du temps (\cite{Herbert10}). Pour un réservoir assimilant une importante quantitée de donnée, son état interne ne doit donc plus dépendre de l'initialisation.
+Pour que l'approche ESN fonctionne, le réservoir doit satisfaire \textit{l'echo state property} : l'état d'un réservoir ne doit dépendre que des données entrées au court du temps (\cite{Jaeger10}). Pour un réservoir assimilant une importante quantitée de donnée, son état interne ne doit donc plus dépendre de l'initialisation.
 
 
 \section{Formalisation}
@@ -79,7 +79,7 @@ où $\beta$ est le coefficient de régularisation.
 
 \section{Protocoles}
 
-\subsection{Tâches de prédiction}
+\subsection{Tâches de génération et de prédiction}
 
 Toutes les tâches explicitées ci-dessous ont pour but d'analyser la faculté d'un réservoir à apprendre de manière supervisée à prédire une séquence temporelle.
 
@@ -90,9 +90,9 @@ $x(t+1) = \beta \frac{ x(t-\tau) }{ 1+{x(t-\tau)}^n }-\gamma x$
 \end{center}
 où $\quad \gamma,\beta,n > 0$
 \paragraph{Démarche}
-L'ESN possède un neurone d'entrée et un neurone de sortie. Après la phase d'apprentissage, le réseau devrait être capable de générer la fonction de façon autonome, c'est à dire que $y(t)$ prédit à l'instant $t$ sera utilisé comme entrée $u(t+1)$ à l'instant $t+1$.
+L'ESN possède un neurone d'entrée et un neurone de sortie. Après la phase d'apprentissage, le réseau devrait être capable de prédire $y(t)$, ce qui nous ouvre la porte à deux tâches intéressante. D'une part, il est possible de générer la fonction de façon autonome, c'est à dire que nous fournissons au réseau $u(t_{startTask})$ puis les $y(t)$ prédit à l'instant $t$ seront utilisés comme entrées à l'instant $t+1$. D'autre part, nous pouvons simplement prédire la fonction sur une distance $\delta t$, c'est à dire que nous réalisons une tâche de génération où nous réinjectons $u(t)$ à la place de $y(t)$ lorsque $t - t_{startTask} \equiv 0 \pmod{ \Delta t }$.
 \paragraph{Mesure de la performance}
-Nous nous baserons ici sur la différence entre $y^{target}(t)$ et $y(t)$ pour tout $t$, nous permettant une analyse statistique de l'erreur.
+Nous nous baserons ici sur la différence entre $y^{target}(t)$ et $y(t)$ pour tout $t$, nous permettant une analyse statistique de l'erreur. L'indice de performance principale que nous utiliserons est la \textit{Root Mean Squared Error}.
 
 
 \subsubsection{Séquence de lettre}
@@ -106,25 +106,57 @@ Nous générons au hasard $max_{\forall i}(\tau_{i})$ caractères, puis appliquo
 \paragraph{Démarche}
 Même démarche que pour la fonction de Mackey-Glass, mis à part que l'ESN possède autant de neurone d'entrée et de sortie que de lettres composant la séquence. Ainsi pour une séquence formée à l'aide d'un alphabet de cardinalité 2, le réseau de neurone possèdera deux neurones d'entrée. L'activation du premier neurone correspondant à une lettre, et celle du second neurone correspondant à la deuxième lettre. Bien entendu, la couche de sortie du réseau de neurone ne sera pas activé de façon binaire, et nous regarderons donc l'unité la plus active pour savoir quelle est la lettre prédite par l'ESN.
 \paragraph{Mesure de la performance}
-Pour cette tâche, nous mesurons la précision (\textit{precision}), le rappel (\textit{recall}), la F-mesure (\textit{F-measure}), et la justesse (\textit{accuracy}) à chaque instant.\\
-
-$precision(t) = \frac{1}{\#Alphabet} \sum_{l \in Alphabet} \frac{l\ correctement\ predit}{l\ predit}$\\\\
-$rappel(t) = \frac{1}{\#Alphabet} \sum_{l \in Alphabet} \frac{l\ correctement\ predit}{l\ existant}$\\\\
-$F-measure(t) = \frac{2 \times precision(t) \times rappel(t)}{precision(t) + rappel(t)}$\\\\
+Pour cette tâche, nous mesurons la précision (\textit{precision}), le rappel (\textit{recall}), la F-mesure (\textit{F-measure}), et la justesse (\textit{accuracy}) à chaque instant. 
+\newline
+\newline
+$precision(t) = \frac{1}{\#Alphabet} \sum_{l \in Alphabet} \frac{l\ correctement\ predit}{l\ predit}$
+\newline
+\newline
+$rappel(t) = \frac{1}{\#Alphabet} \sum_{l \in Alphabet} \frac{l\ correctement\ predit}{l\ existant}$
+\newline
+\newline
+$F-measure(t) = \frac{2 \times precision(t) \times rappel(t)}{precision(t) + rappel(t)}$
+\newline
+\newline
 $accuracy(t)= \frac{predictions correctes}{t}$
 
 \subsection{Tâche de classification}
 
 Toutes les tâches explicitées ci-dessous ont pour but d'analyser la faculté d'un réservoir à apprendre à classer des séquences temporelles.
 
-\begin{center}
-COMING SOON... 
-\end{center}
+\subsubsection{Trajectoires}
+\paragraph{Formalisation}
+Nous réutilisons ici les trajectoires décrites dans \cite{HuskenStagge}, c'est à dire les trois équations paramétriques suivantes.
+\begin{description}
+\item[classe 1:]
+\begin{description}
+\item
+\item $x(t) = \alpha \sin(t+\beta)|\sin(t)|$
+\item $y(t) = \alpha \cos(t+\beta)|\sin(t)|$
+\end{description}
+\item[classe 2:] 
+\begin{description}
+\item
+\item $x(t) = \alpha \sin(\frac{1}{2}t+\beta)\sin(\frac{3}{2}t)$
+\item $y(t) = \alpha \cos(t+\beta)\sin(2t)$
+\end{description}
+\item[classe 3:] 
+\begin{description}
+\item
+\item $x(t) = \alpha \sin(t+\beta)\sin(2t)$
+\item $y(t) = \alpha \cos(t+\beta)\sin(2t)$
+\end{description}
+\end{description}
+où $\alpha$ est fixe pour toutes les trajectoires, $\beta$ est choisit aléatoirement entre $[0, 2\pi)$ pour chaque trajectoire. Nous allons échantillonner les trajectoires avec un $\Delta t = \frac{2}{30}\pi$ et $t_0$ choisit aléatoirement entre $[0, 2\pi)$ pour chaque trajectoire.
+
+\paragraph{Démarche}
+generation des traj, compilation, test
+\paragraph{Mesure de la performance}
 
 \section{Expérimentations}
 
 \begin{center}
-COMING SOON... 
+SOON
 \end{center}
 
 

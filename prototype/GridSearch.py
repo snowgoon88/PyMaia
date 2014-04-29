@@ -28,13 +28,14 @@ def main():
 	for i in range(len(tmp)):
 		data[:, i] = tmp[i]
 
-	rranges = (slice(0.30, 0.35, 0.01), slice(1.20, 1.25, 0.01))
+	rranges = (slice(0.30, 0.31, 0.01), slice(1.20, 1.21, 0.01))
 	params = (1, 1000, 1, 42, 1e-8, data , 100, 1900, 2000)
 	
 	resbrute = optimize.brute(minimizeMackeyGlass, rranges, args=params, full_output=True, finish=None)
 
 	print "min(RMSE) =", resbrute[1]
 	print "with:", resbrute[0]
+	print "grid:", resbrute[2]
 
 if __name__ == "__main__":
 	main()
