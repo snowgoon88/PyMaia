@@ -28,7 +28,7 @@ def main():
 	for i in range(len(tmp)):
 		data[:, i] = tmp[i]
 
-	rranges = (slice(0.30, 0.35, 0.01), slice(1, 1.5, 0.05))
+	rranges = (slice(0.30, 0.35, 0.01), slice(1.20, 1.25, 0.01))
 	params = (1, 1000, 1, 42, 1e-8, data , 100, 1900, 2000)
 	
 	resbrute = optimize.brute(minimizeMackeyGlass, rranges, args=params, full_output=True, finish=None)
