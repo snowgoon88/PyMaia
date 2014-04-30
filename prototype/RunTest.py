@@ -1,6 +1,8 @@
 import ESN as esn
 from numpy import *
 from matplotlib.pyplot import *
+from mpl_toolkits.mplot3d import Axes3D
+
 import json, getopt, sys
 
 def main():
@@ -80,7 +82,7 @@ def process(json_file, json_data, data, display):
         elif test == 'rappelGeneration':
             Ytarget, Y = esn.rappelGeneration(json_data['esn']['K'], 
                                               json_data['esn']['N'], 
-                                              json_data['esn']['L'], 
+                                              json_data['esn']['L'],
                                               json_data['esn']['seed'], 
                                               json_data['esn']['leaking_rate'], 
                                               json_data['esn']['rho_factor'], 
@@ -114,7 +116,7 @@ def process(json_file, json_data, data, display):
                                             json_data['data']['init_len'], 
                                             json_data['data']['train_len'], 
                                             json_data['data']['test_len'])
-            display("%s: %s"%(test, json_file), Ytarget, Y)
+            display("%s: %s"%(test, json_file), Ytarget, Y, X=data[0][:, json_data['data']['init_len']+json_data['data']['train_len']:json_data['data']['init_len']+json_data['data']['train_len']+json_data['data']['test_len']])
         elif test == 'rappelClassification':
             Ytarget, Y = esn.rappelClassification(json_data['esn']['K'], 
                                                   json_data['esn']['N'], 
@@ -127,17 +129,29 @@ def process(json_file, json_data, data, display):
                                                   data[1], 
                                                   json_data['data']['init_len'], 
                                                   json_data['data']['train_len'])
-            display("%s: %s"%(test, json_file), Ytarget, Y)
+            display("%s: %s"%(test, json_file), Ytarget, Y, X=data[0][:, json_data['data']['init_len']+json_data['data']['train_len']:json_data['data']['init_len']+json_data['data']['train_len']+json_data['data']['test_len']])
 
 
-def displayTrajectory(windowsTitle, Ytarget, Y):
+def displayTrajectory(windowsTitle, Ytarget, Y, X=[]):
     print_Ytarget = []
     print_Y = []
 
     accuracy = []
     acc = 0
 
-    for i in range(len(Y.T)):
+    print_traj = {
+            'z':[],
+            'color':[],
+            'x1':[],
+            'x2':[]
+    }
+
+    tmpx1 = []
+    tmpx2 = []
+    z = 0
+    colors = ('g', 'r', 'y')
+    c = ''
+    for i in xrange(len(Y.T)):
         print_Ytarget.append(where(Ytarget[:, i]==0.7)[0][0])
         print_Y.append(where(Y[:, i]==max(Y[:, i]))[0][0])
 
@@ -145,27 +159,63 @@ def displayTrajectory(windowsTitle, Ytarget, Y):
             acc+=1
         accuracy.append(float(acc)/(i+1))
 
+        tmpx1.append(X[0, i])
+        tmpx2.append(X[1, i])
+
+        newcol = colors[print_Y[-1]]
+        if c == '':
+            c = newcol
+
+        if not c == newcol:
+            print_traj['x1'].append(tmpx1)
+            print_traj['x2'].append(tmpx2)
+            print_traj['z'].append(z)
+            print_traj['color'].append(c)
+            tmpx1 = tmpx1[-1:]
+            tmpx2 = tmpx2[-1:]
+            c = newcol
+
+        if i % 30 == 29:
+            print_traj['x1'].append(tmpx1);
+            print_traj['x2'].append(tmpx2);
+            print_traj['z'].append(z);
+            print_traj['color'].append(c)
+            tmpx1 = tmpx1[-1:]
+            tmpx2 = tmpx2[-1:]
+            z+=1
+
+    #Maybe add the last tmpx ? TOCHECK
+
     print "Accuracy:", accuracy[-1]
 
     fig = figure()
     fig.clear()
     fig.canvas.set_window_title(windowsTitle)
     subplot(211)
-    yticks(range(3), ["Class %s"%x for x in range(3)])
+    yticks( range(3), ["Class %s"%x for x in range(3)])
     plot(print_Ytarget, 'wo')
-    plot(print_Y, 'b+')
+    plot(print_Y, 'bx')
+    yinf, ysup = fig.get_axes()[0].get_ylim()
+    fig.get_axes()[0].set_ylim(yinf-0.5, ysup+0.5)
+
     subplot(212)
     plot(accuracy, 'r')
     legend(['Accuracy'])
-    yinf, ysup = fig.get_axes()[0].get_ylim()
-    fig.get_axes()[0].set_ylim(yinf-0.5, ysup+0.5)
+
+    fig = figure()
+    fig.canvas.set_window_title(windowsTitle)
+    ax = fig.gca(projection='3d')
+    for i in xrange(len(print_traj['color'])):
+        ax.plot(print_traj['x1'][i], print_traj['x2'][i], print_traj['z'][i], zdir='z', c=print_traj['color'][i])
+
+    
 
 def displayMackeyGlass(windowsTitle, Ytarget, Y):
     err = []
     rmse = []
     #avg = []
     #var = []
-    for i in range(len(Y.T)):
+    for i in xrange(len(Y.T)):
         err.append(Ytarget.T[i] - Y.T[i])
         rmse.append( np.sqrt(sum(np.power(err,2))/len(err)) )
         #avg.append(sum(np.absolute(err))/len(err))
@@ -198,7 +248,7 @@ def displaySequence(windowsTitle, Ytarget, Y):
     accuracy = []
     acc = 0
 
-    for i in range(len(Y.T)):
+    for i in xrange(len(Y.T)):
         print_Ytarget.append(where(Ytarget[:, i]==1)[0][0])
         print_Y.append(where(Y[:, i]==max(Y[:, i]))[0][0])
 
@@ -254,7 +304,7 @@ def displaySequence(windowsTitle, Ytarget, Y):
     subplot(211)
     yticks(range(26), [chr(65 + x) for x in range(26)])
     plot(print_Ytarget, 'wo')
-    plot(print_Y, 'b+')
+    plot(print_Y, 'bx')
     legend(['Target', 'Prediction'])
     subplot(212)
     plot(accuracy, 'r')

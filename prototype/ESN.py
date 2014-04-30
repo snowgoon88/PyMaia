@@ -46,7 +46,7 @@ def classification(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, ta
         Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.x))[:,0]
 
     #print 'Step 4/5: Wout computation'
-    network.train(target[:, initLen+1:trainLen+initLen+1], Xmem, regul_coef*eye(1+K+N))
+    network.train(target[:, initLen:trainLen+initLen], Xmem, regul_coef*eye(1+K+N))
 
     #print 'Step 5/5: Testing phase'
     Ymem = zeros((L, testLen))
@@ -54,7 +54,7 @@ def classification(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, ta
         u = data[:, initLen+trainLen+t]
         Ymem[:, t] = hstack(network.output(u))
 
-    return target[:, initLen+trainLen+1:initLen+trainLen+testLen+1], Ymem
+    return target[:, initLen+trainLen:initLen+trainLen+testLen], Ymem
 
 def rappelClassification(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, target, initLen, trainLen):
     #print 'Step 1/5: Reservoir generation'
@@ -75,7 +75,7 @@ def rappelClassification(K, N, L, seed, leaking_rate, rho_factor, regul_coef, da
         Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.x))[:,0]
 
     #print 'Step 4/5: Wout computation'
-    network.train(target[:, initLen+1:trainLen+initLen+1], Xmem, regul_coef*eye(1+K+N))
+    network.train(target[:, initLen:trainLen+initLen], Xmem, regul_coef*eye(1+K+N))
 
     network.x = xbak
     #print 'Step 5/5: Testing phase'

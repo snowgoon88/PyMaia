@@ -9,10 +9,10 @@ def class1(t, beta):
 	return alpha*np.sin(t+beta)*np.abs(np.sin(t)), alpha*np.cos(t+beta)*np.abs(np.sin(t))
 
 def class2(t, beta):
-	return alpha*np.sin(t/2+beta)*np.sin(3*t/2), alpha*np.cos(t+beta)*np.sin(2*t)
+	return alpha*np.sin(t/2+beta)*np.sin((3/2)*t), alpha*np.cos(t+beta)*np.sin(2*t)
 
 def class3(t, beta):
-	return alpha*np.sin(t+beta)*np.sin(2*t), alpha*np.cos(t+beta)
+	return alpha*np.sin(t+beta)*np.sin(2*t), alpha*np.cos(t+beta)*np.sin(2*t)
 
 def generate():
     clazz = {
