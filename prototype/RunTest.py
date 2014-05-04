@@ -205,7 +205,7 @@ def displayTrajectory(windowsTitle, Ytarget, Y, X=[]):
     fig = figure()
     fig.canvas.set_window_title(windowsTitle)
     ax = fig.gca(projection='3d')
-    for i in xrange(len(print_traj['color'])):
+    for i in xrange(len(print_traj['z'])):
         ax.plot(print_traj['x1'][i], print_traj['x2'][i], print_traj['z'][i], zdir='z', c=print_traj['color'][i])
 
     
