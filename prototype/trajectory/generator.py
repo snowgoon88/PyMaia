@@ -2,17 +2,17 @@ import numpy as np
 import sys, getopt, random
 
 
-timestep = 2*np.pi / 30.0
+timestep = 2.0*np.pi / 30.0
 alpha = 0.7
 
 def class1(t, beta):
 	return alpha*np.sin(t+beta)*np.abs(np.sin(t)), alpha*np.cos(t+beta)*np.abs(np.sin(t))
 
 def class2(t, beta):
-	return alpha*np.sin(t/2.0+beta)*np.sin((3.0/2.0)*t), alpha*np.cos(t+beta)*np.sin(2*t)
+	return alpha*np.sin(t/2.0+beta)*np.sin(3.0*t/2.0), alpha*np.cos(t/2.0+beta)*np.sin(3.0*t/2.0)
 
 def class3(t, beta):
-	return alpha*np.sin(t+beta)*np.sin(2*t), alpha*np.cos(t+beta)*np.sin(2*t)
+	return alpha*np.sin(t+beta)*np.sin(2.0*t), alpha*np.cos(t+beta)*np.sin(2.0*t)
 
 def generate():
     clazz = {
