@@ -16,7 +16,7 @@
 		"target":"data/trajectory_class",
 		"init_len":30,
 		"train_len":900,
-		"test_len":3300
+		"test_len":1800
 	},
-	"test": ["classification"]
+	"test": ["classificationPrediction"]
 }
