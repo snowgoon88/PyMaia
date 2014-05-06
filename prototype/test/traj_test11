@@ -18,5 +18,5 @@
 		"train_len":900,
 		"test_len":1800
 	},
-	"test": ["classification", "classificationPrediction"]
+	"test": ["classification"]
 }
