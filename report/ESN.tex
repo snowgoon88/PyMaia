@@ -122,7 +122,7 @@ $accuracy(t)= \frac{predictions correctes}{t}$
 
 \subsection{Tâche de classification}
 
-Toutes les tâches explicitées ci-dessous ont pour but d'analyser la faculté d'un réservoir à apprendre à classer des séquences temporelles.
+Toutes les tâches explicitées ci-dessous ont pour but d'analyser la faculté d'un réservoir à classer des séquences temporelles avec un apprentissage supervisée.
 
 \subsubsection{Trajectoires}
 \paragraph{Formalisation}
@@ -147,7 +147,7 @@ Nous réutilisons ici les trajectoires décrites dans \cite{HuskenStagge}, c'est
 \item $y(t) = \alpha \cos(t+\beta)\sin(2t)$
 \end{description}
 \end{description}
-où $\alpha$ est fixe pour toutes les trajectoires, $\beta$ est choisit aléatoirement entre $[0, 2\pi)$ pour chaque trajectoire. Nous allons échantillonner les trajectoires avec un $\Delta t = \frac{2}{30}\pi$ et $t_0$ choisit aléatoirement entre $[0, 2\pi)$ pour chaque trajectoire.
+où $\alpha$ est fixe pour toutes les trajectoires, $\beta$ est choisit aléatoirement entre $[0, 2\pi)$ pour chaque trajectoire. Nous allons échantillonner les trajectoires avec un $\Delta t = \frac{2}{30}\pi$ et un $t_0$ choisit aléatoirement entre $[0, 2\pi)$ pour chaque trajectoire.
 
 \paragraph{Démarche}
 Le corpus d'apprentissage et de test est composé de 150 trajectoires (50 par classes) aléatoirement présenté à l'ESN. La réponse du réseau de neurone sera déterminé par l'encodage \"1-of-$N^{(c)}$\", c'est à dire qu'il y aura autant d'unité de sortie que de classe, et que la classe est déterminée par le neurone à la plus forte valeur de sortie.

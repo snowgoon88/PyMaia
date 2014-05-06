@@ -56,8 +56,6 @@ def displayTrajectory(windowsTitle, Ytarget, Y, X=[]):
             tmpx2 = tmpx2[-1:]
             z+=1
 
-    #Maybe add the last tmpx ? TOCHECK
-
     print "Accuracy:", accuracy[-1]
 
     fig = figure()
@@ -69,12 +67,12 @@ def displayTrajectory(windowsTitle, Ytarget, Y, X=[]):
     plot(print_Y, 'bx')
     yinf, ysup = fig.get_axes()[0].get_ylim()
     fig.get_axes()[0].set_ylim(yinf-0.5, ysup+0.5)
-
     subplot(212)
     plot(accuracy, 'r')
     legend(['Accuracy'])
 
     fig = figure()
+    fig.clear()
     fig.canvas.set_window_title(windowsTitle)
     ax = fig.gca(projection='3d')
     [ax.plot([],[],ls='-',c=c,label=l) for c,l in zip(colors,labels)]
@@ -83,6 +81,7 @@ def displayTrajectory(windowsTitle, Ytarget, Y, X=[]):
         ax.plot(print_traj['x1'][i], print_traj['x2'][i], print_traj['z'][i], zdir='z', c=print_traj['color'][i])
 
     fig = figure()
+    fig.clear()
     fig.canvas.set_window_title(windowsTitle)
     [plot(None,None,ls='-',c=c,label=l) for c,l in zip(colors,labels)]
     legend(labels)
@@ -93,14 +92,9 @@ def displayTrajectory(windowsTitle, Ytarget, Y, X=[]):
 def displayMackeyGlass(windowsTitle, Ytarget, Y):
     err = []
     rmse = []
-    #avg = []
-    #var = []
     for i in xrange(len(Y.T)):
         err.append(Ytarget.T[i] - Y.T[i])
         rmse.append( np.sqrt(sum(np.power(err,2))/len(err)) )
-        #avg.append(sum(np.absolute(err))/len(err))
-        #var.append(sum(np.power(np.absolute(err) - avg[i], 2))/len(err))
-        
     print "RMSE:", rmse[-1]
 
     fig = figure()
@@ -114,6 +108,7 @@ def displayMackeyGlass(windowsTitle, Ytarget, Y):
     plot(err, 'k')
     plot(rmse, 'r')
     legend(['Error', 'RMSE'])
+
 
 def displaySequence(windowsTitle, Ytarget, Y):
     print_Ytarget = []

@@ -59,7 +59,7 @@ def classification(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, ta
 def classificationPrediction(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, target, initLen, trainLen, testLen):
     #print 'Step 1/5: Reservoir generation'
     network = ESN()
-    network.generate(K, N, L+2, seed, leaking_rate, rho_factor)
+    network.generate(K, N, L+K, seed, leaking_rate, rho_factor)
 
     #print 'Step 2/5: Transient initialization'
     for t in range(initLen):
@@ -75,12 +75,12 @@ def classificationPrediction(K, N, L, seed, leaking_rate, rho_factor, regul_coef
     network.train(concatenate((data[:, initLen+1:trainLen+initLen+1], target[:, initLen:trainLen+initLen])), Xmem, regul_coef*eye(1+K+N))
 
     #print 'Step 5/5: Testing phase'
-    Ymem = zeros((L+2, testLen))
+    Ymem = zeros((L+K, testLen))
     for t in range(testLen):
         u = data[:, initLen+trainLen+t]
         Ymem[:, t] = hstack(network.output(u))
 
-    return target[:, initLen+trainLen:initLen+trainLen+testLen], Ymem[2:,:]
+    return target[:, initLen+trainLen:initLen+trainLen+testLen], Ymem[K:,:]
 
 def rappelClassification(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, target, initLen, trainLen):
     #print 'Step 1/5: Reservoir generation'
