@@ -7,7 +7,6 @@
 \usepackage{graphicx}
 \usepackage{verbatim}
 \usepackage{amsfonts}
-\usepackage{comment}
 
 
 \title{Aperçu d'une architecture de Reservoir Computing\\Les Echo State Networks}
@@ -129,23 +128,23 @@ Toutes les tâches explicitées ci-dessous ont pour but d'analyser la faculté d
 Nous réutilisons ici les trajectoires décrites dans \cite{HuskenStagge}, c'est à dire les trois équations paramétriques suivantes.
 \begin{description}
 \item[classe 1:]
-\begin{description}
+\begin{itemize}
 \item
 \item $x(t) = \alpha \sin(t+\beta)|\sin(t)|$
 \item $y(t) = \alpha \cos(t+\beta)|\sin(t)|$
-\end{description}
+\end{itemize}
 \item[classe 2:] 
-\begin{description}
+\begin{itemize}
 \item
 \item $x(t) = \alpha \sin(\frac{1}{2}t+\beta)\sin(\frac{3}{2}t)$
 \item $y(t) = \alpha \cos(t+\beta)\sin(2t)$
-\end{description}
+\end{itemize}
 \item[classe 3:] 
-\begin{description}
+\begin{itemize}
 \item
 \item $x(t) = \alpha \sin(t+\beta)\sin(2t)$
 \item $y(t) = \alpha \cos(t+\beta)\sin(2t)$
-\end{description}
+\end{itemize}
 \end{description}
 où $\alpha$ est fixe pour toutes les trajectoires, $\beta$ est choisit aléatoirement entre $[0, 2\pi)$ pour chaque trajectoire. Nous allons échantillonner les trajectoires avec un $\Delta t = \frac{2}{30}\pi$ et un $t_0$ choisit aléatoirement entre $[0, 2\pi)$ pour chaque trajectoire.
 

@@ -1,0 +1,101 @@
+\documentclass[12pt]{article}
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[OT1]{fontenc}
+
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{amsfonts}
+
+
+\title{Compte Rendu du 06/05}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\paragraph{Ordre du jour}
+Fixer les premières pistes de réflexion, ainsi que nos objectifs quand à l'étude des ESN.
+
+\section{Les tâches}
+\paragraph{MackeyGlass}
+Permets de tester l'aptitude de l'ESN à prédire/générer des fonctions chaotiques, et dans une moindre mesure de tester la mémoire du réseau.
+\paragraph{Séquences}
+Permets essentiellement de tester la faculté de mémorisation du réseau, mais aussi sa robustesse à l'aléatoire.
+\paragraph{Trajectoires}
+Permets de tester la performance du réseau à classifier un ensemble déterministe de trajectoires.
+
+\section{Les paramètres}
+Nous aimerions mieux appréhender l'impacte de certains paramètres sur les performances de l'ESN, en particulier :
+\begin{description}
+\item[$\alpha$] le taux de fuite
+\item[$\rho$] le rayon spectral
+\item[$N$] la taille du réservoir
+\item[$W_{in}$] la matrice d'entrée, en particulier son échelle
+\item[$W$] la matrice du réservoir, en particulier sa \textit{sparsity}
+\item[$\tau$] le temps de relaxation
+\end{description}
+
+\section{Pistes de réflexions \& Intuitions}
+
+\paragraph{Batch vs Online}
+Est il possible qu'un apprentissage en ligne avec N1 échantillons soit équivalent à un apprentissage en lots avec N2 échantillons ? Que ce passe t'il si N1 = N2 ? L'apprentissage en ligne va nécessiter le développement d'un nouvel algorithme afin d'apprendre les poids de $W_{out}$, dans un premier temps nous utiliserons un perceptron multi-couche pour faire cet apprentissage.
+
+\begin{itemize}
+\item Batch > Online
+\end{itemize}
+
+\paragraph{Nombre d'échantillons}
+Quel est l'influence du nombre d'échantillons dans le corpus d'apprentissage ? En quoi la taille du corpus influence t'elle la faculté de généralisation du réseau ? Y a t'il risque de sur-apprentissage ? Est il possible de déterminer une taille optimale de corpus (en fonction des paramètres du réservoir) pour éviter ce phénomène ?
+
+\begin{itemize}
+\item 
+\end{itemize}
+
+\paragraph{Capacité}
+Nous nous intéressons ici à la capacité du réservoir, c'est à dire nombre de classe que celui-ci peut différencier, mais aussi à la capacitité de mémorisation, c'est à dire le nombre d'échantillon mémorisé par le réservoir. Dans le cas d'un $y(t)$ dépendant de $u(t-\Delta t)$, quel peut être le $\Delta t$ maximum supporté par l'ESN ?
+
+\begin{itemize}
+\item grandement lié à $\alpha$
+\item certainement lié à $N$
+\end{itemize}
+
+
+\paragraph{Généralisation}
+L'ESN est il capable de généraliser ou a t'il une tendance naturelle au surapprentissage ? Dans le cas d'une classification, quel est le bassin d'attraction des différents classes ?
+
+\begin{itemize}
+\item certainement lié à $N$
+\end{itemize}
+
+
+\paragraph{Robustesse}
+Nous nous intéressons ici à la robustesse d'un ESN face au bruit. Comment se comporte il après un apprentissage avec des enchantillons bruités ? Comment l'ESN se comporte il si le corpus de test est bruité ? Et si les deux le sont ?
+
+\begin{itemize}
+\item Fortement lié avec la généralisation, si bonne généralisation, alors le bruit ne devrait pas trop déranger durant la phase d'apprentissage.
+\end{itemize}
+
+
+\paragraph{Précision}
+Quelle est la précision de l'ESN ? Quelle est la moyenne des erreurs ainsi que l'écart type ?
+
+\begin{itemize}
+\item
+\end{itemize}
+
+\paragraph{Rappel}
+L'ESN à t'il correctement appris le corpus d'apprentissage ?
+
+\begin{itemize}
+\item De part la régression linéaire, les résultats en rappel devrait toujours être relativement bon.
+\end{itemize}
+
+
+\section{Méthodologie}
+
+SOON =D
+
+\end{document}
