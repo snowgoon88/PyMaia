@@ -23,7 +23,7 @@ Fixer les premières pistes de réflexion, ainsi que nos objectifs quand à l'é
 \paragraph{MackeyGlass}
 Permets de tester l'aptitude de l'ESN à prédire/générer des fonctions chaotiques, et dans une moindre mesure de tester la mémoire du réseau.
 \paragraph{Séquences}
-Permets essentiellement de tester la faculté de mémorisation du réseau, mais aussi sa robustesse à l'aléatoire.
+Permets essentiellement de tester la faculté de mémorisation du réseau, mais aussi son comportement face à l'aléatoire.
 \paragraph{Trajectoires}
 Permets de tester la performance du réseau à classifier un ensemble déterministe de trajectoires.
 
@@ -44,7 +44,7 @@ Nous aimerions mieux appréhender l'impacte de certains paramètres sur les perf
 Est il possible qu'un apprentissage en ligne avec N1 échantillons soit équivalent à un apprentissage en lots avec N2 échantillons ? Que ce passe t'il si N1 = N2 ? L'apprentissage en ligne va nécessiter le développement d'un nouvel algorithme afin d'apprendre les poids de $W_{out}$, dans un premier temps nous utiliserons un perceptron multi-couche pour faire cet apprentissage.
 
 \begin{itemize}
-\item Batch > Online
+\item Batch devrait être plus performant que Online
 \end{itemize}
 
 \paragraph{Nombre d'échantillons}
@@ -75,7 +75,7 @@ L'ESN est il capable de généraliser ou a t'il une tendance naturelle au surapp
 Nous nous intéressons ici à la robustesse d'un ESN face au bruit. Comment se comporte il après un apprentissage avec des enchantillons bruités ? Comment l'ESN se comporte il si le corpus de test est bruité ? Et si les deux le sont ?
 
 \begin{itemize}
-\item Fortement lié avec la généralisation, si bonne généralisation, alors le bruit ne devrait pas trop déranger durant la phase d'apprentissage.
+\item Fortement lié avec la généralisation, si il y a une bonne généralisation alors le bruit ne devrait pas trop déranger durant la phase d'apprentissage.
 \end{itemize}
 
 
