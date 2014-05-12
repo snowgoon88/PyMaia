@@ -1,0 +1,6 @@
+Lundi
+	- System configuration
+		* Sublim text plugins (git + python)
+		* xrandr on login (in /etc/xdg/lxsession/LXDE)
+		* doc sur .profile, .bash_profile, .bashrc et compagnie
+		* tentative automatisation mot de passe sur ssh-add avec expect
