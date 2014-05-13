@@ -9,13 +9,13 @@
 		"Win": {
 			"type": "uniform",
 			"seed": 42,
-			"mini": -0.5,
-			"maxi": 0.5
+			"min": -0.5,
+			"max": 0.5
 		},
 		"W": {
 			"type": "uniform",
-			"mini": -0.5,
-			"maxi": 0.5
+			"min": -0.5,
+			"max": 0.5
 		},
 		"regul_coef":0.1
 	},

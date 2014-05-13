@@ -4,3 +4,10 @@ Lundi
 		* xrandr on login (in /etc/xdg/lxsession/LXDE)
 		* doc sur .profile, .bash_profile, .bashrc et compagnie
 		* tentative automatisation mot de passe sur ssh-add avec expect
+	- CR6-Mai.tex
+
+Mardi
+	- JSON: now handle
+	  	* W & Win distribution (uniform, gaussian, sparse)
+		* display
+	- Sysadmin -> Sound OK =D
