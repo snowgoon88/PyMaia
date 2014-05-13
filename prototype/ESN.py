@@ -8,10 +8,10 @@ class ESN:
         self.a = leaking_rate
         ## Reservoir generation
         random.seed(int(seed))
-        ### With an uniform distribution on [0;1)
+        ### With an uniform distribution on [-0.5;0.5)
         self.Win = random.rand(N, 1+K)-0.5
         self.W = random.rand(N, N)-0.5
-        ### With a gaussian distribution on [-1;1]
+        ### With a gaussian distribution on [-0.5;0.5]
         #self.Win = random.randn(N, 1+K)
         #self.W = random.randn(N,N)
         ## Spectral radius tuning
@@ -56,32 +56,6 @@ def classification(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, ta
 
     return target[:, initLen+trainLen:initLen+trainLen+testLen], Ymem
 
-def classificationPrediction(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, target, initLen, trainLen, testLen):
-    #print 'Step 1/5: Reservoir generation'
-    network = ESN()
-    network.generate(K, N, L+K, seed, leaking_rate, rho_factor)
-
-    #print 'Step 2/5: Transient initialization'
-    for t in range(initLen):
-        network.input(data[:, t])
-
-    #print 'Step 3/5: Learning phase'
-    Xmem = zeros((1+K+N, trainLen))
-    for t in range(initLen, int(trainLen+initLen)):
-        network.input(data[:, t])
-        Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.x))[:,0]
-
-    #print 'Step 4/5: Wout computation'
-    network.train(concatenate((data[:, initLen+1:trainLen+initLen+1], target[:, initLen:trainLen+initLen])), Xmem, regul_coef*eye(1+K+N))
-
-    #print 'Step 5/5: Testing phase'
-    Ymem = zeros((L+K, testLen))
-    for t in range(testLen):
-        u = data[:, initLen+trainLen+t]
-        Ymem[:, t] = hstack(network.output(u))
-
-    return target[:, initLen+trainLen:initLen+trainLen+testLen], Ymem[K:,:]
-
 def rappelClassification(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, target, initLen, trainLen):
     #print 'Step 1/5: Reservoir generation'
     network = ESN()
@@ -112,6 +86,32 @@ def rappelClassification(K, N, L, seed, leaking_rate, rho_factor, regul_coef, da
 
     return target[:, initLen:initLen+trainLen], Ymem
 
+def classificationPrediction(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, target, initLen, trainLen, testLen):
+    #print 'Step 1/5: Reservoir generation'
+    network = ESN()
+    network.generate(K, N, L+K, seed, leaking_rate, rho_factor)
+
+    #print 'Step 2/5: Transient initialization'
+    for t in range(initLen):
+        network.input(data[:, t])
+
+    #print 'Step 3/5: Learning phase'
+    Xmem = zeros((1+K+N, trainLen))
+    for t in range(initLen, int(trainLen+initLen)):
+        network.input(data[:, t])
+        Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.x))[:,0]
+
+    #print 'Step 4/5: Wout computation'
+    network.train(concatenate((data[:, initLen+1:trainLen+initLen+1], target[:, initLen:trainLen+initLen])), Xmem, regul_coef*eye(1+K+N))
+
+    #print 'Step 5/5: Testing phase'
+    Ymem = zeros((L+K, testLen))
+    for t in range(testLen):
+        u = data[:, initLen+trainLen+t]
+        Ymem[:, t] = hstack(network.output(u))
+
+    return target[:, initLen+trainLen:initLen+trainLen+testLen], Ymem[K:,:]
+
 def generation(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen, testLen):
     #print 'Step 1/5: Reservoir generation'
     network = ESN()
@@ -136,33 +136,6 @@ def generation(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, initLe
     for t in range(testLen):
         Ymem[:, t] = hstack(network.output(u))
         u = Ymem[:, t]
-
-    return data[:, initLen+trainLen+1:initLen+trainLen+testLen+1], Ymem
-
-
-def prediction(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen, testLen):
-    #print 'Step 1/5: Reservoir generation'
-    network = ESN()
-    network.generate(K, N, L, seed, leaking_rate, rho_factor)
-
-    #print 'Step 2/5: Transient initialization'
-    for t in range(initLen):
-        network.input(data[:, t])
-
-    #print 'Step 3/5: Learning phase'
-    Xmem = zeros((1+K+N, trainLen))
-    for t in range(initLen, int(trainLen+initLen)):
-        network.input(data[:, t])
-        Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.x))[:,0]
-
-    #print 'Step 4/5: Wout computation'
-    network.train(data[:, initLen+1:trainLen+initLen+1], Xmem, regul_coef*eye(1+K+N))
-
-    #print 'Step 5/5: Testing phase'
-    Ymem = zeros((L, testLen))
-    for t in range(testLen):
-        u = data[:, initLen+trainLen+t]
-        Ymem[:, t] = hstack(network.output(u))
 
     return data[:, initLen+trainLen+1:initLen+trainLen+testLen+1], Ymem
 
@@ -199,6 +172,33 @@ def rappelGeneration(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, 
     return data[:, initLen+1:trainLen+initLen+1], Ymem   
 
 
+def prediction(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen, testLen):
+    #print 'Step 1/5: Reservoir generation'
+    network = ESN()
+    network.generate(K, N, L, seed, leaking_rate, rho_factor)
+
+    #print 'Step 2/5: Transient initialization'
+    for t in range(initLen):
+        network.input(data[:, t])
+
+    #print 'Step 3/5: Learning phase'
+    Xmem = zeros((1+K+N, trainLen))
+    for t in range(initLen, int(trainLen+initLen)):
+        network.input(data[:, t])
+        Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.x))[:,0]
+
+    #print 'Step 4/5: Wout computation'
+    network.train(data[:, initLen+1:trainLen+initLen+1], Xmem, regul_coef*eye(1+K+N))
+
+    #print 'Step 5/5: Testing phase'
+    Ymem = zeros((L, testLen))
+    for t in range(testLen):
+        u = data[:, initLen+trainLen+t]
+        Ymem[:, t] = hstack(network.output(u))
+
+    return data[:, initLen+trainLen+1:initLen+trainLen+testLen+1], Ymem
+
+
 def rappelPrediction(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen):
     #print 'Step 1/5: Reservoir generation'
     network = ESN()
@@ -227,5 +227,4 @@ def rappelPrediction(K, N, L, seed, leaking_rate, rho_factor, regul_coef, data, 
         u = data[:, initLen+t]
         Ymem[:, t] = hstack(network.output(u))
         
-
     return data[:, initLen+1:trainLen+initLen+1], Ymem   

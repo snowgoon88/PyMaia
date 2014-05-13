@@ -30,19 +30,19 @@ def main():
             data = zeros((1, len(tmp)))
             for i in range(len(tmp)):
                 data[:, i] = tmp[i]
-            process(json_file, json_data, data, displayMackeyGlass)
+            process(json_file, json_data, data)
             
         elif json_data['data']['type'] == 'Sequence' :
             tmp = loadtxt(json_data['data']['path'], dtype=string0)
             data = zeros((json_data['esn']['K'], len(tmp)))
             for i in range(len(tmp)):
                 data[:, i] = array(json_data['data']['encode'][tmp[i]])
-            process(json_file, json_data, data, displaySequence)
+            process(json_file, json_data, data)
 
         elif json_data['data']['type'] == 'Trajectory':
             tmpData = loadtxt(json_data['data']['path'])
             tmpTarget = loadtxt(json_data['data']['target'])
-            process(json_file, json_data, (tmpData.T, tmpTarget.T), displayTrajectory)
+            process(json_file, json_data, (tmpData.T, tmpTarget.T))
 
         else :
             print 'Unsupported data type: ',json_data['data']['type']
@@ -51,10 +51,10 @@ def main():
     show()
 
 
-def process(json_file, json_data, data, display):
-    for test in json_data["test"]:
-        print "*", test
-        if test == 'generation':
+def process(json_file, json_data, data):
+    for task in json_data["task"]:
+        print "*", task
+        if task == 'generation':
             Ytarget, Y = esn.generation(json_data['esn']['K'], 
                                         json_data['esn']['N'], 
                                         json_data['esn']['L'], 
@@ -66,8 +66,12 @@ def process(json_file, json_data, data, display):
                                         json_data['data']['init_len'], 
                                         json_data['data']['train_len'], 
                                         json_data['data']['test_len'])
-            display("%s: %s"%(test, json_file), Ytarget, Y)
-        elif test == 'prediction':
+            for display in json_data["task"][task]:
+              if display == "displayAcc":
+                displayAcc("%s: %s"%(task, json_file), Ytarget, Y)
+              if display == "displayRMSE":
+                displayRMSE("%s: %s"%(task, json_file), Ytarget, Y)
+        elif task == 'prediction':
             Ytarget, Y = esn.prediction(json_data['esn']['K'], 
                                         json_data['esn']['N'], 
                                         json_data['esn']['L'], 
@@ -79,8 +83,12 @@ def process(json_file, json_data, data, display):
                                         json_data['data']['init_len'], 
                                         json_data['data']['train_len'], 
                                         json_data['data']['test_len'])
-            display("%s: %s"%(test, json_file), Ytarget, Y)
-        elif test == 'rappelGeneration':
+            for display in json_data["task"][task]:
+              if display == "displayAcc":
+                displayAcc("%s: %s"%(task, json_file), Ytarget, Y)
+              if display == "displayRMSE":
+                displayRMSE("%s: %s"%(task, json_file), Ytarget, Y)
+        elif task == 'rappelGeneration':
             Ytarget, Y = esn.rappelGeneration(json_data['esn']['K'], 
                                               json_data['esn']['N'], 
                                               json_data['esn']['L'],
@@ -91,8 +99,12 @@ def process(json_file, json_data, data, display):
                                               data, 
                                               json_data['data']['init_len'], 
                                               json_data['data']['train_len'])
-            display("%s: %s"%(test, json_file), Ytarget, Y)
-        elif test == 'rappelPrediction':
+            for display in json_data["task"][task]:
+              if display == "displayAcc":
+                displayAcc("%s: %s"%(task, json_file), Ytarget, Y)
+              if display == "displayRMSE":
+                displayRMSE("%s: %s"%(task, json_file), Ytarget, Y)
+        elif task == 'rappelPrediction':
             Ytarget, Y = esn.rappelPrediction(json_data['esn']['K'], 
                                               json_data['esn']['N'], 
                                               json_data['esn']['L'], 
@@ -103,8 +115,12 @@ def process(json_file, json_data, data, display):
                                               data, 
                                               json_data['data']['init_len'], 
                                               json_data['data']['train_len'])
-            display("%s: %s"%(test, json_file), Ytarget, Y)
-        elif test == 'classification':
+            for display in json_data["task"][task]:
+              if display == "displayAcc":
+                displayAcc("%s: %s"%(task, json_file), Ytarget, Y)
+              if display == "displayRMSE":
+                displayRMSE("%s: %s"%(task, json_file), Ytarget, Y)
+        elif task == 'classification':
             Ytarget, Y = esn.classification(json_data['esn']['K'], 
                                             json_data['esn']['N'], 
                                             json_data['esn']['L'], 
@@ -117,9 +133,16 @@ def process(json_file, json_data, data, display):
                                             json_data['data']['init_len'], 
                                             json_data['data']['train_len'], 
                                             json_data['data']['test_len'])
-            display("%s: %s"%(test, json_file), Ytarget, Y, X=data[0][:, json_data['data']['init_len']+json_data['data']['train_len']:json_data['data']['init_len']+json_data['data']['train_len']+json_data['data']['test_len']])
-
-        elif test == 'classificationPrediction':
+            for display in json_data["task"][task]:
+              if display == "displayAcc":
+                displayAcc("%s: %s"%(task, json_file), Ytarget, Y)
+              if display == "displayRMSE":
+                displayRMSE("%s: %s"%(task, json_file), Ytarget, Y)
+              if display == "displayTraj2D":
+                displayTraj2D("%s: %s"%(task, json_file), Ytarget, Y, X=data[0][:, json_data['data']['init_len']+json_data['data']['train_len']:json_data['data']['init_len']+json_data['data']['train_len']+json_data['data']['test_len']])
+              if display == "displayTraj3D":
+                displayTraj3D("%s: %s"%(task, json_file), Ytarget, Y, X=data[0][:, json_data['data']['init_len']+json_data['data']['train_len']:json_data['data']['init_len']+json_data['data']['train_len']+json_data['data']['test_len']])
+        elif task == 'classificationPrediction':
             Ytarget, Y = esn.classificationPrediction(json_data['esn']['K'], 
                                                       json_data['esn']['N'], 
                                                       json_data['esn']['L'], 
@@ -132,9 +155,17 @@ def process(json_file, json_data, data, display):
                                                       json_data['data']['init_len'], 
                                                       json_data['data']['train_len'], 
                                                       json_data['data']['test_len'])
-            display("%s: %s"%(test, json_file), Ytarget, Y, X=data[0][:, json_data['data']['init_len']+json_data['data']['train_len']:json_data['data']['init_len']+json_data['data']['train_len']+json_data['data']['test_len']])
+            for display in json_data["task"][task]:
+              if display == "displayAcc":
+                displayAcc("%s: %s"%(task, json_file), Ytarget, Y)
+              if display == "displayRMSE":
+                displayRMSE("%s: %s"%(task, json_file), Ytarget, Y)
+              if display == "displayTraj2D":
+                displayTraj2D("%s: %s"%(task, json_file), Ytarget, Y, X=data[0][:, json_data['data']['init_len']+json_data['data']['train_len']:json_data['data']['init_len']+json_data['data']['train_len']+json_data['data']['test_len']])
+              if display == "displayTraj3D":
+                displayTraj3D("%s: %s"%(task, json_file), Ytarget, Y, X=data[0][:, json_data['data']['init_len']+json_data['data']['train_len']:json_data['data']['init_len']+json_data['data']['train_len']+json_data['data']['test_len']])
 
-        elif test == 'rappelClassification':
+        elif task == 'rappelClassification':
             Ytarget, Y = esn.rappelClassification(json_data['esn']['K'], 
                                                   json_data['esn']['N'], 
                                                   json_data['esn']['L'], 
@@ -146,7 +177,15 @@ def process(json_file, json_data, data, display):
                                                   data[1], 
                                                   json_data['data']['init_len'], 
                                                   json_data['data']['train_len'])
-            display("%s: %s"%(test, json_file), Ytarget, Y, X=data[0][:, json_data['data']['init_len']+json_data['data']['train_len']:json_data['data']['init_len']+json_data['data']['train_len']+json_data['data']['test_len']])
+            for display in json_data["task"][task]:
+              if display == "displayAcc":
+                displayAcc("%s: %s"%(task, json_file), Ytarget, Y)
+              if display == "displayRMSE":
+                displayRMSE("%s: %s"%(task, json_file), Ytarget, Y)
+              if display == "displayTraj2D":
+                displayTraj2D("%s: %s"%(task, json_file), Ytarget, Y, X=data[0][:, json_data['data']['init_len']+json_data['data']['train_len']:json_data['data']['init_len']+json_data['data']['train_len']+json_data['data']['test_len']])
+              if display == "displayTraj3D":
+                displayTraj3D("%s: %s"%(task, json_file), Ytarget, Y, X=data[0][:, json_data['data']['init_len']+json_data['data']['train_len']:json_data['data']['init_len']+json_data['data']['train_len']+json_data['data']['test_len']])
 
 
 def usage():
