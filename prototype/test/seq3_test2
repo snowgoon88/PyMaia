@@ -6,7 +6,17 @@
 		"L":5,
 		"leaking_rate":1,
 		"rho_factor":1.25,
-		"seed":42,
+		"Win": {
+			"type": "uniform",
+			"seed": 42,
+			"mini": -0.5,
+			"maxi": 0.5
+		},
+		"W": {
+			"type": "uniform",
+			"mini": -0.5,
+			"maxi": 0.5
+		},
 		"regul_coef":0.1
 	},
 	"data":
