@@ -18,5 +18,8 @@
 		"train_len":900,
 		"test_len":1800
 	},
-	"test": ["rappelClassification"]
+	"task": 
+	{
+		"classification" : ["displayAcc", "displayTraj2D"]
+	}
 }

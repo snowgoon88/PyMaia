@@ -22,5 +22,7 @@
 		"train_len":2000,
 		"test_len":2000
 	},
-	"test": []
+	"task":{
+		"generation": ["displayAcc"]
+	}
 }

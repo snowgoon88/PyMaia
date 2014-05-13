@@ -20,6 +20,6 @@
 	},
 	"task": 
 	{
-		"classification" : ["displayAcc", "displayTraj2D", "displayTraj3D", "displayRMSE"]
+		"classification" : ["displayAcc", "displayTraj2D"]
 	}
 }
