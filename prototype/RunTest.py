@@ -84,17 +84,17 @@ def process(json_file, json_data, data):
         
         elif task == 'prediction':
             Ytarget, Y = prediction(json_data['esn']['K'], 
-                                        json_data['esn']['N'], 
-                                        json_data['esn']['L'], 
-                                        json_data['esn']['Win'], 
-                                        json_data['esn']['W'], 
-                                        json_data['esn']['leaking_rate'], 
-                                        json_data['esn']['rho_factor'], 
-                                        json_data['esn']['regul_coef'],
-                                        data, 
-                                        json_data['data']['init_len'], 
-                                        json_data['data']['train_len'], 
-                                        json_data['data']['test_len'])
+                                    json_data['esn']['N'], 
+                                    json_data['esn']['L'], 
+                                    json_data['esn']['Win'], 
+                                    json_data['esn']['W'], 
+                                    json_data['esn']['leaking_rate'], 
+                                    json_data['esn']['rho_factor'], 
+                                    json_data['esn']['regul_coef'],
+                                    data, 
+                                    json_data['data']['init_len'], 
+                                    json_data['data']['train_len'], 
+                                    json_data['data']['test_len'])
             for display in json_data["task"][task]:
               if display == "displayAcc":
                 displayAcc("%s: %s"%(task, json_file), Ytarget, Y, ticks)
@@ -105,16 +105,16 @@ def process(json_file, json_data, data):
         
         elif task == 'rappelGeneration':
             Ytarget, Y = rappelGeneration(json_data['esn']['K'], 
-                                              json_data['esn']['N'], 
-                                              json_data['esn']['L'],
-                                              json_data['esn']['Win'], 
-                                              json_data['esn']['W'], 
-                                              json_data['esn']['leaking_rate'], 
-                                              json_data['esn']['rho_factor'], 
-                                              json_data['esn']['regul_coef'],
-                                              data, 
-                                              json_data['data']['init_len'], 
-                                              json_data['data']['train_len'])
+                                          json_data['esn']['N'], 
+                                          json_data['esn']['L'],
+                                          json_data['esn']['Win'], 
+                                          json_data['esn']['W'], 
+                                          json_data['esn']['leaking_rate'], 
+                                          json_data['esn']['rho_factor'], 
+                                          json_data['esn']['regul_coef'],
+                                          data, 
+                                          json_data['data']['init_len'], 
+                                          json_data['data']['train_len'])
             for display in json_data["task"][task]:
               if display == "displayAcc":
                 displayAcc("%s: %s"%(task, json_file), Ytarget, Y, ticks)
@@ -125,16 +125,16 @@ def process(json_file, json_data, data):
         
         elif task == 'rappelPrediction':
             Ytarget, Y = rappelPrediction(json_data['esn']['K'], 
-                                              json_data['esn']['N'], 
-                                              json_data['esn']['L'], 
-                                              json_data['esn']['Win'], 
-                                              json_data['esn']['W'], 
-                                              json_data['esn']['leaking_rate'], 
-                                              json_data['esn']['rho_factor'], 
-                                              json_data['esn']['regul_coef'],
-                                              data, 
-                                              json_data['data']['init_len'], 
-                                              json_data['data']['train_len'])
+                                          json_data['esn']['N'], 
+                                          json_data['esn']['L'], 
+                                          json_data['esn']['Win'], 
+                                          json_data['esn']['W'], 
+                                          json_data['esn']['leaking_rate'], 
+                                          json_data['esn']['rho_factor'], 
+                                          json_data['esn']['regul_coef'],
+                                          data, 
+                                          json_data['data']['init_len'], 
+                                          json_data['data']['train_len'])
             for display in json_data["task"][task]:
               if display == "displayAcc":
                 displayAcc("%s: %s"%(task, json_file), Ytarget, Y, ticks)
@@ -145,18 +145,18 @@ def process(json_file, json_data, data):
   
         elif task == 'classification':
             Ytarget, Y = classification(json_data['esn']['K'], 
-                                            json_data['esn']['N'], 
-                                            json_data['esn']['L'], 
-                                            json_data['esn']['Win'], 
-                                            json_data['esn']['W'], 
-                                            json_data['esn']['leaking_rate'], 
-                                            json_data['esn']['rho_factor'], 
-                                            json_data['esn']['regul_coef'],
-                                            data[0],
-                                            data[1], 
-                                            json_data['data']['init_len'], 
-                                            json_data['data']['train_len'], 
-                                            json_data['data']['test_len'])
+                                        json_data['esn']['N'], 
+                                        json_data['esn']['L'], 
+                                        json_data['esn']['Win'], 
+                                        json_data['esn']['W'], 
+                                        json_data['esn']['leaking_rate'], 
+                                        json_data['esn']['rho_factor'], 
+                                        json_data['esn']['regul_coef'],
+                                        data[0],
+                                        data[1], 
+                                        json_data['data']['init_len'], 
+                                        json_data['data']['train_len'], 
+                                        json_data['data']['test_len'])
             for display in json_data["task"][task]:
               if display == "displayAcc":
                 displayAcc("%s: %s"%(task, json_file), Ytarget, Y, ticks)
@@ -171,18 +171,18 @@ def process(json_file, json_data, data):
  
         elif task == 'classificationPrediction':
             Ytarget, Y = classificationPrediction(json_data['esn']['K'], 
-                                                      json_data['esn']['N'], 
-                                                      json_data['esn']['L'], 
-                                                      json_data['esn']['Win'], 
-                                                      json_data['esn']['W'], 
-                                                      json_data['esn']['leaking_rate'], 
-                                                      json_data['esn']['rho_factor'], 
-                                                      json_data['esn']['regul_coef'],
-                                                      data[0],
-                                                      data[1], 
-                                                      json_data['data']['init_len'], 
-                                                      json_data['data']['train_len'], 
-                                                      json_data['data']['test_len'])
+                                                  json_data['esn']['N'], 
+                                                  json_data['esn']['L'], 
+                                                  json_data['esn']['Win'], 
+                                                  json_data['esn']['W'], 
+                                                  json_data['esn']['leaking_rate'], 
+                                                  json_data['esn']['rho_factor'], 
+                                                  json_data['esn']['regul_coef'],
+                                                  data[0],
+                                                  data[1], 
+                                                  json_data['data']['init_len'], 
+                                                  json_data['data']['train_len'], 
+                                                  json_data['data']['test_len'])
             for display in json_data["task"][task]:
               if display == "displayAcc":
                 displayAcc("%s: %s"%(task, json_file), Ytarget, Y, ticks)
@@ -197,17 +197,17 @@ def process(json_file, json_data, data):
 
         elif task == 'rappelClassification':
             Ytarget, Y = rappelClassification(json_data['esn']['K'], 
-                                                  json_data['esn']['N'], 
-                                                  json_data['esn']['L'], 
-                                                  json_data['esn']['Win'], 
-                                                  json_data['esn']['W'], 
-                                                  json_data['esn']['leaking_rate'], 
-                                                  json_data['esn']['rho_factor'], 
-                                                  json_data['esn']['regul_coef'],
-                                                  data[0],
-                                                  data[1], 
-                                                  json_data['data']['init_len'], 
-                                                  json_data['data']['train_len'])
+                                              json_data['esn']['N'], 
+                                              json_data['esn']['L'], 
+                                              json_data['esn']['Win'], 
+                                              json_data['esn']['W'], 
+                                              json_data['esn']['leaking_rate'], 
+                                              json_data['esn']['rho_factor'], 
+                                              json_data['esn']['regul_coef'],
+                                              data[0],
+                                              data[1], 
+                                              json_data['data']['init_len'], 
+                                              json_data['data']['train_len'])
             for display in json_data["task"][task]:
               if display == "displayAcc":
                 displayAcc("%s: %s"%(task, json_file), Ytarget, Y, ticks)

@@ -35,7 +35,7 @@
 		"test_len":2000
 	},
 	"task":{
-		"generation": ["displayAcc", "displayF"],
-		"rappelGeneration": ["displayAcc", "displayF"]
+		"generation": ["displayAcc"],
+		"rappelGeneration": ["displayAcc"]
 	}
 }
