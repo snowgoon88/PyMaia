@@ -127,7 +127,7 @@ def displayRMSE(windowsTitle, Ytarget, Y):
     legend(['Error', 'RMSE'])
 
 
-def displayAcc(windowsTitle, Ytarget, Y):
+def displayAcc(windowsTitle, Ytarget, Y, ticks):
     print_Ytarget = []
     print_Y = []
     accuracy = []
@@ -145,7 +145,7 @@ def displayAcc(windowsTitle, Ytarget, Y):
     fig.clear()
     fig.canvas.set_window_title(windowsTitle)
     subplot(211)
-    yticks(range(26), [chr(65 + x) for x in range(26)])
+    yticks(range(26), ticks)
     plot(print_Ytarget, 'wo')
     plot(print_Y, 'bx')
     legend(['Target', 'Prediction'])
@@ -155,3 +155,84 @@ def displayAcc(windowsTitle, Ytarget, Y):
     yinf, ysup = fig.get_axes()[0].get_ylim()
     fig.get_axes()[0].set_ylim(yinf-0.5, ysup+0.5)
 
+
+def displayF(windowsTitle, Ytarget, Y, ticks):
+    print_Ytarget = []
+    print_Y = []
+
+    bonneAttribution = {}
+    attribution = {}
+    appartenant = {}
+
+    precision = []
+    rappel = []
+    fmesure = []
+
+    for i in xrange(len(Y)):
+        attribution[i]=0;
+        bonneAttribution[i]=0;
+        appartenant[i]=0;
+
+    for i in xrange(len(Y.T)):
+        print_Ytarget.append(where(Ytarget[:, i]==max(Ytarget[:, i]))[0][0])
+        print_Y.append(where(Y[:, i]==max(Y[:, i]))[0][0])
+
+        # if not attribution.has_key(print_Y[i]):
+        #     attribution[print_Y[i]] = 0
+        # if not bonneAttribution.has_key(print_Ytarget[i]):
+        #     bonneAttribution[print_Ytarget[i]] = 0
+        # if not appartenant.has_key(print_Ytarget[i]):
+        #     appartenant[print_Ytarget[i]] = 0
+
+        appartenant[print_Ytarget[i]] +=1
+        attribution[print_Y[i]] += 1
+
+        if print_Y[i] == print_Ytarget[i]:
+            bonneAttribution[print_Y[i]]+=1
+
+        tmpP = 0.0
+        tmpR = 0.0
+                
+        for j in range(len(Y)):
+            if attribution[j] != 0 :
+                tmpP += float(bonneAttribution[j]) / ( len(Y) * attribution[j] )
+            if appartenant[j] != 0 :
+                tmpR += float(bonneAttribution[j]) / ( len(Y) * appartenant[j] )
+                
+        precision.append(tmpP)
+        rappel.append(tmpR)
+        if tmpP == 0 and tmpR == 0 :
+            fmesure.append(0)
+        else :
+            fmesure.append( 2*tmpP*tmpR / (tmpP + tmpR) )
+
+    for i in range(len(Y)):
+        tmpP = float(bonneAttribution[i]) / attribution[i]
+        tmpR = float(bonneAttribution[i]) / appartenant[i]
+        print '- class', ticks[i]
+        print '\tPrecision:', tmpP
+        print '\tRecall:', tmpR
+        if tmpP == 0 and tmpR == 0 :
+            print '\tF-Measure:', 0
+        else :
+            print '\tF-Measure:', 2 * tmpP * tmpR / (tmpP + tmpR)
+
+    print 'Precision:', precision[-1]
+    print 'Recall:', rappel[-1]
+    print 'F-Measure:', fmesure[-1]
+
+    fig = figure()
+    fig.clear()
+    fig.canvas.set_window_title(windowsTitle)
+    subplot(211)
+    yticks(range(26), ticks)
+    plot(print_Ytarget, 'wo')
+    plot(print_Y, 'bx')
+    legend(['Target', 'Prediction'])
+    subplot(212)
+    plot(precision, 'g--')
+    plot(rappel, 'b--')
+    plot(fmesure, 'r')
+    legend(['Precision', 'Recall', 'F-Measure'])
+    yinf, ysup = fig.get_axes()[0].get_ylim()
+    fig.get_axes()[0].set_ylim(yinf-0.5, ysup+0.5)

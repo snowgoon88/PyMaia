@@ -30,6 +30,6 @@
 	},
 	"task": 
 	{
-		"classification" : ["displayAcc", "displayTraj2D"]
+		"classification" : ["displayAcc", "displayF", "displayTraj2D"]
 	}
 }
