@@ -16,23 +16,23 @@
 \maketitle
 
 \paragraph{Ordre du jour}
-Fixer les premières pistes de réflexion, ainsi que nos objectifs quand à l'étude des ESN.
+Fixer les premières pistes de réflexion, ainsi que nos objectifs quant à l'étude des ESN.
 
 \section{Les tâches}
 \paragraph{MackeyGlass}
-Permets de tester l'aptitude de l'ESN à prédire/générer des fonctions chaotiques, et dans une moindre mesure de tester la mémoire du réseau.
+Permet de tester l'aptitude de l'ESN à prédire/générer des fonctions chaotiques, et dans une moindre mesure de tester la mémoire du réseau.
 \paragraph{Séquences}
-Permets essentiellement de tester la faculté de mémorisation du réseau, mais aussi son comportement face à l'aléatoire.
+Permet essentiellement de tester la faculté de mémorisation du réseau, mais aussi son comportement face à l'aléatoire.
 \paragraph{Trajectoires}
-Permets de tester la performance du réseau à classifier un ensemble fini.
+Permet de tester la performance du réseau à classifier un ensemble fini de trajectoires déterministes.
 
 \section{Les paramètres}
-Nous aimerions mieux appréhender l'impacte de certains paramètres sur les performances de l'ESN, en particulier :
+Nous aimerions mieux appréhender l'impact de certains paramètres sur les performances de l'ESN, en particulier :
 \begin{description}
 \item[$\alpha$] le taux de fuite
-\item[$\rho$] le rayon spectral
+\item[$\rho$] le rayon spectral de $W$
 \item[$N$] la taille du réservoir
-\item[$W_{in}$] la matrice d'entrée, en particulier son échelle
+\item[$W_{in}$] la matrice d'entrée
 \item[$W$] la matrice du réservoir, en particulier sa \textit{sparsity}
 \item[$\tau$] le temps de relaxation
 \end{description}
@@ -40,7 +40,7 @@ Nous aimerions mieux appréhender l'impacte de certains paramètres sur les perf
 \section{Pistes de réflexions \& Intuitions}
 
 \paragraph{Batch vs Online}
-Est il possible qu'un apprentissage en ligne avec N1 échantillons soit équivalent à un apprentissage en lots avec N2 échantillons ? Que ce passe t'il si N1 = N2 ? L'apprentissage en ligne va nécessiter le développement d'un nouvel algorithme afin d'apprendre les poids de $W_{out}$, dans un premier temps nous utiliserons un perceptron multi-couche pour faire cet apprentissage.
+Est il possible qu'un apprentissage en ligne avec N1 échantillons soit équivalent à un apprentissage en lots avec N2 échantillons ? Que ce passe t'il si N1 = N2 ? L'apprentissage en ligne va nécessiter soit le développement d'un nouvel algorithme afin d'apprendre les poids de $W_{out}$, dans un premier temps nous utiliserons un perceptron pour faire cet apprentissage, soit l'utilisation de la méthode d'apprentissage en ligne proposé par \cite{Steil05}.
 
 \begin{itemize}
 \item Batch devrait être plus performant que Online
@@ -63,7 +63,7 @@ Nous nous intéressons ici à la capacité du réservoir, c'est à dire nombre d
 
 
 \paragraph{Généralisation}
-L'ESN est il capable de généraliser ou a t'il une tendance naturelle au surapprentissage ? Dans le cas d'une classification, quel est le bassin d'attraction des différents classes ?
+L'ESN est il capable de généraliser ou a t'il une tendance naturelle au sur-apprentissage ? Dans le cas d'une classification, quel est le bassin d'attraction des différents classes ?
 
 \begin{itemize}
 \item certainement lié à $N$
@@ -95,6 +95,8 @@ L'ESN à t'il correctement appris le corpus d'apprentissage ?
 
 \section{Méthodologie}
 
-SOON =D
+
+\bibliographystyle{apalike}
+\bibliography{reservoir}
 
 \end{document}
