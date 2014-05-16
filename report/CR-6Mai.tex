@@ -40,21 +40,21 @@ Nous aimerions mieux appréhender l'impact de certains paramètres sur les perfo
 \section{Pistes de réflexions \& Intuitions}
 
 \paragraph{Batch vs Online}
-Est il possible qu'un apprentissage en ligne avec N1 échantillons soit équivalent à un apprentissage en lots avec N2 échantillons ? Que ce passe t'il si N1 = N2 ? L'apprentissage en ligne va nécessiter soit le développement d'un nouvel algorithme afin d'apprendre les poids de $W_{out}$, dans un premier temps nous utiliserons un perceptron pour faire cet apprentissage, soit l'utilisation de la méthode d'apprentissage en ligne proposé par \cite{Steil05}.
+Est il possible qu'un apprentissage en ligne avec N1 échantillons soit équivalent à un apprentissage en lots avec N2 échantillons ? Que se passe t'il si N1 = N2 ? L'apprentissage en ligne va nécessiter soit le développement d'un nouvel algorithme afin d'apprendre les poids de $W_{out}$, par exemple en utilisant un perceptron pour faire cet apprentissage, soit l'utilisation de la méthode d'apprentissage en ligne \textit{Backpropagation-Decorrelation} (BPDC) proposé par \cite{Steil05}.
 
 \begin{itemize}
-\item Batch devrait être plus performant que Online
+\item Batch devrait être plus performant que Online, car il minimise directement l'erreur sur l'ensemble du corpus d'apprentissage, évitant ainsi les possibilités de tomber dans un minimum local comme dans un apprentissage avec une rétropropagation de l'erreur classique.
 \end{itemize}
 
 \paragraph{Nombre d'échantillons}
-Quel est l'influence du nombre d'échantillons dans le corpus d'apprentissage ? En quoi la taille du corpus influence t'elle la faculté de généralisation du réseau ? Y a t'il risque de sur-apprentissage ? Est il possible de déterminer une taille optimale de corpus (en fonction des paramètres du réservoir) pour éviter ce phénomène ?
+Quel est l'influence du nombre d'échantillons dans le corpus d'apprentissage ? En quoi la taille du corpus influence t'elle la faculté de généralisation du réseau ? Y a t'il risque de sur-apprentissage ? Est-il possible de déterminer une taille optimale de corpus (en fonction des paramètres du réservoir) pour éviter ce phénomène ?
 
 \begin{itemize}
 \item 
 \end{itemize}
 
-\paragraph{Capacité}
-Nous nous intéressons ici à la capacité du réservoir, c'est à dire nombre de classe que celui-ci peut différencier, mais aussi à la capacitité de mémorisation, c'est à dire le nombre d'échantillon mémorisé par le réservoir. Dans le cas d'un $y(t)$ dépendant de $u(t-\Delta t)$, quel peut être le $\Delta t$ maximum supporté par l'ESN ?
+\paragraph{Capacité \& Mémoire}
+Nous nous intéressons ici à la capacité du réservoir, c'est à dire nombre de classe que celui-ci peut différencier, mais aussi à sa mémoire, c'est à dire le nombre d'entrées artificiellement mémorisées par le réservoir grâce aux connexions récurrentes. Dans le cas d'un $y(t)$ dépendant de $u(t-\Delta t)$, quel peut être le $\Delta t$ maximum supporté par l'ESN ?
 
 \begin{itemize}
 \item grandement lié à $\alpha$ et $\rho$
@@ -63,7 +63,7 @@ Nous nous intéressons ici à la capacité du réservoir, c'est à dire nombre d
 
 
 \paragraph{Généralisation}
-L'ESN est il capable de généraliser ou a t'il une tendance naturelle au sur-apprentissage ? Dans le cas d'une classification, quel est le bassin d'attraction des différents classes ?
+L'ESN est-il capable de généraliser ou a-t-il une tendance naturelle au sur-apprentissage ? Dans le cas d'une classification, quel est le bassin d'attraction des différentes classes ?
 
 \begin{itemize}
 \item certainement lié à $N$
@@ -75,6 +75,7 @@ Nous nous intéressons ici à la robustesse d'un ESN face au bruit. Comment se c
 
 \begin{itemize}
 \item Fortement lié avec la généralisation, si il y a une bonne généralisation alors le bruit ne devrait pas trop déranger durant la phase d'apprentissage.
+\item Bruiter les échantillons du corpus d'apprentissage pourrait éventuellement aider à mieux généraliser.
 \end{itemize}
 
 
@@ -89,12 +90,13 @@ Quelle est la précision de l'ESN ? Quelle est la moyenne des erreurs ainsi que 
 L'ESN à t'il correctement appris le corpus d'apprentissage ?
 
 \begin{itemize}
-\item De part la régression linéaire, les résultats en rappel devrait toujours être relativement bon.
+\item De part la régression linéaire, les résultats en rappel devrait être relativement bon, sous la condition que le réservoir fournisse \"assez\" d'états internes décorrelés pour permettre de reproduire la dynamique du signal d'entrée.
 \end{itemize}
 
 
 \section{Méthodologie}
 
+\subsection{} 
 
 \bibliographystyle{apalike}
 \bibliography{reservoir}
