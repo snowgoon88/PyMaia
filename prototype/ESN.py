@@ -1,17 +1,17 @@
 from numpy import *
 import scipy.linalg
 
-def uniform(shape, param):
+def uniformDistribution(shape, param):
     if "seed" in param:
         random.seed(param["seed"])
     return (param["max"]-param["min"])*random.rand(shape[0], shape[1]) + param["min"]
 
-def gaussian(shape, param):
+def gaussianDistribution(shape, param):
     if "seed" in param:
         random.seed(param["seed"])
     return param["sigma"] * random.rand(shape[0], shape[1]) + param["mu"]
 
-def sparse(shape, param):
+def sparseDistribution(shape, param):
     if "seed" in param:
         random.seed(param["seed"])
     M = zeros(shape)
@@ -26,9 +26,9 @@ def sparse(shape, param):
     return M
 
 distribution = {
-    "uniform": uniform,
-    "gaussian": gaussian,
-    "sparse": sparse
+    "uniform": uniformDistribution,
+    "gaussian": gaussianDistribution,
+    "sparse": sparseDistribution
 }
 
 class ESN:
@@ -52,11 +52,15 @@ class ESN:
         # Update X with input
         self.X = (1-self.a)*self.X + self.a*tanh( dot(self.Win, vstack((1, vstack(data)))) + dot(self.W, self.X) )
 
-    def train(self, Ytarget, Xmem, regMatrix):
+    def batchTraining(self, Ytarget, Xmem, regMatrix):
         # Compute Wout with a ridge regression
         self.Wout = dot( dot(Ytarget, Xmem.T), linalg.inv( dot(Xmem, Xmem.T) + regMatrix ))
 
-    def output(self, data):
+    def onlineTraining(self, data):
+        self.input(data)
+        # BPDC here
+
+    def compute(self, data):
         self.input(data)
         return dot(self.Wout, vstack((1,vstack(data),self.X)) )
 

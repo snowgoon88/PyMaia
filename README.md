@@ -1,6 +1,6 @@
-Internship - Loria, MAIA Team
+A Study of Reservoir Computing
 ====
 
-
-
-Théo Biasutto--Lervat
+By Théo Biasutto--Lervat
+Internship under the supervision of Alain Dutech
+INRIA - Loria, MAIA Team, 2014
