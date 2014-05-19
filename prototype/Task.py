@@ -1,10 +1,9 @@
 from numpy import *
-from ESN import ESN
+from Reservoir import ESN
 
 def classification(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data, target, initLen, trainLen, testLen):
     #print 'Step 1/5: Reservoir generation'
-    network = ESN()
-    network.generate(K, N, L, Win, W, leaking_rate, rho_factor)
+    network = ESN(K, N, L, Win, W, leaking_rate, rho_factor)
 
     #print 'Step 2/5: Transient initialization'
     for t in range(initLen):
@@ -29,8 +28,7 @@ def classification(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data, 
 
 def rappelClassification(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data, target, initLen, trainLen):
     #print 'Step 1/5: Reservoir generation'
-    network = ESN()
-    network.generate(K, N, L, Win, W, leaking_rate, rho_factor)
+    network = ESN(K, N, L, Win, W, leaking_rate, rho_factor)
 
     #print 'Step 2/5: Transient initialization'
     for t in range(initLen):
@@ -59,8 +57,7 @@ def rappelClassification(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, 
 
 def classificationPrediction(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data, target, initLen, trainLen, testLen):
     #print 'Step 1/5: Reservoir generation'
-    network = ESN()
-    network.generate(K, N, L+K, Win, W, leaking_rate, rho_factor)
+    network = ESN(K, N, L+K, Win, W, leaking_rate, rho_factor)
 
     #print 'Step 2/5: Transient initialization'
     for t in range(initLen):
@@ -85,8 +82,7 @@ def classificationPrediction(K, N, L, Win, W, leaking_rate, rho_factor, regul_co
 
 def generation(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen, testLen):
     #print 'Step 1/5: Reservoir generation'
-    network = ESN()
-    network.generate(K, N, L, Win, W, leaking_rate, rho_factor)
+    network = ESN(K, N, L, Win, W, leaking_rate, rho_factor)
 
     #print 'Step 2/5: Transient initialization'
     for t in range(initLen):
@@ -113,8 +109,7 @@ def generation(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data, init
 
 def rappelGeneration(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen):
     #print 'Step 1/5: Reservoir generation'
-    network = ESN()
-    network.generate(K, N, L, Win, W, leaking_rate, rho_factor)
+    network = ESN(K, N, L, Win, W, leaking_rate, rho_factor)
     
     #print 'Step 2/5: Transient initialization'
     for t in range(initLen):
@@ -145,8 +140,7 @@ def rappelGeneration(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data
 
 def prediction(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen, testLen):
     #print 'Step 1/5: Reservoir generation'
-    network = ESN()
-    network.generate(K, N, L, Win, W, leaking_rate, rho_factor)
+    network = ESN(K, N, L, Win, W, leaking_rate, rho_factor)
 
     #print 'Step 2/5: Transient initialization'
     for t in range(initLen):
@@ -172,8 +166,7 @@ def prediction(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data, init
 
 def rappelPrediction(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data, initLen, trainLen):
     #print 'Step 1/5: Reservoir generation'
-    network = ESN()
-    network.generate(K, N, L, Win, W, leaking_rate, rho_factor)
+    network = ESN(K, N, L, Win, W, leaking_rate, rho_factor)
     
     #print 'Step 2/5: Transient initialization'
     for t in range(initLen):
