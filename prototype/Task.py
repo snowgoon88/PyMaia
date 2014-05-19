@@ -1,5 +1,5 @@
 from numpy import *
-from ESN import *
+from ESN import ESN
 
 def classification(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data, target, initLen, trainLen, testLen):
     #print 'Step 1/5: Reservoir generation'

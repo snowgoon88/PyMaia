@@ -25,24 +25,25 @@ def main():
         json_data = json.load(fd)
         fd.close()
 
+        data = None
         if json_data['data']['type'] == 'MackeyGlass' :
             tmp = loadtxt(json_data['data']['path'])
             data = zeros((1, len(tmp)))
             for i in range(len(tmp)):
                 data[:, i] = tmp[i]
-            process(json_file, json_data, data)
             
         elif json_data['data']['type'] == 'Sequence' :
             tmp = loadtxt(json_data['data']['path'], dtype=string0)
             data = zeros((json_data['esn']['K'], len(tmp)))
             for i in range(len(tmp)):
                 data[:, i] = array(json_data['data']['encode'][tmp[i]])
-            process(json_file, json_data, data)
 
         elif json_data['data']['type'] == 'Trajectory':
             tmpData = loadtxt(json_data['data']['path'])
             tmpTarget = loadtxt(json_data['data']['target'])
-            process(json_file, json_data, (tmpData.T, tmpTarget.T))
+            data = (tmpData.T, tmpTarget.T)
+        
+        process(json_file, json_data, data)
 
         else :
             print 'Unsupported data type: ',json_data['data']['type']

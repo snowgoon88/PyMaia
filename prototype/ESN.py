@@ -52,9 +52,13 @@ class ESN:
         # Update X with input
         self.X = (1-self.a)*self.X + self.a*tanh( dot(self.Win, vstack((1, vstack(data)))) + dot(self.W, self.X) )
 
-    def batchTraining(self, Ytarget, Xmem, regMatrix):
-        # Compute Wout with a ridge regression
-        self.Wout = dot( dot(Ytarget, Xmem.T), linalg.inv( dot(Xmem, Xmem.T) + regMatrix ))
+    def batchTraining(self, Ytarget, Xmem, regMatrix=None):
+        if not regMatrix is None :
+            # Compute Wout with a ridge regression
+            self.Wout = dot( dot(Ytarget, Xmem.T), linalg.inv( dot(Xmem, Xmem.T) + regMatrix ))
+        else:
+            # Compute Wout with a Moore-Penrose pseudoinverse
+            self.Wout = dot(Ytarget, linalg.pinv(Xmem.T))
 
     def onlineTraining(self, data):
         self.input(data)
