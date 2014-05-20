@@ -1,0 +1,60 @@
+{
+	"title":"Test ESN",
+
+	"type": "ESN",
+
+	"reservoir":
+	{
+		"K":1,
+		"N":200,
+		"L":1,
+		"leaking_rate":0.3,
+		"rho_factor":1.25,
+		"Win": {
+			"type": "uniform",
+			"seed": 42,
+			"min": -0.5,
+			"max": 0.5
+		},
+		"W": {
+			"type": "uniform",
+			"min": -0.5,
+			"max": 0.5
+		}
+	},
+
+	"task": [
+		{
+			"type": "rappelGeneration",
+			"data": {
+				"type": "MackeyGlass",
+				"signal_path": "data/MackeyGlass_t17_data"
+			},
+			"param": {
+				"init_len":100,
+				"train_len":1900,
+				"regul_coef":1e-8
+			},
+			"display": ["displayRMSE"]
+		},
+		{
+			"type": "generation",
+			"data": {
+				"type": "MackeyGlass",
+				"signal_path": "data/MackeyGlass_t17_data"
+			},
+			"param": {
+				"init_len":100,
+				"train_len":1900,
+				"test_len":2000,
+				"regul_coef":1e-8
+			},
+			"display": [
+				{
+					"type":"RMSE",
+					"param" : {}
+				}
+			]
+		}
+	]
+}

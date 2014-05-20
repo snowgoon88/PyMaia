@@ -1,5 +1,5 @@
 {
-	"title":"MackeyGlass t17 test1",
+	"title":"",
 	"esn":
 	{
 		"K":1,
@@ -29,7 +29,6 @@
 		"test_len":2000
 	},
 	"task":{
-		"generation": ["displayRMSE"],
-		"rappelGeneration": ["displayRMSE"]
+		"generation": ["displayRMSE"]
 	}
 }

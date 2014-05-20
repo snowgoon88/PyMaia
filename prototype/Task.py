@@ -16,7 +16,7 @@ def classification(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data, 
         Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.X))[:,0]
 
     #print 'Step 4/5: Wout computation'
-    network.batchTraining(target[:, initLen:trainLen+initLen], Xmem, regul_coef*eye(1+K+N))
+    network.train(Ytarget=target[:, initLen:trainLen+initLen], Xmem=Xmem, regMatrix=regul_coef*eye(1+K+N))
 
     #print 'Step 5/5: Testing phase'
     Ymem = zeros((L, testLen))
@@ -44,7 +44,7 @@ def rappelClassification(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, 
         Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.X))[:,0]
 
     #print 'Step 4/5: Wout computation'
-    network.batchTraining(target[:, initLen:trainLen+initLen], Xmem, regul_coef*eye(1+K+N))
+    network.train(Ytarget=target[:, initLen:trainLen+initLen], Xmem=Xmem, regMatrix=regul_coef*eye(1+K+N))
 
     network.X = xbak
     #print 'Step 5/5: Testing phase'
@@ -70,7 +70,7 @@ def classificationPrediction(K, N, L, Win, W, leaking_rate, rho_factor, regul_co
         Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.X))[:,0]
 
     #print 'Step 4/5: Wout computation'
-    network.batchTraining(concatenate((data[:, initLen+1:trainLen+initLen+1], target[:, initLen:trainLen+initLen])), Xmem, regul_coef*eye(1+K+N))
+    network.train(Ytarget=concatenate((data[:, initLen+1:trainLen+initLen+1], target[:, initLen:trainLen+initLen])), Xmem=Xmem, regMatrix=regul_coef*eye(1+K+N))
 
     #print 'Step 5/5: Testing phase'
     Ymem = zeros((L+K, testLen))
@@ -95,7 +95,7 @@ def generation(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data, init
         Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.X))[:,0]
 
     #print 'Step 4/5: Wout computation'
-    network.batchTraining(data[:, initLen+1:trainLen+initLen+1], Xmem, regul_coef*eye(1+K+N))
+    network.train(Ytarget=data[:, initLen+1:trainLen+initLen+1], Xmem=Xmem, regMatrix=regul_coef*eye(1+K+N))
 
     #print 'Step 5/5: Testing phase'
     Ymem = zeros((L, testLen))
@@ -125,7 +125,7 @@ def rappelGeneration(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data
         Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.X))[:,0]
 
     #print 'Step 4/5: Wout computation'
-    network.batchTraining(data[:, initLen+1:trainLen+initLen+1], Xmem, regul_coef*eye(1+K+N))
+    network.train(Ytarget=data[:, initLen+1:trainLen+initLen+1], Xmem=Xmem, regMatrix=regul_coef*eye(1+K+N))
 
     network.X = xbak
     #print 'Step 5/5: Testing phase'
@@ -153,7 +153,7 @@ def prediction(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data, init
         Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.X))[:,0]
 
     #print 'Step 4/5: Wout computation'
-    network.batchTraining(data[:, initLen+1:trainLen+initLen+1], Xmem, regul_coef*eye(1+K+N))
+    network.train(Ytarget=data[:, initLen+1:trainLen+initLen+1], Xmem=Xmem, regMatrix=regul_coef*eye(1+K+N))
 
     #print 'Step 5/5: Testing phase'
     Ymem = zeros((L, testLen))
@@ -182,7 +182,7 @@ def rappelPrediction(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data
         Xmem[:, t-initLen] = vstack((1, vstack(data[:, t]), network.X))[:,0]
 
     #print 'Step 4/5: Wout computation'
-    network.batchTraining(data[:, initLen+1:trainLen+initLen+1], Xmem, regul_coef*eye(1+K+N))
+    network.train(Ytarget=data[:, initLen+1:trainLen+initLen+1], Xmem=Xmem, regMatrix=regul_coef*eye(1+K+N))
 
     network.X = xbak
     #print 'Step 5/5: Testing phase'

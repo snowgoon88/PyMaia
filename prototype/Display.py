@@ -145,7 +145,7 @@ def displayAcc(windowsTitle, Ytarget, Y, ticks):
     fig.clear()
     fig.canvas.set_window_title(windowsTitle)
     subplot(211)
-    yticks(range(26), ticks)
+    yticks(range(len(Ytarget.T)), ticks)
     plot(print_Ytarget, 'wo')
     plot(print_Y, 'bx')
     legend(['Target', 'Prediction'])
@@ -177,13 +177,6 @@ def displayF(windowsTitle, Ytarget, Y, ticks):
         print_Ytarget.append(where(Ytarget[:, i]==max(Ytarget[:, i]))[0][0])
         print_Y.append(where(Y[:, i]==max(Y[:, i]))[0][0])
 
-        # if not attribution.has_key(print_Y[i]):
-        #     attribution[print_Y[i]] = 0
-        # if not bonneAttribution.has_key(print_Ytarget[i]):
-        #     bonneAttribution[print_Ytarget[i]] = 0
-        # if not appartenant.has_key(print_Ytarget[i]):
-        #     appartenant[print_Ytarget[i]] = 0
-
         appartenant[print_Ytarget[i]] +=1
         attribution[print_Y[i]] += 1
 
@@ -195,7 +188,7 @@ def displayF(windowsTitle, Ytarget, Y, ticks):
                 
         for j in range(len(Y)):
             if attribution[j] != 0 :
-                tmpP += float(bonneAttribution[j]) / ( len(Y) * attribution[j] )
+                tmpP += float(bonneAttribution[j]) / ( len(Y) * attribution[j] ) #len(Y) ??? seriously ?
             if appartenant[j] != 0 :
                 tmpR += float(bonneAttribution[j]) / ( len(Y) * appartenant[j] )
                 
@@ -225,7 +218,7 @@ def displayF(windowsTitle, Ytarget, Y, ticks):
     fig.clear()
     fig.canvas.set_window_title(windowsTitle)
     subplot(211)
-    yticks(range(26), ticks)
+    yticks(range(len(Ytarget.T)), ticks)
     plot(print_Ytarget, 'wo')
     plot(print_Y, 'bx')
     legend(['Target', 'Prediction'])
