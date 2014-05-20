@@ -15,7 +15,8 @@ tasks = {
 }
 
 displays = {
-	'RMSE' : displayRMSE
+	'RMSE' : displayRMSE,
+	'Accuracy': displayAcc
 }
 
 def main():
@@ -46,7 +47,9 @@ def process(test_data):
 		Ytarget, Y = tasks[task['type']](network, data, **task['param'])
 
 		for display in task['display']:
-			displays[display['type']]("%s: %s of %s"%(test_data['title'], task['type'], task['data']['type']), Ytarget, Y, **display['param'])
+			displays[display['type']]("%s: %s of %s"%(test_data['title'], task['type'], task['data']['type']), 
+									  Ytarget, Y, 
+									  **display['param'])
 
 	show()
 

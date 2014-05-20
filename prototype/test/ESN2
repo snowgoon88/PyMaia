@@ -5,9 +5,9 @@
 
 	"reservoir":
 	{
-		"K":1,
+		"K":5,
 		"N":200,
-		"L":1,
+		"L":5,
 		"leaking_rate":0.3,
 		"rho_factor":1.25,
 		"Win": {
@@ -27,32 +27,55 @@
 		{
 			"type": "rappelGeneration",
 			"data": {
-				"type": "MackeyGlass",
-				"signal_path": "data/MackeyGlass_t17_data"
+				"type": "Sequence",
+				"signal_path": "data/seq4_data",
+				"encode": {
+			  		"A":[1,0,0,0,0],
+			  		"B":[0,1,0,0,0],
+			  		"C":[0,0,1,0,0],
+			  		"D":[0,0,0,1,0],
+			  		"E":[0,0,0,0,1]
+				}
 			},
 			"param": {
 				"init_len":100,
 				"train_len":1900,
-				"regul_coef":1e-8
+				"regul_coef":1e-3
 			},
-			"display": ["displayRMSE"]
+			"display": [
+				{
+					"type":"Accuracy",
+					"param" : {
+						"ticks": ["A", "B", "C", "D", "E"]
+					}
+				}
+			]
 		},
 		{
 			"type": "generation",
 			"data": {
-				"type": "MackeyGlass",
-				"signal_path": "data/MackeyGlass_t17_data"
+				"type": "Sequence",
+				"signal_path": "data/seq4_data",
+				"encode": {
+			  		"A":[1,0,0,0,0],
+			  		"B":[0,1,0,0,0],
+			  		"C":[0,0,1,0,0],
+			  		"D":[0,0,0,1,0],
+			  		"E":[0,0,0,0,1]
+				}
 			},
 			"param": {
 				"init_len":100,
 				"train_len":1900,
 				"test_len":2000,
-				"regul_coef":1e-8
+				"regul_coef":1e-3
 			},
 			"display": [
 				{
-					"type":"RMSE",
-					"param" : {}
+					"type":"Accuracy",
+					"param" : {
+						"ticks": ["A", "B", "C", "D", "E"]
+					}
 				}
 			]
 		}
