@@ -1,15 +1,15 @@
 {
-	"title":"N:200",
+	"title":"Trajectory",
 
 	"type": "ESN",
 
 	"reservoir":
 	{
 		"K":2,
-		"N":200,
+		"N":250,
 		"L":3,
-		"leaking_rate":0.3,
-		"rho_factor":1.25,
+		"leaking_rate":0.9,
+		"rho_factor":1.1,
 		"Win": {
 			"type": "uniform",
 			"seed": 42,
@@ -39,7 +39,20 @@
 				"test_len":1800,
 				"regul_coef":1e-5
 			},
-			"display": []
+			"display": [
+				{
+					"type": "F-Measure",
+					"param": {
+						"ticks": ["2-petals","3-petals","4-petals"]
+					}
+				},
+				{
+					"type": "Accuracy",
+					"param": {
+						"ticks": ["2-petals","3-petals","4-petals"]
+					}
+				}
+			]
 		},		
 		{
 			"type": "rappelClassification",
@@ -53,6 +66,23 @@
 			"param": {
 				"init_len":90,
 				"train_len":1800,
+				"regul_coef":1e-5
+			},
+			"display": []
+		},
+		{
+			"type": "classification",
+			"data": {
+				"type": "Trajectory",
+				"param": {
+					"data": "data/trajectory_data",
+					"target": "data/trajectory_class"
+				}
+			},
+			"param": {
+				"init_len":90,
+				"train_len":1800,
+				"test_len":1800,
 				"regul_coef":1e-5
 			},
 			"display": []
