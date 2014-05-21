@@ -132,4 +132,4 @@ def classificationPrediction(network, data, target, init_len, train_len, test_le
         u = data[:, init_len+train_len+t]
         Ymem[:, t] = hstack(network.compute(u))
 
-    return target[:, init_len+train_len:init_len+train_len+test_len], Ymem[K:,:]
+    return target[:, init_len+train_len:init_len+train_len+test_len], Ymem[network.K:,:]

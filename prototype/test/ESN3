@@ -26,36 +26,6 @@
 
 	"task": [
 		{
-			"type": "classification",
-			"data": {
-				"type": "Trajectory",
-				"param": {
-					"data": "data/trajectory_data",
-					"target": "data/trajectory_class"
-				}
-			},
-			"param": {
-				"init_len":90,
-				"train_len":1800,
-				"test_len":1800,
-				"regul_coef":1e-5
-			},
-			"display": [
-				{
-					"type": "F-Measure",
-					"param": {
-						"ticks": ["2-petals","3-petals","4-petals"]
-					}
-				},
-				{
-					"type": "Accuracy",
-					"param": {
-						"ticks": ["2-petals","3-petals","4-petals"]
-					}
-				}
-			]
-		},		
-		{
 			"type": "rappelClassification",
 			"data": {
 				"type": "Trajectory",
@@ -86,7 +56,50 @@
 				"test_len":1800,
 				"regul_coef":1e-5
 			},
-			"display": []
+			"display": [
+				{
+					"type": "F-Measure",
+					"param": {
+						"ticks": ["2-petals","3-petals","4-petals"]
+					}
+				},
+				{
+					"type": "Accuracy",
+					"param": {
+						"ticks": ["2-petals","3-petals","4-petals"]
+					}
+				}
+			]
+		},		
+		{
+			"type": "classificationPrediction",
+			"data": {
+				"type": "Trajectory",
+				"param": {
+					"data": "data/trajectory_data",
+					"target": "data/trajectory_class"
+				}
+			},
+			"param": {
+				"init_len":90,
+				"train_len":1800,
+				"test_len":1800,
+				"regul_coef":1e-5
+			},
+			"display": [
+				{
+					"type": "F-Measure",
+					"param": {
+						"ticks": ["2-petals","3-petals","4-petals"]
+					}
+				},
+				{
+					"type": "Accuracy",
+					"param": {
+						"ticks": ["2-petals","3-petals","4-petals"]
+					}
+				}
+			]
 		}
 	]
 }
