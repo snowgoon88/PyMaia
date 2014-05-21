@@ -53,7 +53,7 @@ def process(test_data):
 		print ''.join(['-' for _ in xrange(len(task['type'])+8)])
 
 		sys.stdout.write('Generating reservoir... ')
-		network = networks[test_data['type']](**test_data['reservoir'])
+		network = networks[test_data['reservoir']['type']](**test_data['reservoir']['param'])
 		print '\t[done]'
 
 		sys.stdout.write('Loading data... ')
