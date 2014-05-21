@@ -1,25 +1,26 @@
 {
-	"title":"Trajectory",
-
-	"type": "ESN",
+	"title":"ESN3",
 
 	"reservoir":
 	{
-		"K":2,
-		"N":250,
-		"L":3,
-		"leaking_rate":0.9,
-		"rho_factor":1.1,
-		"Win": {
-			"type": "uniform",
-			"seed": 42,
-			"min": -0.5,
-			"max": 0.5
-		},
-		"W": {
-			"type": "uniform",
-			"min": -0.5,
-			"max": 0.5
+		"type": "ESN",
+		"param": {
+			"K":2,
+			"N":250,
+			"L":3,
+			"leaking_rate":0.9,
+			"rho_factor":1.1,
+			"Win": {
+				"type": "uniform",
+				"seed": 42,
+				"min": -0.5,
+				"max": 0.5
+			},
+			"W": {
+				"type": "uniform",
+				"min": -0.5,
+				"max": 0.5
+			}
 		}
 	},
 

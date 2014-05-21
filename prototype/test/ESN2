@@ -1,25 +1,26 @@
 {
-	"title":"N:200",
-
-	"type": "ESN",
+	"title":"ESN2",
 
 	"reservoir":
 	{
-		"K":5,
-		"N":200,
-		"L":5,
-		"leaking_rate":0.3,
-		"rho_factor":1.25,
-		"Win": {
-			"type": "uniform",
-			"seed": 42,
-			"min": -0.5,
-			"max": 0.5
-		},
-		"W": {
-			"type": "uniform",
-			"min": -0.5,
-			"max": 0.5
+		"type": "ESN",
+		"param": {
+			"K":5,
+			"N":200,
+			"L":5,
+			"leaking_rate":0.3,
+			"rho_factor":1.25,
+			"Win": {
+				"type": "uniform",
+				"seed": 42,
+				"min": -0.5,
+				"max": 0.5
+			},
+			"W": {
+				"type": "uniform",
+				"min": -0.5,
+				"max": 0.5
+			}
 		}
 	},
 
