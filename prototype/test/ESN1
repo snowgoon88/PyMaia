@@ -1,5 +1,5 @@
 {
-	"title":"Test ESN",
+	"title":"N:1000",
 
 	"type": "ESN",
 
@@ -28,7 +28,9 @@
 			"type": "rappelGeneration",
 			"data": {
 				"type": "MackeyGlass",
-				"signal_path": "data/MackeyGlass_t17_data"
+				"param": {
+					"data": "data/MackeyGlass_t17_data"
+				}
 			},
 			"param": {
 				"init_len":100,
@@ -46,7 +48,9 @@
 			"type": "generation",
 			"data": {
 				"type": "MackeyGlass",
-				"signal_path": "data/MackeyGlass_t17_data"
+				"param": {
+					"data": "data/MackeyGlass_t17_data"
+				}
 			},
 			"param": {
 				"init_len":100,
