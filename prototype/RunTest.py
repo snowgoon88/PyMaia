@@ -71,25 +71,5 @@ def process(test_data):
 
 	show()
 
-def loadData(type, signal_path, target_path=None, encode=None):
-	if type == 'MackeyGlass' :
-		tmp = loadtxt(signal_path)
-		data = zeros((1, len(tmp)))
-		for i in range(len(tmp)):
-			data[:, i] = tmp[i]
-		data = (data,)
-
-	elif type == 'Sequence' :
-		tmp = loadtxt(signal_path, dtype=string0)
-		data = zeros((len(encode), len(tmp)))
-		for i in range(len(tmp)):
-			data[:, i] = array(encode[tmp[i]])
-		data = (data,)
-
-	elif type == 'Trajectory':
-		data = (loadtxt(signal_path), loadtxt(target_path))
-
-	return data
-
 if __name__ == "__main__":
 	main()
