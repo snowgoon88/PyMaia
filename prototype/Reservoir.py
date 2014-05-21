@@ -1,7 +1,7 @@
 from numpy import *
 import scipy.linalg
 
-                #### Distribution method ####
+
 def uniformDistribution(shape, param):
     if 'seed' in param:
         random.seed(param['seed'])
@@ -10,7 +10,7 @@ def uniformDistribution(shape, param):
 def gaussianDistribution(shape, param):
     if 'seed' in param:
         random.seed(param['seed'])
-    return param['sigma'] * random.rand(shape[0], shape[1]) + param['mu']
+    return param['sigma'] * random.randn(shape[0], shape[1]) + param['mu']
 
 def sparseDistribution(shape, param):
     if 'seed' in param:
@@ -32,28 +32,34 @@ distribution = {
     "sparse": sparseDistribution
 }
 
-                #### Reservoir class ####
+function = {
+    "tanh": tanh
+}
+
 class Reservoir:
-    def __init__(self, K, N, L, Win, W, leaking_rate, rho_factor):
+    def __init__(self, K, N, L, Win, W, f, leaking_rate, rho_factor):
         ## Reservoir generation
         # constant
         self.a = leaking_rate
         self.K = K
         self.N = N
         self.L = L
+        self.f = function[f]
         # internal state
         self.X = zeros((N, 1))
         # input weight
         self.Win = distribution[Win["type"]]((N, 1+K), Win)
         # internal weight
         self.W = distribution[W["type"]]((N, N), W)
+        # output weight
+        self.Wout = random.rand(L, 1+K+N)-0.5
         ## Spectral radius tuning
         rhoW = max( abs( linalg.eig(self.W)[0] ) )
         self.W *= rho_factor / rhoW
 
     def input(self, data):
         # Update X with input
-        self.X = (1-self.a)*self.X + self.a*tanh( dot(self.Win, vstack((1, vstack(data)))) + dot(self.W, self.X) )
+        self.X = (1-self.a)*self.X + self.a*self.f( dot(self.Win, vstack((1, vstack(data)))) + dot(self.W, self.X) )
 
     def compute(self, data):
         self.input(data)

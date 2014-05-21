@@ -1,5 +1,6 @@
 from Display import *
-from Task import *
+from TaskESN import *
+from TaskBPDC import *
 from Reservoir import *
 from DataLoader import *
 from matplotlib.pyplot import show
@@ -17,13 +18,18 @@ loaders = {
 }
 
 tasks = {
-	'generation': generation,
-	'rappelGeneration': rappelGeneration,
-	'prediction': prediction,
-	'rappelPrediction': rappelPrediction,
-	'classification': classification,
-	'rappelClassification': rappelClassification,
-	'classificationPrediction': classificationPrediction
+	'ESN': {
+		'generation': generationESN,
+		'rappelGeneration': rappelGenerationESN,
+		'prediction': predictionESN,
+		'rappelPrediction': rappelPredictionESN,
+		'classification': classificationESN,
+		'rappelClassification': rappelClassificationESN,
+		'classificationPrediction': classificationPredictionESN
+	},
+	'BPDC': {
+		'generation':generationBPDC
+	}
 }
 
 displays = {
@@ -43,14 +49,16 @@ def main():
 		process(test_data)
 
 def process(test_data):
-	print ''.join(['=' for _ in xrange(len(test_data['title'])+10)])
-	print '====', test_data['title'], "===="
-	print ''.join(['=' for _ in xrange(len(test_data['title'])+10)])
+	sys.stdout.write('\t\t')
+	print ''.join(['=' for _ in xrange(len(test_data['title'])+8)])
+	sys.stdout.write('\t\t')
+	print '===', test_data['title'], "==="
+	sys.stdout.write('\t\t')
+	print ''.join(['=' for _ in xrange(len(test_data['title'])+8)])
 
 	for task in test_data['task']:
-		print ''.join(['-' for _ in xrange(len(task['type'])+8)])
+		sys.stdout.write('\t')
 		print '---', task['type'], '---'
-		print ''.join(['-' for _ in xrange(len(task['type'])+8)])
 
 		sys.stdout.write('Generating reservoir... ')
 		network = networks[test_data['reservoir']['type']](**test_data['reservoir']['param'])
@@ -61,11 +69,11 @@ def process(test_data):
 		print '\t\t[done]'
 
 		sys.stdout.write('Running task... ')
-		Ytarget, Y = tasks[task['type']](network, *data, **task['param'])
+		Ytarget, Y = tasks[test_data['reservoir']['type']][task['type']](network, *data, **task['param'])
 		print '\t\t[done]'
 
 		for display in task['display']:
-			displays[display['type']]("%s: %s of %s"%(test_data['title'], task['type'], task['data']['type']), 
+			displays[display['type']]("[%s] %s: %s"%(test_data['title'], task['type'], task['data']['type']), 
 									  Ytarget, Y, 
 									  **display['param'])
 

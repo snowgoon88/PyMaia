@@ -10,6 +10,7 @@
 			"L":3,
 			"leaking_rate":0.9,
 			"rho_factor":1.1,
+			"f": "tanh",
 			"Win": {
 				"type": "uniform",
 				"seed": 42,
@@ -56,20 +57,7 @@
 				"test_len":1800,
 				"regul_coef":1e-5
 			},
-			"display": [
-				{
-					"type": "F-Measure",
-					"param": {
-						"ticks": ["2-petals","3-petals","4-petals"]
-					}
-				},
-				{
-					"type": "Accuracy",
-					"param": {
-						"ticks": ["2-petals","3-petals","4-petals"]
-					}
-				}
-			]
+			"display": []
 		},		
 		{
 			"type": "classificationPrediction",
@@ -97,6 +85,22 @@
 					"type": "Accuracy",
 					"param": {
 						"ticks": ["2-petals","3-petals","4-petals"]
+					}
+				},
+				{
+					"type": "Trajectory-2D",
+					"param" : {
+						"Xpath": "data/trajectory_data",
+						"Xfrom": 1890,
+						"Xto": 3690
+					}
+				}, 
+				{
+					"type": "Trajectory-3D",
+					"param" : {
+						"Xpath": "data/trajectory_data",
+						"Xfrom": 1890,
+						"Xto": 3690
 					}
 				}
 			]

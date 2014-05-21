@@ -1,9 +1,9 @@
-from numpy import where
+from numpy import where, loadtxt
 from matplotlib.pyplot import *
 from mpl_toolkits.mplot3d import Axes3D
 
 
-def displayTraj2D(windowsTitle, Ytarget, Y, X):
+def displayTraj2D(windowsTitle, Ytarget, Y, Xpath, Xfrom, Xto):
     print_Ytarget = []
     print_Y = []
     print_traj = {
@@ -14,6 +14,9 @@ def displayTraj2D(windowsTitle, Ytarget, Y, X):
     }
     colors = ('r', 'g', 'b')
     labels = ('2-petals', '3-petals', '4-petals')
+
+    X = loadtxt(Xpath).T
+    X = X[:, Xfrom:Xto]
 
     tmpx1 = []
     tmpx2 = []
@@ -54,7 +57,7 @@ def displayTraj2D(windowsTitle, Ytarget, Y, X):
         plot([x + 2*print_traj['z'][i] for x in print_traj['x1'][i]], print_traj['x2'][i], c=print_traj['color'][i])
 
 
-def displayTraj3D(windowsTitle, Ytarget, Y, X):
+def displayTraj3D(windowsTitle, Ytarget, Y, Xpath, Xfrom, Xto):
     print_Ytarget = []
     print_Y = []
     print_traj = {
@@ -65,6 +68,9 @@ def displayTraj3D(windowsTitle, Ytarget, Y, X):
     }
     colors = ('r', 'g', 'b')
     labels = ('2-petals', '3-petals', '4-petals')
+
+    X = loadtxt(Xpath).T
+    X = X[:, Xfrom:Xto]
 
     tmpx1 = []
     tmpx2 = []
@@ -203,12 +209,12 @@ def displayF(windowsTitle, Ytarget, Y, ticks):
         tmpP = float(bonneAttribution[i]) / attribution[i]
         tmpR = float(bonneAttribution[i]) / appartenant[i]
         print '- class', ticks[i]
-        print '\tPrecision:', tmpP
-        print '\tRecall:', tmpR
+        print '   Precision:', tmpP
+        print '   Recall:', tmpR
         if tmpP == 0 and tmpR == 0 :
-            print '\tF-Measure:', 0
+            print '   F-Measure:', 0
         else :
-            print '\tF-Measure:', 2 * tmpP * tmpR / (tmpP + tmpR)
+            print '   F-Measure:', 2 * tmpP * tmpR / (tmpP + tmpR)
 
     print 'Precision:', precision[-1]
     print 'Recall:', rappel[-1]
