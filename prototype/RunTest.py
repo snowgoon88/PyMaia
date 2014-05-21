@@ -1,7 +1,7 @@
 from Display import *
-from Task2 import *
+from Task import *
 from Reservoir import *
-from Loader import *
+from DataLoader import *
 from matplotlib.pyplot import show
 import sys, json
 
@@ -29,7 +29,9 @@ tasks = {
 displays = {
 	'RMSE' : displayRMSE,
 	'Accuracy': displayAcc,
-	'F-Measure': displayF
+	'F-Measure': displayF,
+	'Trajectory-2D': displayTraj2D,
+	'Trajectory-3D': displayTraj3D
 }
 
 def main():
@@ -52,15 +54,15 @@ def process(test_data):
 
 		sys.stdout.write('Generating reservoir... ')
 		network = networks[test_data['type']](**test_data['reservoir'])
-		print 'done'
+		print '\t[done]'
 
 		sys.stdout.write('Loading data... ')
 		data = loaders[task['data']['type']](**task['data']['param'])
-		print 'done'
+		print '\t\t[done]'
 
 		sys.stdout.write('Running task... ')
 		Ytarget, Y = tasks[task['type']](network, *data, **task['param'])
-		print 'done'
+		print '\t\t[done]'
 
 		for display in task['display']:
 			displays[display['type']]("%s: %s of %s"%(test_data['title'], task['type'], task['data']['type']), 

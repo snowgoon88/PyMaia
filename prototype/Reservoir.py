@@ -31,8 +31,8 @@ distribution = {
     "gaussian": gaussianDistribution,
     "sparse": sparseDistribution
 }
-                #############################
 
+                #### Reservoir class ####
 class Reservoir:
     def __init__(self, K, N, L, Win, W, leaking_rate, rho_factor):
         ## Reservoir generation

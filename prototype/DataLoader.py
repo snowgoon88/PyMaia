@@ -15,4 +15,4 @@ def loadSeq(data, encode):
 	return (load,)
 
 def loadTraj(data, target):
-	return (loadtxt(data), loadtxt(target))
+	return (loadtxt(data).T, loadtxt(target).T)

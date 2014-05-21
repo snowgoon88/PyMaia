@@ -44,20 +44,7 @@
 				"train_len":1900,
 				"regul_coef":1e-3
 			},
-			"display": [
-				{
-					"type":"Accuracy",
-					"param" : {
-						"ticks": ["A", "B", "C", "D", "E"]
-					}
-				},
-				{
-					"type":"F-Measure",
-					"param" : {
-						"ticks": ["A", "B", "C", "D", "E"]
-					}
-				}
-			]
+			"display": []
 		},
 		{
 			"type": "generation",
@@ -104,28 +91,6 @@
 				"regul_coef":1e-3
 			},
 			"display": []
-		},
-		{
-			"type": "rappelPrediction",
-			"data": {
-				"type": "Sequence",
-				"param": {
-					"data": "data/seq4_data",
-					"encode": {
-			  			"A":[1,0,0,0,0],
-			  			"B":[0,1,0,0,0],
-			  			"C":[0,0,1,0,0],
-			  			"D":[0,0,0,1,0],
-			  			"E":[0,0,0,0,1]
-					}
-				}
-			},
-			"param": {
-				"init_len":100,
-				"train_len":1900,
-				"regul_coef":1e-3
-			},
-			"display": []
-		}		
+		}
 	]
 }

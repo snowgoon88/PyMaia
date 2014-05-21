@@ -78,7 +78,7 @@ def rappelPrediction(network, data, init_len, train_len, regul_coef):
 
     return data[:, init_len+1:train_len+init_len+1], Ymem
 
-def classification(network, data, target, init_len, train_len, test_len):
+def classification(network, data, target, init_len, train_len, test_len, regul_coef):
     for t in range(init_len):
         network.input(data[:, t])
 
@@ -96,7 +96,7 @@ def classification(network, data, target, init_len, train_len, test_len):
 
     return target[:, init_len+train_len:init_len+train_len+test_len], Ymem
 
-def rappelClassification(network, data, target, init_len, train_len):
+def rappelClassification(network, data, target, init_len, train_len, regul_coef):
     for t in range(init_len):
         network.input(data[:, t])
 
@@ -116,7 +116,7 @@ def rappelClassification(network, data, target, init_len, train_len):
 
     return target[:, init_len:init_len+train_len], Ymem
 
-def classificationPrediction(K, N, L, Win, W, leaking_rate, rho_factor, regul_coef, data, target, init_len, train_len, test_len):
+def classificationPrediction(network, data, target, init_len, train_len, test_len, regul_coef):
     for t in range(init_len):
         network.input(data[:, t])
 
