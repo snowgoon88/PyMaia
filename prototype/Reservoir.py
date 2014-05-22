@@ -1,6 +1,5 @@
 from numpy import *
-import scipy.linalg
-
+from scipy.linalg import eig, inv, pinv
 
 def uniformDistribution(shape, param):
     if 'seed' in param:
@@ -61,7 +60,7 @@ class Reservoir:
         # output weight
         self.Wout = random.rand(L, 1+K+N)-0.5
         ## Spectral radius tuning
-        rhoW = max( abs( linalg.eig(self.W)[0] ) )
+        rhoW = max( abs( eig(self.W)[0] ) )
         self.W *= rho_factor / rhoW
 
     def input(self, data):
@@ -82,10 +81,10 @@ class ESN(Reservoir):
         Xmem = params['Xmem']
         if 'regul_matrix' in params:
             # Compute Wout with a ridge regression
-            self.Wout = dot( dot(Ytarget, Xmem.T), linalg.inv( dot(Xmem, Xmem.T) + params['regul_matrix'] ))
+            self.Wout = dot( dot(Ytarget, Xmem.T), inv( dot(Xmem, Xmem.T) + params['regul_matrix'] ))
         else:
             # Compute Wout with a pseudoinverse
-            self.Wout = dot( Ytarget, linagl.pinv(Xmem) )
+            self.Wout = dot( Ytarget, pinv(Xmem) )
 
 class BPDC(Reservoir):
     def __init__(self, K, N, L, Win, W, f, leaking_rate, rho_factor):

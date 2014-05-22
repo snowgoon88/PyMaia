@@ -1,0 +1,126 @@
+{
+	"title": "BPDC",
+
+	"reservoir":
+	{
+		"type": "BPDC",
+		"param": {
+			"K":1,
+			"N":1000,
+			"L":1,
+			"leaking_rate":0.3,
+			"rho_factor":1.25,
+			"f": "tanh",
+			"Win": {
+				"type": "uniform",
+				"seed": 42,
+				"min": -0.5,
+				"max": 0.5
+			},
+			"W": {
+				"type": "uniform",
+				"min": -0.5,
+				"max": 0.5
+			}
+		}
+	},
+
+	"task": [
+		{
+			"type": "generation",
+			"data": {
+				"type": "MackeyGlass",
+				"param": {
+					"data": "data/MackeyGlass_t17_data"
+				}
+			},
+			"param": {
+				"init_len":100,
+				"train_len":0,
+				"test_len":2000,
+				"learning_rate":0.3,
+				"regul_const":0.002
+			},
+			"display": [
+				{
+					"type":"RMSE",
+					"param" : {
+						"title": "No training"
+					}
+				}
+			]
+		},
+		{
+			"type": "generation",
+			"data": {
+				"type": "MackeyGlass",
+				"param": {
+					"data": "data/MackeyGlass_t17_data"
+				}
+			},
+			"param": {
+				"init_len":100,
+				"train_len":250,
+				"test_len":2000,
+				"learning_rate":0.3,
+				"regul_const":0.002
+			},
+			"display": [
+				{
+					"type":"RMSE",
+					"param" : {
+						"title": "Training: 250 step"
+					}
+				}
+			]
+		},
+		{
+			"type": "generation",
+			"data": {
+				"type": "MackeyGlass",
+				"param": {
+					"data": "data/MackeyGlass_t17_data"
+				}
+			},
+			"param": {
+				"init_len":100,
+				"train_len":500,
+				"test_len":2000,
+				"learning_rate":0.3,
+				"regul_const":0.002
+			},
+			"display": [
+				{
+					"type":"RMSE",
+					"param" : {
+						"title": "Training: 500 step"
+					}
+				}
+			]
+		},
+		{
+			"type": "generation",
+			"data": {
+				"type": "MackeyGlass",
+				"param": {
+					"data": "data/MackeyGlass_t17_data"
+				}
+			},
+			"param": {
+				"init_len":100,
+				"train_len":1000,
+				"test_len":2000,
+				"learning_rate":0.3,
+				"regul_const":0.002
+			},
+			"display": [
+				{
+					"type":"RMSE",
+					"param" : {
+						"title": "Training: 1000 step"
+					}
+				}
+			]
+		}
+	]
+}

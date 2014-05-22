@@ -3,7 +3,7 @@ from matplotlib.pyplot import *
 from mpl_toolkits.mplot3d import Axes3D
 
 
-def displayTraj2D(windowsTitle, Ytarget, Y, Xpath, Xfrom, Xto):
+def displayTraj2D(Ytarget, Y, Xpath, Xfrom, Xto, title="untitled"):
     print_Ytarget = []
     print_Y = []
     print_traj = {
@@ -50,14 +50,14 @@ def displayTraj2D(windowsTitle, Ytarget, Y, Xpath, Xfrom, Xto):
 
     fig = figure()
     fig.clear()
-    fig.canvas.set_window_title(windowsTitle)
+    fig.canvas.set_window_title(title)
     [plot(None,None,ls='-',c=c,label=l) for c,l in zip(colors,labels)]
     legend(labels)
     for i in xrange(len(print_traj['z'])):
         plot([x + 2*print_traj['z'][i] for x in print_traj['x1'][i]], print_traj['x2'][i], c=print_traj['color'][i])
 
 
-def displayTraj3D(windowsTitle, Ytarget, Y, Xpath, Xfrom, Xto):
+def displayTraj3D(Ytarget, Y, Xpath, Xfrom, Xto, title="untitled"):
     print_Ytarget = []
     print_Y = []
     print_traj = {
@@ -104,7 +104,7 @@ def displayTraj3D(windowsTitle, Ytarget, Y, Xpath, Xfrom, Xto):
 
     fig = figure()
     fig.clear()
-    fig.canvas.set_window_title(windowsTitle)
+    fig.canvas.set_window_title(title)
     ax = fig.gca(projection='3d')
     [ax.plot([],[],ls='-',c=c,label=l) for c,l in zip(colors,labels)]
     ax.legend(labels)
@@ -112,7 +112,7 @@ def displayTraj3D(windowsTitle, Ytarget, Y, Xpath, Xfrom, Xto):
         ax.plot(print_traj['x1'][i], print_traj['x2'][i], print_traj['z'][i], zdir='z', c=print_traj['color'][i])
 
 
-def displayRMSE(windowsTitle, Ytarget, Y):
+def displayRMSE(Ytarget, Y, title="untitled"):
     err = []
     rmse = []
     for i in xrange(len(Y.T)):
@@ -122,7 +122,7 @@ def displayRMSE(windowsTitle, Ytarget, Y):
 
     fig = figure()
     fig.clear()
-    fig.canvas.set_window_title(windowsTitle)
+    fig.canvas.set_window_title(title)
     subplot(211)
     plot(Ytarget.T, 'k')
     plot(Y.T, 'b')
@@ -133,7 +133,7 @@ def displayRMSE(windowsTitle, Ytarget, Y):
     legend(['Error', 'RMSE'])
 
 
-def displayAcc(windowsTitle, Ytarget, Y, ticks):
+def displayAcc(Ytarget, Y, ticks, title="untitled"):
     print_Ytarget = []
     print_Y = []
     accuracy = []
@@ -149,7 +149,7 @@ def displayAcc(windowsTitle, Ytarget, Y, ticks):
 
     fig = figure()
     fig.clear()
-    fig.canvas.set_window_title(windowsTitle)
+    fig.canvas.set_window_title(title)
     subplot(211)
     yticks(range(len(Ytarget.T)), ticks)
     plot(print_Ytarget, 'wo')
@@ -162,7 +162,7 @@ def displayAcc(windowsTitle, Ytarget, Y, ticks):
     fig.get_axes()[0].set_ylim(yinf-0.5, ysup+0.5)
 
 
-def displayF(windowsTitle, Ytarget, Y, ticks):
+def displayF(Ytarget, Y, ticks, title="untitled"):
     print_Ytarget = []
     print_Y = []
 
@@ -222,7 +222,7 @@ def displayF(windowsTitle, Ytarget, Y, ticks):
 
     fig = figure()
     fig.clear()
-    fig.canvas.set_window_title(windowsTitle)
+    fig.canvas.set_window_title(title)
     subplot(211)
     yticks(range(len(Ytarget.T)), ticks)
     plot(print_Ytarget, 'wo')

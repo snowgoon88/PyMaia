@@ -61,21 +61,22 @@ def process(test_data):
 		print '---', task['type'], '---'
 
 		sys.stdout.write('Generating reservoir... ')
+		sys.stdout.flush()
 		network = networks[test_data['reservoir']['type']](**test_data['reservoir']['param'])
 		print '\t[done]'
 
 		sys.stdout.write('Loading data... ')
+		sys.stdout.flush()
 		data = loaders[task['data']['type']](**task['data']['param'])
 		print '\t\t[done]'
 
 		sys.stdout.write('Running task... ')
+		sys.stdout.flush()
 		Ytarget, Y = tasks[test_data['reservoir']['type']][task['type']](network, *data, **task['param'])
 		print '\t\t[done]'
 
 		for display in task['display']:
-			displays[display['type']]("[%s] %s: %s"%(test_data['title'], task['type'], task['data']['type']), 
-									  Ytarget, Y, 
-									  **display['param'])
+			displays[display['type']](Ytarget, Y, **display['param'])
 
 	show()
 
