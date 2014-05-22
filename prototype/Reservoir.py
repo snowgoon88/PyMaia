@@ -36,6 +36,13 @@ function = {
     "tanh": tanh
 }
 
+def tanhprim(x):
+    return 1 - power(tanh(x), 2)
+
+derived = {
+    "tanh": tanhprim
+}
+
 class Reservoir:
     def __init__(self, K, N, L, Win, W, f, leaking_rate, rho_factor):
         ## Reservoir generation
@@ -73,13 +80,32 @@ class ESN(Reservoir):
     def train(self, **params):
         Ytarget = params['Ytarget']
         Xmem = params['Xmem']
-        if 'regMatrix' in params:
+        if 'regul_matrix' in params:
             # Compute Wout with a ridge regression
-            self.Wout = dot( dot(Ytarget, Xmem.T), linalg.inv( dot(Xmem, Xmem.T) + params['regMatrix'] ))
+            self.Wout = dot( dot(Ytarget, Xmem.T), linalg.inv( dot(Xmem, Xmem.T) + params['regul_matrix'] ))
         else:
             # Compute Wout with a pseudoinverse
             self.Wout = dot( Ytarget, linagl.pinv(Xmem) )
 
 class BPDC(Reservoir):
+    def __init__(self, K, N, L, Win, W, f, leaking_rate, rho_factor):
+        Reservoir.__init__(self, K, N, L, Win, W, f, leaking_rate, rho_factor)
+        self.fprim = derived[f]
+        self.err_mem = [0 for _ in xrange(L)]
+
     def train(self, **params):
-        print 'soon'
+        data = params['data']
+        target = params['target']
+        n = params['learning_rate']
+        e = params['regul_const']
+
+        y = self.compute(data)
+        err = y - target
+        x = vstack((1, vstack(data), self.X))
+
+        for i in xrange(self.L):
+            gamma = (1-self.a)*sum(self.err_mem)-err[i]
+            for j in xrange(1, 1+self.K+self.N):
+                self.Wout[i, j] += (n/self.a)*(self.f(x[j])/(sum(power(self.f(x), 2))+e))*gamma
+
+        self.err_mem = err
