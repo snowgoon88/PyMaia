@@ -58,7 +58,7 @@ def process(test_data):
 
 	for task in test_data['task']:
 		sys.stdout.write('\t')
-		print '---', task['type'], '---'
+		print '---', task['title'], '---'
 
 		sys.stdout.write('Generating reservoir... ')
 		sys.stdout.flush()
@@ -76,7 +76,7 @@ def process(test_data):
 		print '\t\t[done]'
 
 		for display in task['display']:
-			displays[display['type']](Ytarget, Y, **display['param'])
+			displays[display['type']](Ytarget, Y, title=task['title'],**display['param'])
 
 	show()
 

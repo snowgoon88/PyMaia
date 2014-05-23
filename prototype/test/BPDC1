@@ -27,6 +27,7 @@
 
 	"task": [
 		{
+			"title": "No training",
 			"type": "generation",
 			"data": {
 				"type": "MackeyGlass",
@@ -44,13 +45,35 @@
 			"display": [
 				{
 					"type":"RMSE",
-					"param" : {
-						"title": "No training"
-					}
+					"param" : {}
 				}
 			]
 		},
 		{
+			"title": "Training: 125 step",
+			"type": "generation",
+			"data": {
+				"type": "MackeyGlass",
+				"param": {
+					"data": "data/MackeyGlass_t17_data"
+				}
+			},
+			"param": {
+				"init_len":100,
+				"train_len":125,
+				"test_len":2000,
+				"learning_rate":0.3,
+				"regul_const":0.002
+			},
+			"display": [
+				{
+					"type":"RMSE",
+					"param" : {}
+				}
+			]
+		},
+		{
+			"title": "Training: 250 step",
 			"type": "generation",
 			"data": {
 				"type": "MackeyGlass",
@@ -68,57 +91,7 @@
 			"display": [
 				{
 					"type":"RMSE",
-					"param" : {
-						"title": "Training: 250 step"
-					}
-				}
-			]
-		},
-		{
-			"type": "generation",
-			"data": {
-				"type": "MackeyGlass",
-				"param": {
-					"data": "data/MackeyGlass_t17_data"
-				}
-			},
-			"param": {
-				"init_len":100,
-				"train_len":500,
-				"test_len":2000,
-				"learning_rate":0.3,
-				"regul_const":0.002
-			},
-			"display": [
-				{
-					"type":"RMSE",
-					"param" : {
-						"title": "Training: 500 step"
-					}
-				}
-			]
-		},
-		{
-			"type": "generation",
-			"data": {
-				"type": "MackeyGlass",
-				"param": {
-					"data": "data/MackeyGlass_t17_data"
-				}
-			},
-			"param": {
-				"init_len":100,
-				"train_len":1000,
-				"test_len":2000,
-				"learning_rate":0.3,
-				"regul_const":0.002
-			},
-			"display": [
-				{
-					"type":"RMSE",
-					"param" : {
-						"title": "Training: 1000 step"
-					}
+					"param" : {}
 				}
 			]
 		}

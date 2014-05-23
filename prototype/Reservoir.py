@@ -78,13 +78,13 @@ class Reservoir:
 class ESN(Reservoir):
     def train(self, **params):
         Ytarget = params['Ytarget']
-        Xmem = params['Xmem']
+        Xmen = params['Xmen']
         if 'regul_matrix' in params:
             # Compute Wout with a ridge regression
-            self.Wout = dot( dot(Ytarget, Xmem.T), inv( dot(Xmem, Xmem.T) + params['regul_matrix'] ))
+            self.Wout = dot( dot(Ytarget, Xmen.T), inv( dot(Xmen, Xmen.T) + params['regul_matrix'] ))
         else:
             # Compute Wout with a pseudoinverse
-            self.Wout = dot( Ytarget, pinv(Xmem) )
+            self.Wout = dot( Ytarget, pinv(Xmen) )
 
 class BPDC(Reservoir):
     def __init__(self, K, N, L, Win, W, f, leaking_rate, rho_factor):
@@ -105,6 +105,6 @@ class BPDC(Reservoir):
         for i in xrange(self.L):
             gamma = (1-self.a)*sum(self.err_mem)-err[i]
             for j in xrange(1, 1+self.K+self.N):
-                self.Wout[i, j] += (n/self.a)*(self.f(x[j])/(sum(power(self.f(x), 2))+e))*gamma
+                self.Wout[i, j] += (n/self.a)*(self.f(x[j])/(sum(power(self.f(x[-self.N:]), 2))+e))*gamma
 
         self.err_mem = err
