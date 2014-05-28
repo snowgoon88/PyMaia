@@ -74,7 +74,7 @@ class Reservoir:
     def train(self, **params):
         raise NotImplementedError("A raw reservoir can't be train !")
 
-
+# Batch training
 class ESN(Reservoir):
     def train(self, **params):
         Ytarget = params['Ytarget']
@@ -85,6 +85,30 @@ class ESN(Reservoir):
         else:
             # Compute Wout with a pseudoinverse
             self.Wout = dot( Ytarget, pinv(Xmen) )
+
+
+# Online training
+class DR(Reservoir):
+    def train(self, **params):
+        n = params['learning_rate']
+        data = params['data']
+        target = params['target']
+
+        y = self.compute(data)
+        err = target - y 
+        Xwrap = vstack((1, vstack(data),self.X))
+
+        for j in xrange(self.L):
+           for i in xrange(1+self.K+self.N):
+               self.Wout[j, i] += n*err[j]*Xwrap[i]
+
+        return y
+
+
+        # self.Wout = self.Wout + n*multiply(target-y, vstack((1,vstack(data),self.X)))
+
+
+
 
 class BPDC(Reservoir):
     def __init__(self, K, N, L, Win, W, f, leaking_rate, rho_factor):
@@ -104,7 +128,7 @@ class BPDC(Reservoir):
 
         for i in xrange(self.L):
             gamma = (1-self.a)*sum(self.err_mem)-err[i]
-            for j in xrange(1, 1+self.K+self.N):
+            for j in xrange(1+self.K+self.N):
                 self.Wout[i, j] += (n/self.a)*(self.f(x[j])/(sum(power(self.f(x[-self.N:]), 2))+e))*gamma
 
         self.err_mem = err

@@ -4,7 +4,7 @@ def generationBPDC(network, data, init_len, train_len, test_len, learning_rate, 
     for t in range(init_len):
         network.input(data[:, t])
 
-    for t in range(init_len, int(train_len+init_len)):
+    for t in range(init_len, train_len+init_len):
         network.train(data=data[:, t], target=data[:, t+1], learning_rate=learning_rate, regul_const=regul_const)
 
     Ymem = zeros((network.L, test_len))

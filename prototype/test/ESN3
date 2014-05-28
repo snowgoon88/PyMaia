@@ -1,8 +1,7 @@
 {
 	"title": "ESN",
 	
-	"reservoir":
-	{
+	"reservoir": {
 		"type": "ESN",
 		"param": {
 			"K":2,

@@ -5,7 +5,7 @@ def generationESN(network, data, init_len, train_len, test_len, regul_coef=None)
         network.input(data[:, t])
 
     Xmem = zeros((1+network.N+network.K, train_len))
-    for t in range(init_len, int(train_len+init_len)):
+    for t in range(init_len, train_len+init_len):
         network.input(data[:, t])
         Xmem[:, t-init_len] = vstack((1, vstack(data[:, t]), network.X))[:,0]
 
@@ -45,7 +45,7 @@ def predictionESN(network, data, init_len, train_len, test_len, regul_coef=None)
         network.input(data[:, t])
 
     Xmem = zeros((1+network.N+network.K, train_len))
-    for t in range(init_len, int(train_len+init_len)):
+    for t in range(init_len, train_len+init_len):
         network.input(data[:, t])
         Xmem[:, t-init_len] = vstack((1, vstack(data[:, t]), network.X))[:,0]
 
@@ -83,7 +83,7 @@ def classificationESN(network, data, target, init_len, train_len, test_len, regu
         network.input(data[:, t])
 
     Xmem = zeros((1+network.K+network.N, train_len))
-    for t in range(init_len, int(train_len+init_len)):
+    for t in range(init_len, train_len+init_len):
         network.input(data[:, t])
         Xmem[:, t-init_len] = vstack((1, vstack(data[:, t]), network.X))[:,0]
 
@@ -103,7 +103,7 @@ def rappelClassificationESN(network, data, target, init_len, train_len, regul_co
     xbak = network.X
 
     Xmem = zeros((1+network.K+network.N, train_len))
-    for t in range(init_len, int(train_len+init_len)):
+    for t in range(init_len, train_len+init_len):
         network.input(data[:, t])
         Xmem[:, t-init_len] = vstack((1, vstack(data[:, t]), network.X))[:,0]
 
@@ -121,7 +121,7 @@ def classificationPredictionESN(network, data, target, init_len, train_len, test
         network.input(data[:, t])
 
     Xmem = zeros((1+network.K+network.N, train_len))
-    for t in range(init_len, int(train_len+init_len)):
+    for t in range(init_len, train_len+init_len):
         network.input(data[:, t])
         Xmem[:, t-init_len] = vstack((1, vstack(data[:, t]), network.X))[:,0]
 

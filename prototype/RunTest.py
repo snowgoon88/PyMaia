@@ -1,6 +1,7 @@
 from Display import *
 from TaskESN import *
 from TaskBPDC import *
+from TaskDR import *
 from Reservoir import *
 from DataLoader import *
 from matplotlib.pyplot import show
@@ -8,7 +9,8 @@ import sys, json
 
 networks = {
 	'ESN': ESN,
-	'BPDC': BPDC
+	'BPDC': BPDC,
+	'DR': DR
 }
 
 loaders = {
@@ -28,7 +30,11 @@ tasks = {
 		'classificationPrediction': classificationPredictionESN
 	},
 	'BPDC': {
-		'generation':generationBPDC
+		'generation': generationBPDC
+	},
+	'DR': {
+		'generation': generationDR,
+		'prediction': predictionDR
 	}
 }
 
@@ -76,7 +82,7 @@ def process(test_data):
 		print '\t\t[done]'
 
 		for display in task['display']:
-			displays[display['type']](Ytarget, Y, title=task['title'],**display['param'])
+			displays[display['type']](Ytarget, Y, title=task['title'], **display['param'])
 
 	show()
 
