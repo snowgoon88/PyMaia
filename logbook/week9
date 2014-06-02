@@ -1,0 +1,5 @@
+Lundi - Mardi - Mercredi
+	* debug
+	* Implem Online
+		- BPDC (?) => de côté
+		- Perceptron => prediction ok, mais convergence (ou divergence) du réservoir lors d'une génération

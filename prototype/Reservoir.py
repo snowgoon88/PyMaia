@@ -105,9 +105,6 @@ class DR(Reservoir):
         return y
 
 
-        # self.Wout = self.Wout + n*multiply(target-y, vstack((1,vstack(data),self.X)))
-
-
 
 
 class BPDC(Reservoir):

@@ -26,6 +26,8 @@ def generationDR(network, data, init_len, train_len, test_len, learning_rate):
     figure().canvas.set_window_title("X")
     plot(X)
 
+    #print network.Wout
+
     return data[:, init_len+1:init_len+train_len+test_len+1], Ymem
 
 

@@ -6,7 +6,7 @@
 		"type": "DR",
 		"param": {
 			"K":1,
-			"N":1000,
+			"N":250,
 			"L":1,
 			"leaking_rate":0.3,
 			"rho_factor":1.25,
