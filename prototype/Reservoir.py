@@ -78,10 +78,17 @@ class Reservoir:
 class ESN(Reservoir):
     def train(self, **params):
         Ytarget = params['Ytarget']
-        Xmen = params['Xmen']
+        Xmen = params['Xmem']
         if 'regul_matrix' in params:
             # Compute Wout with a ridge regression
             self.Wout = dot( dot(Ytarget, Xmen.T), inv( dot(Xmen, Xmen.T) + params['regul_matrix'] ))
+
+            if isnan(sum(self.Wout)):
+                print "[WARNING] Wout contains NaN !"
+
+            if isinf(sum(self.Wout)):
+                print "[WARNING] Wout contains inf !"
+                
         else:
             # Compute Wout with a pseudoinverse
             self.Wout = dot( Ytarget, pinv(Xmen) )

@@ -1,4 +1,4 @@
-from numpy import where, loadtxt
+from numpy import where, loadtxt, isnan, sum
 from matplotlib.pyplot import *
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -141,6 +141,8 @@ def displayAcc(Ytarget, Y, ticks, title="untitled"):
 
     for i in xrange(len(Y.T)):
         print_Ytarget.append(where(Ytarget[:, i]==max(Ytarget[:, i]))[0][0])
+        if isnan(sum(Y[:, i])):
+            break
         print_Y.append(where(Y[:, i]==max(Y[:, i]))[0][0])
         if print_Y[i] == print_Ytarget[i]:
             acc+=1
