@@ -5,7 +5,7 @@ from TaskDR import *
 from Reservoir import *
 from DataLoader import *
 from matplotlib.pyplot import show
-import sys, json
+import sys, json, getopt
 
 networks = {
 	'ESN': ESN,
@@ -47,12 +47,18 @@ displays = {
 }
 
 def main():
-	for test_file in sys.argv[1:]:
+	opt, files = getopt.getopt(sys.argv[1:], '', ['display'])
+
+	for test_file in files:
 		fd = open(test_file)
 		test_data = json.load(fd)
 		fd.close()
 
 		process(test_data)
+
+	if '--display' in opt:
+		show()
+
 
 def process(test_data):
 	sys.stdout.write('\t\t')
@@ -83,8 +89,6 @@ def process(test_data):
 
 		for display in task['display']:
 			displays[display['type']](Ytarget, Y, title=task['title'], **display['param'])
-
-	show()
 
 if __name__ == "__main__":
 	main()

@@ -1,0 +1,153 @@
+{
+	"title": "ESN - Memory Test",
+	
+	"reservoir": {
+		"type": "ESN",
+		"param": {
+			"K":5,
+			"N":100,
+			"L":5,
+			"leaking_rate":1,
+			"rho_factor":1.25,
+			"f": "tanh",
+			"Win": {
+				"type": "uniform",
+				"seed": 42,
+				"min": -0.5,
+				"max": 0.5
+			},
+			"W": {
+				"type": "uniform",
+				"min": -0.5,
+				"max": 0.5
+			}
+		}
+	},
+
+	"task": [
+		{
+			"title": "Memory 5",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/seqmem5_data",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":100,
+				"train_len":1900,
+				"test_len":2000,
+				"regul_coef":1e-3
+			},
+			"display": [
+				{
+					"type": "Accuracy",
+					"param": {
+						"ticks": ["A", "B", "C", "D", "E"]
+					}
+				}
+			]
+		},	
+		{
+			"title": "Memory 10",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/seqmem10_data",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":100,
+				"train_len":1900,
+				"test_len":2000,
+				"regul_coef":1e-3
+			},
+			"display": [
+				{
+					"type": "Accuracy",
+					"param": {
+						"ticks": ["A", "B", "C", "D", "E"]
+					}
+				}
+			]
+		},
+		{
+			"title": "Memory 15",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/seqmem15_data",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":100,
+				"train_len":1900,
+				"test_len":2000,
+				"regul_coef":1e-3
+			},
+			"display": [
+				{
+					"type": "Accuracy",
+					"param": {
+						"ticks": ["A", "B", "C", "D", "E"]
+					}
+				}
+			]
+		},
+		{
+			"title": "Memory 20",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/seqmem20_data",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":100,
+				"train_len":1900,
+				"test_len":2000,
+				"regul_coef":1e-3
+			},
+			"display": [
+				{
+					"type": "Accuracy",
+					"param": {
+						"ticks": ["A", "B", "C", "D", "E"]
+					}
+				}
+			]
+		}
+	]
+}
