@@ -56,7 +56,7 @@ def main():
 
 		process(test_data)
 
-	if '--display' in opt:
+	if ('--display', '') in opt:
 		show()
 
 
@@ -67,6 +67,8 @@ def process(test_data):
 	print '===', test_data['title'], "==="
 	sys.stdout.write('\t\t')
 	print ''.join(['=' for _ in xrange(len(test_data['title'])+8)])
+
+	print test_data['reservoir']
 
 	for task in test_data['task']:
 		sys.stdout.write('\t')
