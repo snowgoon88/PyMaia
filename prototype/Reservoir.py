@@ -2,18 +2,12 @@ from numpy import *
 from scipy.linalg import eig, inv, pinv
 
 def uniformDistribution(shape, param):
-    if 'seed' in param:
-        random.seed(param['seed'])
     return (param["max"]-param['min'])*random.rand(shape[0], shape[1]) + param['min']
 
 def gaussianDistribution(shape, param):
-    if 'seed' in param:
-        random.seed(param['seed'])
     return param['sigma'] * random.randn(shape[0], shape[1]) + param['mu']
 
 def sparseDistribution(shape, param):
-    if 'seed' in param:
-        random.seed(param['seed'])
     M = zeros(shape)
     for i in xrange(shape[0]):
         for j in xrange(shape[1]):
@@ -42,8 +36,9 @@ derived = {
     "tanh": tanhprim
 }
 
+
 class Reservoir:
-    def __init__(self, K, N, L, Win, W, f, leaking_rate, rho_factor):
+    def __init__(self, K, N, L, Win, W, f, leaking_rate, rho_factor, seed=None):
         ## Reservoir generation
         # constant
         self.a = leaking_rate
@@ -53,6 +48,10 @@ class Reservoir:
         self.f = function[f]
         # internal state
         self.X = zeros((N, 1))
+
+        if seed:
+            random.seed(seed)
+
         # input weight
         self.Win = distribution[Win["type"]]((N, 1+K), Win)
         # internal weight
@@ -73,6 +72,7 @@ class Reservoir:
 
     def train(self, **params):
         raise NotImplementedError("A raw reservoir can't be train !")
+
 
 # Batch training
 class ESN(Reservoir):
@@ -110,8 +110,6 @@ class DR(Reservoir):
                self.Wout[j, i] += n*err[j]*Xwrap[i]
 
         return y
-
-
 
 
 class BPDC(Reservoir):

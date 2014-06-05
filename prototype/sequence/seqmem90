@@ -1,6 +1,6 @@
 {
 	"alphabet": ["A", "B", "C", "D", "E"],
-	"delay": [15, 1],
+	"delay": [90, 1],
 	"rules": {
 		"AA": "E",
 		"AB": "E",
