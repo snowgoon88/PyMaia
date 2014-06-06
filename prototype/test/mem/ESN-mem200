@@ -1,4 +1,5 @@
 {
+	"title": "ESN-mem200",
 	
 	"reservoir": {
 		"type": "ESN",
