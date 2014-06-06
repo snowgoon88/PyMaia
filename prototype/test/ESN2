@@ -25,6 +25,15 @@
 		}
 	},
 
+	"display": [
+		{
+			"type": "Accuracy",
+			"param": {
+				"ticks": ["A", "B", "C", "D", "E"]
+			}
+		}
+	],
+
 	"task": [
 		{
 			"type": "rappelGeneration",
@@ -45,8 +54,7 @@
 				"init_len":100,
 				"train_len":1900,
 				"regul_coef":1e-3
-			},
-			"display": []
+			}
 		},
 		{
 			"type": "generation",
@@ -68,15 +76,7 @@
 				"train_len":1900,
 				"test_len":2000,
 				"regul_coef":1e-3
-			},
-			"display": [
-				{
-					"type": "Accuracy",
-					"param": {
-						"ticks": ["A", "B", "C", "D", "E"]
-					}
-				}
-			]
+			}
 		},
 		{
 			"type": "rappelPrediction",
@@ -97,8 +97,7 @@
 				"init_len":100,
 				"train_len":1900,
 				"regul_coef":1e-3
-			},
-			"display": []
+			}
 		},
 		{
 			"type": "prediction",
@@ -120,8 +119,7 @@
 				"train_len":1900,
 				"test_len":2000,
 				"regul_coef":1e-3
-			},
-			"display": []
+			}
 		}	
 	]
 }

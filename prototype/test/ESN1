@@ -25,6 +25,13 @@
 		}
 	},
 
+	"display": [
+		{
+			"type":"RMSE",
+			"param" : {}
+		}
+	],
+
 	"task": [
 		{
 			"type": "rappelGeneration",
@@ -38,13 +45,7 @@
 				"init_len":100,
 				"train_len":1900,
 				"regul_coef":1e-8
-			},
-			"display": [
-				{
-					"type":"RMSE",
-					"param" : {}
-				}
-			]
+			}
 		},
 		{
 			"type": "generation",
@@ -59,13 +60,7 @@
 				"train_len":1900,
 				"test_len":2000,
 				"regul_coef":1e-8
-			},
-			"display": [
-				{
-					"type":"RMSE",
-					"param" : {}
-				}
-			]
+			}
 		}
 	]
 }

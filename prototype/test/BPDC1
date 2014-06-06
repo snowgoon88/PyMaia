@@ -25,6 +25,13 @@
 		}
 	},
 
+	"display": [
+		{
+			"type":"RMSE",
+			"param" : {}
+		}
+	],
+
 	"task": [
 		{
 			"title": "No training",
@@ -41,13 +48,7 @@
 				"test_len":2000,
 				"learning_rate":0.3,
 				"regul_const":0.002
-			},
-			"display": [
-				{
-					"type":"RMSE",
-					"param" : {}
-				}
-			]
+			}
 		},
 		{
 			"title": "Training: 125 step",
@@ -64,13 +65,7 @@
 				"test_len":2000,
 				"learning_rate":0.3,
 				"regul_const":0.002
-			},
-			"display": [
-				{
-					"type":"RMSE",
-					"param" : {}
-				}
-			]
+			}
 		},
 		{
 			"title": "Training: 250 step",
@@ -87,13 +82,7 @@
 				"test_len":2000,
 				"learning_rate":0.3,
 				"regul_const":0.002
-			},
-			"display": [
-				{
-					"type":"RMSE",
-					"param" : {}
-				}
-			]
+			}
 		}
 	]
 }

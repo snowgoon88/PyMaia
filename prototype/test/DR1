@@ -25,6 +25,13 @@
 		}
 	},
 
+	"display": [
+		{
+			"type":"RMSE",
+			"param" : {}
+		}
+	],
+
 	"task": [
 		{
 			"title": "Generation",
@@ -40,13 +47,7 @@
 				"train_len":1900,
 				"test_len":2000,
 				"learning_rate":0.01
-			},
-			"display": [
-				{
-					"type":"RMSE",
-					"param" : {}
-				}
-			]
+			}
 		},
 		{
 			"title": "Prediction",
@@ -62,13 +63,7 @@
 				"train_len":1900,
 				"test_len":2000,
 				"learning_rate":0.01
-			},
-			"display": [
-				{
-					"type":"RMSE",
-					"param" : {}
-				}
-			]
+			}
 		}
 	]
 }

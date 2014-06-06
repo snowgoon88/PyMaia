@@ -24,6 +24,37 @@
 		}
 	},
 
+	"display": [
+		{	
+			"type": "F-Measure",
+			"param": {
+				"ticks": ["2-petals","3-petals","4-petals"]
+			}
+		},
+		{
+			"type": "Accuracy",
+			"param": {
+				"ticks": ["2-petals","3-petals","4-petals"]
+			}
+		},
+		{
+			"type": "Trajectory-2D",
+			"param" : {
+				"Xpath": "data/trajectory_data",
+				"Xfrom": 1890,
+				"Xto": 3690
+			}
+		}, 
+		{
+			"type": "Trajectory-3D",
+			"param" : {
+				"Xpath": "data/trajectory_data",
+				"Xfrom": 1890,
+				"Xto": 3690
+			}
+		}
+	],
+
 	"task": [
 		{
 			"type": "rappelClassification",
@@ -38,8 +69,7 @@
 				"init_len":90,
 				"train_len":1800,
 				"regul_coef":1e-5
-			},
-			"display": []
+			}
 		},
 		{
 			"type": "classification",
@@ -55,8 +85,7 @@
 				"train_len":1800,
 				"test_len":1800,
 				"regul_coef":1e-5
-			},
-			"display": []
+			}
 		},		
 		{
 			"type": "classificationPrediction",
@@ -74,34 +103,7 @@
 				"regul_coef":1e-5
 			},
 			"display": [
-				{
-					"type": "F-Measure",
-					"param": {
-						"ticks": ["2-petals","3-petals","4-petals"]
-					}
-				},
-				{
-					"type": "Accuracy",
-					"param": {
-						"ticks": ["2-petals","3-petals","4-petals"]
-					}
-				},
-				{
-					"type": "Trajectory-2D",
-					"param" : {
-						"Xpath": "data/trajectory_data",
-						"Xfrom": 1890,
-						"Xto": 3690
-					}
-				}, 
-				{
-					"type": "Trajectory-3D",
-					"param" : {
-						"Xpath": "data/trajectory_data",
-						"Xfrom": 1890,
-						"Xto": 3690
-					}
-				}
+				
 			]
 		}
 	]
