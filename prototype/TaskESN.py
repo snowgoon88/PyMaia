@@ -9,7 +9,7 @@ def generationESN(network, data, init_len, train_len, test_len, regul_coef=None)
         network.input(data[:, t])
         Xmem[:, t-init_len] = vstack((1, vstack(data[:, t]), network.X))[:,0]
 
-    network.train(Ytarget=data[:, init_len+1:train_len+init_len+1], Xmem=Xmem, regul_matrix=regul_coef*eye(1+network.N+network.K))
+    network.train(Ytarget=data[:, init_len+1:train_len+init_len+1], Xmem=Xmem, regul_matrix=None if regul_coef is None else regul_coef*eye(1+network.N+network.K))
 
     Ymem = zeros((network.L, test_len))
     u = data[:, train_len+init_len]
@@ -49,7 +49,7 @@ def predictionESN(network, data, init_len, train_len, test_len, regul_coef=None)
         network.input(data[:, t])
         Xmem[:, t-init_len] = vstack((1, vstack(data[:, t]), network.X))[:,0]
 
-    network.train(Ytarget=data[:, init_len+1:train_len+init_len+1], Xmem=Xmem, regul_matrix=regul_coef*eye(1+network.N+network.K))
+    network.train(Ytarget=data[:, init_len+1:train_len+init_len+1], Xmem=Xmem, regul_matrix=None if regul_coef is None else regul_coef*eye(1+network.N+network.K))
 
     Ymem = zeros((network.L, test_len))
     for t in range(test_len):
@@ -87,7 +87,7 @@ def classificationESN(network, data, target, init_len, train_len, test_len, regu
         network.input(data[:, t])
         Xmem[:, t-init_len] = vstack((1, vstack(data[:, t]), network.X))[:,0]
 
-    network.train(Ytarget=target[:, init_len:train_len+init_len], Xmem=Xmem, regul_matrix=None if regul_coef is None else None if regul_coef is None else regul_coef*eye(1+network.K+network.N))
+    network.train(Ytarget=target[:, init_len:train_len+init_len], Xmem=Xmem, regul_matrix=None if regul_coef is None else regul_coef*eye(1+network.K+network.N))
 
     Ymem = zeros((network.L, test_len))
     for t in range(test_len):

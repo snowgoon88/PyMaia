@@ -1,5 +1,5 @@
 from numpy import *
-from scipy.linalg import eig, inv, pinv
+from scipy.linalg import eig, inv, pinv, lstsq
 
 def uniformDistribution(shape, param):
     return (param["max"]-param['min'])*random.rand(shape[0], shape[1]) + param['min']
@@ -79,19 +79,21 @@ class ESN(Reservoir):
     def train(self, **params):
         Ytarget = params['Ytarget']
         Xmen = params['Xmem']
-        if 'regul_matrix' in params:
+        if not params['regul_matrix'] is None:
             # Compute Wout with a ridge regression
             self.Wout = dot( dot(Ytarget, Xmen.T), inv( dot(Xmen, Xmen.T) + params['regul_matrix'] ))
-
-            if isnan(sum(self.Wout)):
-                print "[WARNING] Wout contains NaN !"
-
-            if isinf(sum(self.Wout)):
-                print "[WARNING] Wout contains inf !"
-                
         else:
+            # Compute Wout with numpy.linalg.lstsq
+            self.Wout = lstsq(Xmen.T, Ytarget.T)[0].T
             # Compute Wout with a pseudoinverse
-            self.Wout = dot( Ytarget, pinv(Xmen) )
+            #self.Wout = dot( Ytarget, pinv(Xmen) )
+
+
+        if isnan(sum(self.Wout)):
+            print "[WARNING] Wout contains NaN !"
+
+        if isinf(sum(self.Wout)):
+            print "[WARNING] Wout contains inf !"
 
 
 # Online training

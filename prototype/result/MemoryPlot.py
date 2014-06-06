@@ -12,9 +12,10 @@ colors = ('r', 'g', 'b', 'k', 'y', 'c', 'm', 'w')
 def main():
 	opt, files = getopt.getopt(sys.argv[1:], '', [])
 
-	test = []
-	tmp = {}
 	for result_file in files:
+		test = []
+		tmp = {}
+
 		fd = open(result_file, 'r')
 		line = fd.readline()
 		while line:

@@ -1,5 +1,5 @@
 {
-	"title": "ESN",
+	"title": "ESN Trajectory",
 	
 	"reservoir": {
 		"type": "ESN",
@@ -12,7 +12,6 @@
 			"f": "tanh",
 			"Win": {
 				"type": "uniform",
-				"seed": 42,
 				"min": -0.5,
 				"max": 0.5
 			},
@@ -56,21 +55,6 @@
 	],
 
 	"task": [
-		{
-			"type": "rappelClassification",
-			"data": {
-				"type": "Trajectory",
-				"param": {
-					"data": "data/trajectory_data",
-					"target": "data/trajectory_class"
-				}
-			},
-			"param": {
-				"init_len":90,
-				"train_len":1800,
-				"regul_coef":1e-5
-			}
-		},
 		{
 			"type": "classification",
 			"data": {
