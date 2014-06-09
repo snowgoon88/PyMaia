@@ -10,6 +10,8 @@ def main():
 		mode = 'w'
 
 	for test_file in files:
+		print "\t\t=== %s ==="%test_file
+
 		fd = open(test_file, 'r')
 		test_data = json.load(fd)
 		fd.close()
@@ -19,6 +21,11 @@ def main():
 		maxSeed = test_data['perform']['seed']['maxSeed']
 
 		fd = open(test_data['perform']['file'], mode)
+
+		nbTest = test_data['perform']['repeat'] * len(test_data['task'])
+		nbTestExec = 0
+
+		print "Have to perform %i test..."%nbTest
 
 		for i in xrange(test_data['perform']['repeat']):
 
@@ -50,6 +57,10 @@ def main():
 										   test_data['reservoir']['param']['N'], 
 										   seed, 
 										   float(acc)/len(Y.T)))
+
+				nbTestExec +=1
+				sys.stdout.write("progress: %d%%   \r" % ((nbTestExec*100)/nbTest) )
+				sys.stdout.flush()
 
 		fd.close()
 
