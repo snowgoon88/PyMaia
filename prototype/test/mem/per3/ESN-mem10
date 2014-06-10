@@ -1,11 +1,11 @@
 {
-	"title": "ESN-mem500",
+	"title": "ESN-mem10",
 	
 	"reservoir": {
 		"type": "ESN",
 		"param": {
 			"K":5,
-			"N":50,
+			"N":10,
 			"L":5,
 			"leaking_rate":1,
 			"rho_factor":1,
@@ -26,9 +26,7 @@
 	"perform":{
 		"repeat":10,
 		"file":"result/ESN-mem_out",
-
 		"seed": [7, 12, 24, 31, 36, 42, 48, 54, 59, 62]
-
 	},
 
 	"display":[
@@ -47,7 +45,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per10",
+					"data": "data/mem/per3/per10",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -70,7 +68,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per20",
+					"data": "data/mem/per3/per20",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -93,7 +91,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per30",
+					"data": "data/mem/per3/per30",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -116,7 +114,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per40",
+					"data": "data/mem/per3/per40",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -139,7 +137,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per50",
+					"data": "data/mem/per3/per50",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -162,7 +160,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per60",
+					"data": "data/mem/per3/per60",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -185,7 +183,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per70",
+					"data": "data/mem/per3/per70",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -208,7 +206,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per80",
+					"data": "data/mem/per3/per80",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -231,7 +229,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per90",
+					"data": "data/mem/per3/per90",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -254,7 +252,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per100",
+					"data": "data/mem/per3/per100",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -277,7 +275,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per110",
+					"data": "data/mem/per3/per110",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -300,7 +298,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per120",
+					"data": "data/mem/per3/per120",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -323,7 +321,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per130",
+					"data": "data/mem/per3/per130",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -346,7 +344,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per140",
+					"data": "data/mem/per3/per140",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -369,7 +367,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per150",
+					"data": "data/mem/per3/per150",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -392,7 +390,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per160",
+					"data": "data/mem/per3/per160",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -415,7 +413,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per170",
+					"data": "data/mem/per3/per170",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -438,7 +436,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per180",
+					"data": "data/mem/per3/per180",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -461,7 +459,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per190",
+					"data": "data/mem/per3/per190",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
@@ -484,7 +482,7 @@
 			"data": {
 				"type": "Sequence",
 				"param": {
-					"data": "data/mem/per/per200",
+					"data": "data/mem/per3/per200",
 					"encode": {
 			  			"A":[1,0,0,0,0],
 			  			"B":[0,1,0,0,0],
