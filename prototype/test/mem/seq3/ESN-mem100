@@ -1,0 +1,505 @@
+{
+	"title": "ESN-mem100",
+	
+	"reservoir": {
+		"type": "ESN",
+		"param": {
+			"K":5,
+			"N":100,
+			"L":5,
+			"leaking_rate":1,
+			"rho_factor":1,
+			"f": "tanh",
+			"Win": {
+				"type": "uniform",
+				"min": -0.5,
+				"max": 0.5
+			},
+			"W": {
+				"type": "uniform",
+				"min": -0.5,
+				"max": 0.5
+			}
+		}
+	},
+
+	"perform":{
+		"repeat":10,
+		"file":"result/ESN-mem_out",
+
+		"seed": [7, 12, 24, 31, 36, 42, 48, 54, 59, 62]
+
+	},
+
+	"display":[
+		{
+			"type": "Accuracy",
+			"param": {
+				"ticks": ["A", "B", "C", "D", "E"]
+			}
+		}
+	],
+
+	"task": [
+		{
+			"title": "Memory 10",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem10_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 20",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem20_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 30",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem30_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 40",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem40_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 50",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem50_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 60",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem60_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 70",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem70_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 80",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem80_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 90",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem90_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 100",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem100_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 110",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem110_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 120",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem120_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 130",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem130_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 140",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem140_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 150",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem150_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 160",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem160_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 170",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem170_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 180",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem180_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 190",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem190_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		},
+		{
+			"title": "Memory 200",
+			"type": "prediction",
+			"data": {
+				"type": "Sequence",
+				"param": {
+					"data": "data/mem/mem200_data3",
+					"encode": {
+			  			"A":[1,0,0,0,0],
+			  			"B":[0,1,0,0,0],
+			  			"C":[0,0,1,0,0],
+			  			"D":[0,0,0,1,0],
+			  			"E":[0,0,0,0,1]
+					}
+				}
+			},
+			"param": {
+				"init_len":200,
+				"train_len":1000,
+				"test_len":2000,
+				"regul_coef":1e-3
+			}
+		}
+	]
+}

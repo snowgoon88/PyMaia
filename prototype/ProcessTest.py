@@ -17,8 +17,6 @@ def main():
 		fd.close()
 
 		#TODO : generateur de seed, init avec test_data['perform']['seed']
-		minSeed = test_data['perform']['seed']['minSeed']
-		maxSeed = test_data['perform']['seed']['maxSeed']
 
 		fd = open(test_data['perform']['file'], mode)
 
@@ -30,7 +28,7 @@ def main():
 		for i in xrange(test_data['perform']['repeat']):
 
 			# TODO : .next() sur le generateur :)
-			seed = int(minSeed + random.random()*(maxSeed - minSeed))
+			seed = test_data['perform']['seed'][i%len(test_data['perform']['seed'])]
 
 			for j in xrange(len(test_data['task'])):
 
