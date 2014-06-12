@@ -1,5 +1,6 @@
 from matplotlib.pyplot import *
 from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
 import sys, getopt
 
 TEST = 0
@@ -40,8 +41,16 @@ def main():
 		k=0
 		label = []
 		for i in tmp:
-			plot(range(len(test)), [sum(tmp[i][x])/len(tmp[i][x]) for x in test], colors[k])
+			avg = np.array([sum(tmp[i][x])/len(tmp[i][x]) for x in test])
+			var = np.sum(np.power([[tmp[i][j] for j in test][x] - avg[x] for x in xrange(len(avg))], 2), axis=1)/[len(tmp[i][j]) for j in test]
+
+			plot(range(len(test)), avg, colors[k])
 			label.append("N: %s"%i)
+			plot(range(len(test)), avg + var, "%s--"%colors[k])
+			label.append("")
+			plot(range(len(test)), avg - var, "%s--"%colors[k])
+			label.append("")
+
 			k = (k+1)%len(colors)
 
 		legend(label)
