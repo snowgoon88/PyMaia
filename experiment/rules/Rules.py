@@ -11,35 +11,31 @@ def main():
                                      epilog="Write by NiZiL")
     parser.add_argument('-v', '--version', action='version', version='%(prog)s 2.0')
     parser.add_argument('--esn', action='store', type=argparse.FileType('r'))
+    parser.add_argument('--esnSeed', action='store', type=int)
     parser.add_argument('--seq', action='store', type=argparse.FileType('r'))
+    parser.add_argument('--seqSeed', action='store', type=int)
     parser.add_argument('--init', action='store', type=int)
     parser.add_argument('--train', action='store', type=int)
     parser.add_argument('--test', action='store', type=int)
     parser.add_argument('--regul', action='store', type=float)
-    parser.add_argument('--seed', action='store', type=int)
+
     args = parser.parse_args()
 
     # Generating esn
     esn_param = json.load(args.esn)
     args.esn.close()
 
-    print "ESN:", esn_param
-    if args.seed:
-        np.random.seed(args.seed)
+    np.random.seed(args.esnSeed)
     esn = ESN(**esn_param)
 
     # Generating data
     seq_param = json.load(args.seq)
     args.seq.close()
 
-    delay = []
-    for l in seq_param['rules']:
-        delay.append(seq_param['rules'][l]['delay'])
-
-    np.random.seed(seq_param['seed'])
+    np.random.seed(args.seqSeed)
     seq = []
-    for i in xrange(max(delay)):
-        seq.append(chr(65+np.random.randint(0, len(delay))))
+    for i in xrange(max([seq_param['rules'][x]['delay'] for x in seq_param['rules']])+1):
+        seq.append(chr(65+np.random.randint(0, len(seq_param['encode']))))
     while len(seq) < args.init + args.train + args.test +1:
         seq.append(seq_param['rules'][seq[-1]][seq[-1-seq_param['rules'][seq[-1]]['delay']]])
 
@@ -98,7 +94,7 @@ def main():
 
     print "LEARNING"
     for i in xrange(len(seq_param['encode'])):
-        print "* %c"%(65+i)
+        print "* %c:"%(65+i), sum(learnQ[chr(65+i)].values())
         for j in xrange(len(seq_param['encode'])):
             print "\t -> %c: %i"%(chr(65+j), learnQ[chr(65+i)][chr(65+j)])
     print "ACCURACY"
