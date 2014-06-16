@@ -10,7 +10,7 @@ do
     do
       for seqSeed in 8 13 29 35 47
       do
-        ./Period.py --esn ../data/esn$n-1-1.json \
+        ./Period.py --esn data/esn$n-1-1.json \
                     --esnSeed $esnSeed \
                     --seqSeed $seqSeed \
                     --period $period \
