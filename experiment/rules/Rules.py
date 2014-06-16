@@ -8,7 +8,6 @@ from reservoir.network import ESN
 
 def main():
     parser = argparse.ArgumentParser(description="Learning of sequence rules with Echo State Network")
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s 2.0')
     parser.add_argument('--esn', action='store', type=argparse.FileType('r'))
     parser.add_argument('--esnSeed', action='store', type=int)
     parser.add_argument('--seq', action='store', type=argparse.FileType('r'))
