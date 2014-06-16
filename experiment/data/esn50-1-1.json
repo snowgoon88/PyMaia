@@ -1,0 +1,17 @@
+{
+	"K":5,
+	"N":50,
+	"L":5,
+	"leaking_rate":1,
+	"rho_factor":0.9,
+	"Win": {
+		"type": "uniform",
+		"min": -0.5,
+		"max": 0.5
+	},
+	"W": {
+		"type": "uniform",
+		"min": -0.5,
+		"max": 0.5
+	}
+}

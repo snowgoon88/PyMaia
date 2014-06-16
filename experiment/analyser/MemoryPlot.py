@@ -1,3 +1,5 @@
+#! /usr/bin/python
+
 from matplotlib.pyplot import *
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
@@ -36,7 +38,7 @@ def main():
 		fig.canvas.set_window_title(result_file)
 		ylabel('Accuracy')
 		xlabel('Memory')
-		xticks(range(len(test)), [x[x.rfind(' ')+1:] for x in test])
+		xticks(range(len(test)), [x for x in test])
 		
 		k=0
 		label = []
