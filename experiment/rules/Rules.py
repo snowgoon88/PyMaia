@@ -37,16 +37,21 @@ def main():
         delay.append(seq_param['rules'][l]['delay'])
 
     np.random.seed(seq_param['seed'])
-    tmp = []
+    seq = []
     for i in xrange(max(delay)):
-        tmp.append(chr(65+np.random.randint(0, len(delay))))
-    while len(tmp) < args.init + args.train + args.test +1:
-        tmp.append(seq_param['rules'][tmp[-1]][tmp[-1*seq_param['rules'][tmp[-1]]['delay']]])
+        seq.append(chr(65+np.random.randint(0, len(delay))))
+    while len(seq) < args.init + args.train + args.test +1:
+        seq.append(seq_param['rules'][seq[-1]][seq[-1-seq_param['rules'][seq[-1]]['delay']]])
 
-    data = np.zeros((len(seq_param['encode']), len(tmp)))
-    for i in xrange(len(tmp)):
-        data[:, i] = np.array(seq_param['encode'][tmp[i]])
+    data = np.zeros((len(seq_param['encode']), len(seq)))
+    for i in xrange(len(seq)):
+        data[:, i] = np.array(seq_param['encode'][seq[i]])
 
+    learnQ = {}
+    for i in seq_param['encode']:
+        learnQ[i] = {}
+        for j in seq_param['encode']:
+            learnQ[i][j] = 0
 
     # transient
     for i in xrange(args.init):
@@ -55,6 +60,7 @@ def main():
     Xmem = np.zeros((1+esn_param['K']+esn_param['N'], args.train))
     for i in xrange(args.train):
         esn.input(data[:, i+args.init])
+        learnQ[seq[args.init + i]][seq[args.init + i +1]] +=1
         Xmem[:, i] = np.vstack((1, np.vstack(data[:, i+args.init]), esn.X))[:,0]
     # learning
     esn.train(data[:, args.init+1:args.init+args.train+1], 
@@ -66,12 +72,14 @@ def main():
         Y[:, i] = np.hstack(esn.compute(data[:, args.init+args.train+i]))
 
     # print perf and caetera
-    acc = 0
-    accByLetter = {}
-    lenByLetter = {}
-    for i in xrange(len(delay)):
-        accByLetter[i]=0
-        lenByLetter[i]=0
+    accByRule = {}
+    lenByRule = {}
+    for i in xrange(len(seq_param['encode'])):
+        accByRule[i]={}
+        lenByRule[i]={}
+        for j in xrange(len(seq_param['encode'])):
+            accByRule[i][j]=0
+            lenByRule[i][j]=0
     
     Ytarget = data[:, args.init+args.train+1:args.init+args.train+args.test+1]
     Xinput = data[:, args.init+args.train:args.init+args.train+args.test]
@@ -79,23 +87,29 @@ def main():
         xletter = np.where(Xinput[:, i]==max(Xinput[:, i]))[0][0]
         tmp1 = np.where(Ytarget[:, i]==max(Ytarget[:, i]))[0][0]
 
-        lenByLetter[xletter]+=1
+        lenByRule[xletter][tmp1]+=1
         if np.isnan(sum(Y[:, i])):
             print "[WARNING] NaN in reservoir output"
             break
 
         tmp2 = np.where(Y[:, i]==max(Y[:, i]))[0][0]
         if tmp1 == tmp2:
-            acc+=1
-            accByLetter[xletter]+=1
+            accByRule[xletter][tmp1]+=1
 
-    for i in accByLetter:
-        if lenByLetter[i] == 0 :
-            print "There is no %c"%(65+i)
-        else:
-            print "Accuracy for %i %c:"%(lenByLetter[i],(65+i)), float(accByLetter[i])/lenByLetter[i]
-    print "Accuracy:", float(acc)/args.test
-
+    print "LEARNING"
+    for i in xrange(len(seq_param['encode'])):
+        print "* %c"%(65+i)
+        for j in xrange(len(seq_param['encode'])):
+            print "\t -> %c: %i"%(chr(65+j), learnQ[chr(65+i)][chr(65+j)])
+    print "ACCURACY"
+    for i in xrange(len(seq_param['encode'])):
+        print "* %c:"%(65+i), float(sum(accByRule[i].values()))/sum(lenByRule[i].values())
+        for j in xrange(len(seq_param['encode'])):
+            if lenByRule[i][j] == 0 :
+                print "\t-> %c (0): _"%(65+j)
+            else:
+                print "\t-> %c (%i):"%((65+j), lenByRule[i][j]), float(accByRule[i][j])/lenByRule[i][j]
+    print "Global:", float(sum([ sum(accByRule[x].values()) for x in accByRule ])) / sum([sum(lenByRule[x].values()) for x in lenByRule])
 
 if __name__ == "__main__":
     main()
