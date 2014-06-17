@@ -10,24 +10,16 @@ from reservoir.network import ESN
 def main():
     parser = argparse.ArgumentParser(description="Learning of sequence rules with Echo State Network")
     parser.add_argument('--esn', action='store', type=argparse.FileType('r'))
+    parser.add_argument('--esnSeed', action='store', type=int)
     parser.add_argument('--period', action='store', type=int)
     parser.add_argument('--cardinal', action='store', type=int)
+    parser.add_argument('--seqSeed', action='store', type=int)
     parser.add_argument('--init', action='store', type=int)
     parser.add_argument('--train', action='store', type=int)
     parser.add_argument('--test', action='store', type=int)
     parser.add_argument('--regul', action='store', type=float)
-    parser.add_argument('--esnSeed', action='store', type=int)
-    parser.add_argument('--seqSeed', action='store', type=int)
     parser.add_argument('--output', action='store', type=argparse.FileType('a'))
     args = parser.parse_args()
-
-    # Generating esn
-    esn_param = json.load(args.esn)
-    args.esn.close()
-
-    if args.esnSeed:
-        np.random.seed(args.esnSeed)
-    esn = ESN(**esn_param)
 
     # Generating data
     np.random.seed(args.seqSeed)
@@ -38,6 +30,14 @@ def main():
     data = np.zeros((args.cardinal, args.init+args.train+args.test+1))
     for i in xrange(len(data.T)):
         data[:, i] = period[:, i%len(period.T)]
+
+
+    # Generating esn
+    esn_param = json.load(args.esn)
+    args.esn.close()
+
+    np.random.seed(args.esnSeed)
+    esn = ESN(**esn_param)
 
     # transient
     for i in xrange(args.init):

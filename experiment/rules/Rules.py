@@ -18,13 +18,6 @@ def main():
     parser.add_argument('--regul', action='store', type=float)
     args = parser.parse_args()
 
-    # Generating esn
-    esn_param = json.load(args.esn)
-    args.esn.close()
-
-    np.random.seed(args.esnSeed)
-    esn = ESN(**esn_param)
-
     # Generating data
     seq_param = json.load(args.seq)
     args.seq.close()
@@ -45,6 +38,13 @@ def main():
         learnQ[i] = {}
         for j in seq_param['encode']:
             learnQ[i][j] = 0
+
+    # Generating esn
+    esn_param = json.load(args.esn)
+    args.esn.close()
+
+    np.random.seed(args.esnSeed)
+    esn = ESN(**esn_param)
 
     # transient
     for i in xrange(args.init):

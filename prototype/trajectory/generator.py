@@ -16,10 +16,10 @@ def class3(t, beta):
 
 def generate():
     clazz = {
-    		'1' : class1,
-    		'2' : class2,
-    		'3' : class3
-            }
+    	'1' : class1,
+    	'2' : class2,
+    	'3' : class3
+    }
 
     for classID in clazz :
         for i in xrange(50):
