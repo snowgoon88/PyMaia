@@ -2,6 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
+import gen_sequence as gs
+import plot_seq as ps
+
+import matplotlib
+import matplotlib.pyplot as plt
 
 # ********************************************************************* RECMAP
 class RECMAP(object):
@@ -86,15 +91,19 @@ class RECMAP(object):
         h = np.exp( - dtopo / (2.0 * sigma * sigma) )
         return h
     # ------------------------------------------------------------------ learn
-    def learn(self, samples, np_epoch=1, epsilon=0.1, eta=1.0 ):
+    def learn(self, samples, epsilon=0.1, eta=1.0 ):
         """
         Fait apprentissage avec le sample, en fonction du contexte et du voisinage.
         
         Params:
-        - `samples`:
-        - `np_epoch`:
+        - `samples`: donnée d'apprentissage, avec une entrée en ligne.
         - `epsilon`:
         - `eta`:
+        
+        Return:
+        - `delta_in` : modif poids entrée de la carte
+        - `delta_con` : modif des poids du contexte
+        - `win` : indice du neurone vainqueur
         """
         data = np.array(samples)
         print "DATA="+str(data)
@@ -115,7 +124,7 @@ class RECMAP(object):
         # for i in xrange(len(self._win)):
         #     self._win[i,:] = np.add( self._win[i,:], delta_in[i])
         #     self._wcon[i,:] = np.add( self._wcon[i,:], delta_con[i])
-        return np.array(delta_in), np.array(delta_con)
+        return np.array(delta_in), np.array(delta_con), win
     # ------------------------------------------------------------ str_dump
     def str_dump(self, ):
         """ Dump everything
@@ -126,6 +135,36 @@ class RECMAP(object):
         str_dump += "\n_d_topo = " + str(self._d_topo)
         str_dump += "\n_wcon = " + str(self._wcon)
         return str_dump
+# ****************************************************************************
+# *********************************************************************** PLOT
+# ****************************************************************************
+def plot_sequence(seq, outfilename = None):
+    """
+    Affiche une séquence de lettre.
+    
+    Params:
+    - `seq`:
+    - `outfilename` : si pas None, sauvegarde dans un fichier.
+    """
+    # prépare la figure
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    #
+    code = {"A":1.0, "B":2.0, "C":3.0, "D":4.0, "E":5.0}
+    seq_plot = [ code[s] for s in seq ]
+    ax.plot(seq_plot, '-')
+    #
+    # et une autre figure qui plot avec des matrices de couleur
+    p = ps.SeqPlot( seq_plot, maxcol=100)
+    plt.show()
+    #
+    # save ??
+    if outfilename is not None:
+        fname = outfilename+str('%03d' % (length))+'.png'
+        print fname
+        plt.savefig( fname )
+    
+
 # ****************************************************************************
 # *********************************************************************** TEST
 # ****************************************************************************
@@ -170,18 +209,67 @@ def test_learn():
     x1 = np.array( [0.1, 0.2, -0.5] )
     x2 = np.array( [0.9, 0.0, 0.5] )
     #
-    di,dc = rsom.learn( x0, np_epoch=1, epsilon=0.1, eta=1.0 )
+    di,dc = rsom.learn( x0, epsilon=0.1, eta=1.0 )
     print "delta_in = "+str(di)
     print "delta_con = "+str(dc)
     print "LEARNED_n"+rsom.str_dump()
+def test_sequence():
+    """
+    Test d'un apprentissage avec des séquences de lettres.
+    """
+    import gen_sequence as gs
+    #
+    print "***** CREATION"
+    rsom = RECMAP()
+    rsom.generate( dim_input=5, size_grid=5)
+    #
+    # Génération de séqence à partir de fichier "seq_test.json"
+    file_param = open('seq_test.json', 'r')
+    seq_param = gs.json.load(file_param)
+    file_param.close()
+    seq,data = gs.gen_sequence( seq_param, length=1000 )
+    pos_start = gs.get_delay_init(seq_param['rules'])
+    print "***** SEQ\n",seq
+    #
+    # Pour évaluer/comprendre l'apprentissage
+    d_eval = {}
+    # Initialisation
+    for i in xrange(pos_start):
+        rsom.learn(data[:,i].transpose(), epsilon=0.0, eta=1.0 )
+    # Apprentissage
+    for i in xrange(pos_start, data.shape[1]):
+        di,dc,win = rsom.learn( data[:,i].transpose(), epsilon=0.1, eta=1.0 )
+        # ajouter le résultat à d_eval
+        # D'abord trouver la règle en cours dans la séquence
+        rule,next = gs.get_rule(seq,i,seq_param['rules'])
+        # Augmenter compteur
+        if not d_eval.has_key( rule):
+            d_eval[rule] = []
+        d_eval[rule].append( win )
+    #
+    for k,v in d_eval.iteritems():
+        print "{0} => {1}".format(k, str(v))
+def test_plot():
+    """
+    Différentes façon d'afficher une séqence de lettres.
+    """
+    # Génération de séqence à partir de fichier "seq_test.json"
+    file_param = open('seq_test.json', 'r')
+    seq_param = gs.json.load(file_param)
+    file_param.close()
+    seq,data = gs.gen_sequence( seq_param, length=500 )
+    pos_start = gs.get_delay_init(seq_param['rules'])
+    #
+    plot_sequence( seq )
+    
 # ****************************************************************************
 # *********************************************************************** MAIN
 # ****************************************************************************
 if __name__ == '__main__':
     # test_creation()
-    test_learn()
-
-
+    # test_learn()
+    # test_sequence()
+    test_plot()
 
 
 
