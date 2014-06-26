@@ -249,6 +249,31 @@ def test_sequence():
     #
     for k,v in d_eval.iteritems():
         print "{0} => {1}".format(k, str(v))
+def test_pattern():
+    """
+    Génère une séquence et cherche les "meilleurs" patterns qui peuvent
+    être répétitif.
+    """
+    import gen_sequence as gs
+    import seek_period as sp
+    #
+    # Génération de séqence à partir de fichier "seq_test.json"
+    file_param = open('seq_test.json', 'r')
+    seq_param = gs.json.load(file_param)
+    file_param.close()
+    seq,data = gs.gen_sequence( seq_param, length=1000 )
+    #
+    res = sp.search_period(seq, ['A','B','C','D','E'],120)
+    for i in xrange(len(res)):
+        p,d = res[i]
+        print "{0:0.3f} - {1:3d} {2}".format( d,i+1,''.join(p) )
+    #
+    # prépare la figure
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(np.arange(len(res))+1,[d for p,d in res], '-')
+    plt.show()
+
 def test_plot():
     """
     Différentes façon d'afficher une séqence de lettres.
@@ -269,7 +294,8 @@ if __name__ == '__main__':
     # test_creation()
     # test_learn()
     # test_sequence()
-    test_plot()
+    test_pattern()
+    # test_plot()
 
 
 
